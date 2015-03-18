@@ -2,7 +2,7 @@
     "Variables":  {
                       "SmaRunbookWorker-ProcDumpPath":  {
                                                             "isEncrypted":  false,
-                                                            "Description":  "",
+                                                            "Description":  "Location to store the proc dumps",
                                                             "Value":  "c:\\ProcDumpOutput"
                                                         },
                       "SmaRunbookWorker-MinimumPercentFreeMemory":  {
