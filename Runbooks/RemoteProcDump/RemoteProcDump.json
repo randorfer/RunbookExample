@@ -7,7 +7,7 @@
                                                              },
                       "RemoteProcDump-ProcDumpExePath":  {
                                                              "isEncrypted":  false,
-                                                             "Description":  "",
+                                                             "Description":  "The location of the proc dump exe",
                                                              "Value":  "c:\\ProcDump\\ProcDump.exe"
                                                          },
                       "RemoteProcDump-AccessCredName":  {
