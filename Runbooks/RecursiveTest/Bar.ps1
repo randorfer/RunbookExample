@@ -1,0 +1,4 @@
+workflow bar
+{
+    a
+}

@@ -1,0 +1,4 @@
+workflow a 
+{
+    b
+}
