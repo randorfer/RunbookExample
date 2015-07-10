@@ -1,7 +1,7 @@
 ﻿<#
 .SYNOPSIS
     Examines paths for old files that match the specified criteria. The list of
-    files discovered is returned.
+    files discovered is returned!
 
 .PARAMETER Path
     The paths that should be examined for old files.
