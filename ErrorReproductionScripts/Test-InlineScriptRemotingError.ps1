@@ -11,14 +11,14 @@ workflow Test-InlineScriptRemotingError
     {
         inlinescript
         {
-            $errorActionPreference = "Stop"
+            $errorActionPreference = 'Stop'
  
-            "Before: " + $using:i
+            'Before: ' + $using:i
             if($using:i -gt 3)
             {
                 Write-Error -Message Error
             }
-            "After."
+            'After.'
         } -PSComputerName localhost
     }
 }
@@ -29,15 +29,16 @@ workflow Test-InlineScriptRemotingErrorWorkaround
     {
         inlinescript
         {
+            $ErrorActionPreference = 'Continue'
             & {
-                $errorActionPreference = "Stop"
+                $errorActionPreference = 'Stop'
  
-                "Before: " + $using:i
+                'Before: ' + $using:i
                 if($using:i -gt 3)
                 {
                     Write-Error -Message Error
                 }
-                "After."
+                'After.'
             }
         } -PSComputerName localhost
     }
