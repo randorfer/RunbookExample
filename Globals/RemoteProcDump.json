@@ -10,11 +10,6 @@
                                                              "Description":  "The location of the proc dump exe",
                                                              "Value":  "c:\\ProcDump\\ProcDump.exe"
                                                          },
-                      "RemoteProcDump-coolstuff":  {
-                                                       "isEncrypted":  false,
-                                                       "Description":  "",
-                                                       "Value":  "{\"a\":\"b\",\"this\":\"that\"}"
-                                                   },
                       "RemoteProcDump-AccessCredName":  {
                                                             "isEncrypted":  false,
                                                             "Description":  "",
