@@ -1,9 +1,0 @@
-{
-    "Variables":  {
-                      "Test-WebserviceEndpoint":  {
-                                                                      "isEncrypted":  false,
-                                                                      "Description":  "",
-                                                                      "Value":  "https://mgoapsmap4.genmills.com"
-                                                    }
-            }
-}
