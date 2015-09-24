@@ -34,11 +34,6 @@
                                                                   "isEncrypted":  false,
                                                                   "Description":  "",
                                                                   "Value":  7
-                                                              },
-                      "SmaRunbookWorker-CoolVars":  {
-                                                                  "isEncrypted":  false,
-                                                                  "Description":  "",
-                                                                  "Value":  7
                                                               }
                   }
 }
