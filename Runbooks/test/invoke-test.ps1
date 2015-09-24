@@ -1,0 +1,4 @@
+workflow invoke-test
+{
+    'hey'
+}
