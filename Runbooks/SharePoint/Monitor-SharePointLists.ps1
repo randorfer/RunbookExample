@@ -28,7 +28,7 @@
         $CredNameArray = @()
         $CredArray     = @()
         
-	    $DefaultSPActionCred = Get-AutomationPSCredential -Name $Vars.DefaultSPActionCredName
+        $DefaultSPActionCred = Get-AutomationPSCredential -Name $Vars.DefaultSPActionCredName
         Write-Verbose -Message "`$DefaultSPActionCred.UserName [$($DefaultSPActionCred.UserName)]"
 
         Try
@@ -108,16 +108,16 @@
                         
                     Write-Verbose -Message "[$NewRequestsURI]: `$NewRequests.Count [$($NewRequests.count)]"
                                 
-					if($NewRequests.Count -gt 0)
+                    if($NewRequests.Count -gt 0)
                     {
                         # If throttle limit is greater than 0 the check how much space there is
                         if($ThrottleLimit -gt 0)
                         {
                             $Runbook = Get-SmaRunbook      -WebServiceEndpoint $WebServiceEndpoint -Name $ExecutionRunbook
-							$Jobs    = @()
+                            $Jobs    = @()
                             $Jobs   += Get-SmaJobsInStatus -WebServiceEndpoint $WebServiceEndpoint -JobStatus 'Running'
                             $Jobs   += Get-SmaJobsInStatus -WebServiceEndpoint $WebServiceEndpoint -JobStatus 'New'
-							$Jobs   += Get-SmaJobsInStatus -WebServiceEndpoint $WebServiceEndpoint -JobStatus 'Activating'
+                            $Jobs   += Get-SmaJobsInStatus -WebServiceEndpoint $WebServiceEndpoint -JobStatus 'Activating'
 
                             $RunningRequests = @()
                             Foreach($Job in $jobs)
@@ -136,40 +136,40 @@
                         # If any new requests were found, for each new request...
                         For($i = 0 ; $i -lt $NumberOfRunbookInstancesToStart ; $i++)
                         {
-						    $NewRequest = $NewRequests[$i]
-										
-							Write-Verbose -Message "[$($NewRequest.ID)]: Calling [$ExecutionRunbook]."
+                                $NewRequest = $NewRequests[$i]
 
-							$Launch = $Null
-							$Launch = Start-SmaRunbook -Name               $ExecutionRunbook `
-														-Parameters      @{ 'NewRequestURI' = $NewRequest.ID } `
-														-WebServiceEndpoint $WebServiceEndpoint
+                            Write-Verbose -Message "[$($NewRequest.ID)]: Calling [$ExecutionRunbook]."
 
-							If ( $Launch )
-							{
-								#  Change request Status to $NextValue
-								Update-SPListItem -SPUri      $NewRequest.ID `
-													-Data    @{ $StatusPropertyName = $StatusPropertyNextValue } `
-													-Credential $RunCred
+                            $Launch = $Null
+                            $Launch = Start-SmaRunbook -Name               $ExecutionRunbook `
+                                                       -Parameters     @{ 'NewRequestURI' = $NewRequest.ID } `
+                                                       -WebServiceEndpoint $WebServiceEndpoint
 
-								If ( $EnabledList.Properties.NotifyRequesterValue -eq 'True' )
-								{
-									$RequestsStarted += $NewRequest
-								}
-								$Status = 'Success'
-							}
-							Else
-							{
-								$Status = "Execute Runbook [$ExecutionRunbook] Not Found"
-								Write-Warning -Message "[$($EnabledList.ID)] [$Status]" -WarningAction Continue
-							}
+                            If ( $Launch )
+                            {
+                                #  Change request Status to $NextValue
+                                Update-SPListItem -SPUri      $NewRequest.ID `
+                                                  -Data    @{ $StatusPropertyName = $StatusPropertyNextValue } `
+                                                  -Credential $RunCred
 
-							If ( $EnabledList.Properties."$($Vars.LastResultSPField)" -ne $Status )
-							{
-								Update-SPListItem -SPUri      $EnabledList.ID `
-													-Data    @{ $Vars.LastResultSPField = $Status } `
-													-Credential $DefaultSPActionCred
-							}
+                                If ( $EnabledList.Properties.NotifyRequesterValue -eq 'True' )
+                                {
+                                    $RequestsStarted += $NewRequest
+                                }
+                                $Status = 'Success'
+                            }
+                            Else
+                            {
+                                $Status = "Execute Runbook [$ExecutionRunbook] Not Found"
+                                Write-Warning -Message "[$($EnabledList.ID)] [$Status]" -WarningAction Continue
+                            }
+
+                            If ( $EnabledList.Properties."$($Vars.LastResultSPField)" -ne $Status )
+                            {
+                                Update-SPListItem -SPUri      $EnabledList.ID `
+                                                  -Data    @{ $Vars.LastResultSPField = $Status } `
+                                                  -Credential $DefaultSPActionCred
+                            }
                         }
                     }
                     ElseIf($EnabledList.Properties."$($Vars.LastResultSPField)" -ne 'Success')
@@ -181,7 +181,7 @@
                 }
                 Catch
                 {
-					If ( $_.Message -eq 'The remote server returned an error: (404) Not Found.' )
+                    If ( $_.Message -eq 'The remote server returned an error: (404) Not Found.' )
                     {
                         $ErrorMessage = 'Error: List Not Found'
                         Update-SPListItem -SPUri      $EnabledList.ID `
@@ -190,15 +190,15 @@
 
                         Write-Warning -Message "[$($EnabledList.ID)] [$ErrorMessage]" -WarningAction Continue
                     }
-					ElseIf ( $_.Message -Like 'Could not start runbook*')
-					{
-						$ErrorMessage = 'Error: Could Not Start Runbook'
+                    ElseIf ( $_.Message -Like 'Could not start runbook*')
+                    {
+                        $ErrorMessage = 'Error: Could Not Start Runbook'
                         Update-SPListItem -SPUri      $EnabledList.ID `
                                             -Data    @{ $Vars.LastResultSPField = $ErrorMessage } `
                                             -Credential $DefaultSPActionCred
 
                         Write-Warning -Message "[$($EnabledList.ID)] [$ErrorMessage]" -WarningAction Continue
-					}
+                    }
                     ElseIf ($_.Message -eq 'The remote server returned an error: (400) Bad Request.')
                     {
                         $ErrorMessage = "Error: No property [$StatusPropertyName] exists in list"
@@ -246,7 +246,7 @@
     }
 
     #  Relaunch this monitor
-    Write-Verbose -Message "Reached end of monitor lifespan. Relaunching"
+    Write-Verbose -Message 'Reached end of monitor lifespan. Relaunching'
     $Launch = Start-SmaRunbook -Name               $WorkflowCommandName `
                                -WebServiceEndpoint $WebserviceEndpoint
 }
