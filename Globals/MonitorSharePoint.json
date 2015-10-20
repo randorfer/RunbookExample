@@ -1,0 +1,84 @@
+﻿{
+    "Variables":  {
+                      "MonitorSharePoint-SMTPServer":  {
+                                                           "isEncrypted":  false,
+                                                           "Description":  "",
+                                                           "Value":  "mail.genmills.com"
+                                                       },
+                      "MonitorSharePoint-AzureAutomationAccessCredentialName":  {
+                                                                                    "isEncrypted":  false,
+                                                                                    "Description":  "",
+                                                                                    "Value":  "M3IS052@genmills.com"
+                                                                                },
+                      "MonitorSharePoint-SourceSPFarm":  {
+                                                             "isEncrypted":  false,
+                                                             "Description":  "",
+                                                             "Value":  "solutions.generalmills.com"
+                                                         },
+                      "MonitorSharePoint-DelayCycle":  {
+                                                           "isEncrypted":  false,
+                                                           "Description":  "",
+                                                           "Value":  30
+                                                       },
+                      "MonitorSharePoint-SourceSPSite":  {
+                                                             "isEncrypted":  false,
+                                                             "Description":  "",
+                                                             "Value":  "gcloud"
+                                                         },
+                      "MonitorSharePoint-From":  {
+                                                     "isEncrypted":  false,
+                                                     "Description":  "",
+                                                     "Value":  "Automation.Communication@genmills.com"
+                                                 },
+                      "MonitorSharePoint-LastResultSPField":  {
+                                                                  "isEncrypted":  false,
+                                                                  "Description":  "",
+                                                                  "Value":  "LastResult"
+                                                              },
+                      "MonitorSharePoint-DelayCheckpoint":  {
+                                                                "isEncrypted":  false,
+                                                                "Description":  "",
+                                                                "Value":  30
+                                                            },
+                      "MonitorSharePoint-SubscriptionName":  {
+                                                                 "isEncrypted":  false,
+                                                                 "Description":  "",
+                                                                 "Value":  "Hybrid Cloud Project"
+                                                             },
+                      "MonitorSharePoint-SourceSPStartValue":  {
+                                                                   "isEncrypted":  false,
+                                                                   "Description":  "",
+                                                                   "Value":  "AzureAutomation"
+                                                               },
+                      "MonitorSharePoint-SourceSPList":  {
+                                                             "isEncrypted":  false,
+                                                             "Description":  "",
+                                                             "Value":  "SharePointListsToMonitor"
+                                                         },
+                      "MonitorSharePoint-AutomationAccountName":  {
+                                                                      "isEncrypted":  false,
+                                                                      "Description":  "",
+                                                                      "Value":  "GeneralMills"
+                                                                  },
+                      "MonitorSharePoint-ResourceGroupName":  {
+                                                                  "isEncrypted":  false,
+                                                                  "Description":  "",
+                                                                  "Value":  "AzureAutomation"
+                                                              },
+                      "MonitorSharePoint-SourceSPCollection":  {
+                                                                   "isEncrypted":  false,
+                                                                   "Description":  "",
+                                                                   "Value":  "sites"
+                                                               },
+                      "MonitorSharePoint-SourceSPStatusField":  {
+                                                                    "isEncrypted":  false,
+                                                                    "Description":  "",
+                                                                    "Value":  "ActiveEnvironmentValue"
+                                                                },
+                      "MonitorSharePoint-DefaultSPActionCredName":  {
+                                                                        "isEncrypted":  false,
+                                                                        "Description":  "",
+                                                                        "Value":  "M3IS052@genmills.com"
+                                                                    }
+                  }
+}
