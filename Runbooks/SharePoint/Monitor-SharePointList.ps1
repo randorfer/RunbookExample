@@ -1,4 +1,8 @@
-﻿Workflow Monitor-SharePointList
+﻿<#
+    .Synopsis
+        Monitors sharepoint lists for jobs to start
+#>
+Workflow Monitor-SharePointList
 {
     Param (
     )
