@@ -114,7 +114,15 @@ Function Invoke-SharePointRunbookJob
             Position = 12
         )]
         [string]
-        $LastResultSPField
+        $LastResultSPField,
+        
+        [Parameter(
+            Mandatory = $True,
+            ValueFromPipeLine,
+            Position = 13
+        )]
+        [string]
+        $RunOn
     )
 
     $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
@@ -143,7 +151,8 @@ Function Invoke-SharePointRunbookJob
                                            -AutomationAccountName $AutomationAccountName `
                                            -SMTPServer $SMTPServer `
                                            -From $From `
-                                           -LastResultSPField $LastResultSPField
+                                           -LastResultSPField $LastResultSPField `
+                                           -RunOn $RunOn
             }
             Catch
             {
@@ -214,7 +223,15 @@ Function Start-SharePointWrapperJob
             Position = 5
         )]
         [string]
-        $LastResultSPField
+        $LastResultSPField,
+
+        [Parameter(
+            Mandatory=$True,
+            ValueFromPipeline = $True,
+            Position = 6
+        )]
+        [string]
+        $RunOn
     )
 
     $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
@@ -293,7 +310,8 @@ Function Start-SharePointWrapperJob
                                                                   'NewRequestURI' = $NewRequest.ID
                                                              } `
                                                              -AutomationAccountName $AutomationAccountName `
-                                                             -ResourceGroupName $ResourceGroupName
+                                                             -ResourceGroupName $ResourceGroupName `
+                                                             -RunOn $RunOn
 
                     If($Launch -as [bool])
                     {

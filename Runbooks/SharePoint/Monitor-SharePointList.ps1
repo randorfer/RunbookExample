@@ -18,7 +18,8 @@
                                               'ResourceGroupName',
                                               'AzureAutomationAccessCredentialName',
                                               'SMTPServer',
-                                              'From' `
+                                              'From',
+                                              'RunOn' `
                                         -Prefix 'MonitorSharePoint'
     do
     {
@@ -40,7 +41,8 @@
                                     -AutomationAccountName $Vars.AutomationAccountName `
                                     -SMTPServer $Vars.SMTPServer `
                                     -From $Vars.From `
-                                    -LastResultSPField $Vars.LastResultSPField
+                                    -LastResultSPField $Vars.LastResultSPField `
+                                    -RunOn $Vars.RunOn
         
         do
         {
