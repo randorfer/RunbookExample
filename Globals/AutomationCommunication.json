@@ -1,0 +1,19 @@
+﻿{
+    "Variables":  {
+                      "AutomationCommunication-TemplateMailboxName":  {
+                                                                          "isEncrypted":  false,
+                                                                          "Description":  "",
+                                                                          "Value":  "SETUP"
+                                                                      },
+                      "AutomationCommunication-TemplateFolder":  {
+                                                                     "isEncrypted":  false,
+                                                                     "Description":  "",
+                                                                     "Value":  "SETUP"
+                                                                 },
+                      "AutomationCommunication-CredentialName":  {
+                                                                     "isEncrypted":  false,
+                                                                     "Description":  "",
+                                                                     "Value":  "SETUP"
+                                                                 }
+                  }
+}

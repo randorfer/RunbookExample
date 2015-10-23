@@ -21,14 +21,21 @@ Workflow New-FTPSetup-SharePoint
                                                         'DomainCredName' `
                                                   -Prefix 'Global'
 
+        $CommunicationVars = Get-BatchAutomationVariable -Name 'TemplateMailboxName',
+                                                               'TemplateFolder',
+                                                               'CredentialName' `
+                                                         -Prefix 'AutomationCommunication'
+        
         $Vars = Get-BatchAutomationVariable -Name 'UserOUPath',
                                                   'GroupOUPath',
                                                   'PasswordLength',
                                                   'PasswordSpecialCharacters',
                                                   'ADDomain' `
                                             -Prefix 'FTP'
+
         $SharePointCredential = Get-AutomationPSCredential -Name $GlobalVars.SharePointCredName
         $DomainCredential = Get-AutomationPSCredential -Name $GlobalVars.DomainCredName
+        $CommunicationCredential = Get-AutomationPSCredential -Name $CommunicationVars.CredentialName
 
         $Request = Get-SPListItem -SPUri $NewRequestURI -Credential $SharePointCredential -ExpandProperty 'GroupMembers', 'AccountOwner', 'CreatedBy'
         $Requester = ConvertTo-PrimaryUserId -Identity $Request.LinkedItems.CreatedBy.Properties.Account -Properties mail
@@ -67,10 +74,10 @@ Workflow New-FTPSetup-SharePoint
                                              -AdditionalInformation $AdditionalInformation `
                                              -To $RequesterEmail `
                                              -Cc $GlobalVars.SecurityErrorDistlist `
-                                             -Contact $GlobalVars.SecuritySupportContact
-
-
-        New-VariableRunbookTrackingInstance -VariablePrefix 'FTP-New'
+                                             -Contact $GlobalVars.SecuritySupportContact `
+                                             -TemplateMailboxName $CommunicationVars.TemplateMailboxName `
+                                             -TemplateFolder $CommunicationVars.TemplateFolder `
+                                             -Credential $CommunicationCredential
     }
     Catch
     {
@@ -88,7 +95,10 @@ Workflow New-FTPSetup-SharePoint
                                              -AdditionalInformation $AdditionalInformation `
                                              -To $RequesterEmail `
                                              -Cc $GlobalVars.SecurityErrorDistlist `
-                                             -Contact $GlobalVars.SecuritySupportContact
+                                             -Contact $GlobalVars.SecuritySupportContact `
+                                             -TemplateMailboxName $CommunicationVars.TemplateMailboxName `
+                                             -TemplateFolder $CommunicationVars.TemplateFolder `
+                                             -Credential $CommunicationCredential
             }
         }
     }
