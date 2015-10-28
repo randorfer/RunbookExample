@@ -136,9 +136,10 @@ Function Invoke-SharePointRunbookJob
                                                  -StatusField $StatusField `
                                                  -EnvironmentValue $EnvironmentValue `
                                                  -Credential $SharePointCredential
-
-        $Null = Add-AzureRmAccount -Credential $AzureAutomationCredential `
-                                   -SubscriptionName $SubscriptionName
+        
+        Connect-AzureRmAccount -Credential $AzureAutomationCredental `
+                               -SubscriptionName $SubscriptionName
+        
         ForEach($RequestId in $RequestList.Keys)
         {
             Try

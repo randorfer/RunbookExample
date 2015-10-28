@@ -3,17 +3,17 @@
                       "MonitorSharePoint-SMTPServer":  {
                                                            "isEncrypted":  false,
                                                            "Description":  "",
-                                                           "Value":  "mail.genmills.com"
+                                                           "Value":  "UPDATE"
                                                        },
                       "MonitorSharePoint-AzureAutomationAccessCredentialName":  {
                                                                                     "isEncrypted":  false,
                                                                                     "Description":  "",
-                                                                                    "Value":  "M3IS052@genmills.com"
+                                                                                    "Value":  "UPDATE"
                                                                                 },
                       "MonitorSharePoint-SourceSPFarm":  {
                                                              "isEncrypted":  false,
                                                              "Description":  "",
-                                                             "Value":  "solutions.generalmills.com"
+                                                             "Value":  "UPDATE"
                                                          },
                       "MonitorSharePoint-DelayCycle":  {
                                                            "isEncrypted":  false,
@@ -23,17 +23,17 @@
                       "MonitorSharePoint-SourceSPSite":  {
                                                              "isEncrypted":  false,
                                                              "Description":  "",
-                                                             "Value":  "gcloud"
+                                                             "Value":  "UPDATE"
                                                          },
                       "MonitorSharePoint-From":  {
                                                      "isEncrypted":  false,
                                                      "Description":  "",
-                                                     "Value":  "Automation.Communication@genmills.com"
+                                                     "Value":  "UPDATE"
                                                  },
                       "MonitorSharePoint-LastResultSPField":  {
                                                                   "isEncrypted":  false,
                                                                   "Description":  "",
-                                                                  "Value":  "LastResult"
+                                                                  "Value":  "UPDATE"
                                                               },
                       "MonitorSharePoint-DelayCheckpoint":  {
                                                                 "isEncrypted":  false,
@@ -43,47 +43,47 @@
                       "MonitorSharePoint-SubscriptionName":  {
                                                                  "isEncrypted":  false,
                                                                  "Description":  "",
-                                                                 "Value":  "Hybrid Cloud Project"
+                                                                 "Value":  "UPDATE"
                                                              },
                       "MonitorSharePoint-SourceSPStartValue":  {
                                                                    "isEncrypted":  false,
                                                                    "Description":  "",
-                                                                   "Value":  "AzureAutomation"
+                                                                   "Value":  "UPDATE"
                                                                },
                       "MonitorSharePoint-SourceSPList":  {
                                                              "isEncrypted":  false,
                                                              "Description":  "",
-                                                             "Value":  "SharePointListsToMonitor"
+                                                             "Value":  "UPDATE"
                                                          },
                       "MonitorSharePoint-AutomationAccountName":  {
                                                                       "isEncrypted":  false,
                                                                       "Description":  "",
-                                                                      "Value":  "GeneralMills"
+                                                                      "Value":  "UPDATE"
                                                                   },
                       "MonitorSharePoint-Runon":  {
                                                       "isEncrypted":  false,
                                                       "Description":  "",
-                                                      "Value":  "GLab"
+                                                      "Value":  "UPDATE"
                                                   },
                       "MonitorSharePoint-ResourceGroupName":  {
                                                                   "isEncrypted":  false,
                                                                   "Description":  "",
-                                                                  "Value":  "AzureAutomation"
+                                                                  "Value":  "UPDATE"
                                                               },
                       "MonitorSharePoint-SourceSPCollection":  {
                                                                    "isEncrypted":  false,
                                                                    "Description":  "",
-                                                                   "Value":  "sites"
+                                                                   "Value":  "UPDATE"
                                                                },
                       "MonitorSharePoint-SourceSPStatusField":  {
                                                                     "isEncrypted":  false,
                                                                     "Description":  "",
-                                                                    "Value":  "ActiveEnvironmentValue"
+                                                                    "Value":  "UPDATE"
                                                                 },
                       "MonitorSharePoint-DefaultSPActionCredName":  {
                                                                         "isEncrypted":  false,
                                                                         "Description":  "",
-                                                                        "Value":  "M3IS052@genmills.com"
+                                                                        "Value":  "UPDATE"
                                                                     }
                   }
 }

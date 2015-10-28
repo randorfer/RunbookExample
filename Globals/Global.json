@@ -1,0 +1,29 @@
+﻿{
+    "Variables":  {
+                      "Global-SecurityErrorDistlist":  {
+                                                           "isEncrypted":  false,
+                                                           "Description":  "",
+                                                           "Value":  "UPDATE"
+                                                       },
+                      "Global-SecuritySupportContact":  {
+                                                            "isEncrypted":  false,
+                                                            "Description":  "",
+                                                            "Value":  "UPDATE"
+                                                        },
+                      "Global-DomainCredName":  {
+                                                    "isEncrypted":  false,
+                                                    "Description":  "",
+                                                    "Value":  "UPDATE"
+                                                },
+                      "Global-SharePointCredName":  {
+                                                        "isEncrypted":  false,
+                                                        "Description":  "",
+                                                        "Value":  "UPDATE"
+                                                    },
+                      "Global-ExchangeCredName":  {
+                                                      "isEncrypted":  false,
+                                                      "Description":  "",
+                                                      "Value":  "UPDATE"
+                                                  }
+                  }
+}

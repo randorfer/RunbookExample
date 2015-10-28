@@ -1,0 +1,29 @@
+﻿{
+    "Variables":  {
+                      "FTP-UserOUPath":  {
+                                             "isEncrypted":  false,
+                                             "Description":  "",
+                                             "Value":  "UPDATE"
+                                         },
+                      "FTP-PasswordLength":  {
+                                                 "isEncrypted":  false,
+                                                 "Description":  "",
+                                                 "Value":  15
+                                             },
+                      "FTP-ADDomain":  {
+                                           "isEncrypted":  false,
+                                           "Description":  "",
+                                           "Value":  "UPDATE"
+                                       },
+                      "FTP-GroupOUPath":  {
+                                              "isEncrypted":  false,
+                                              "Description":  "",
+                                              "Value":  "UPDATE"
+                                          },
+                      "FTP-PasswordSpecialCharacters":  {
+                                                            "isEncrypted":  false,
+                                                            "Description":  "",
+                                                            "Value":  5
+                                                        }
+                  }
+}
