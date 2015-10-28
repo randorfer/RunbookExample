@@ -1,10 +1,25 @@
 ﻿{
     "Variables":  {
-                      "FTP-UserOUPath":  {
-                                             "isEncrypted":  false,
-                                             "Description":  "",
-                                             "Value":  "UPDATE"
-                                         },
+                      "FTP-ErrorDistlist":  {
+                                                "isEncrypted":  false,
+                                                "Description":  "",
+                                                "Value":  "UPDATE"
+                                            },
+                      "FTP-PasswordSpecialCharacters":  {
+                                                            "isEncrypted":  false,
+                                                            "Description":  "",
+                                                            "Value":  5
+                                                        },
+                      "FTP-GroupOUPath":  {
+                                              "isEncrypted":  false,
+                                              "Description":  "",
+                                              "Value":  "UPDATE"
+                                          },
+                      "FTP-SupportContact":  {
+                                                 "isEncrypted":  false,
+                                                 "Description":  "",
+                                                 "Value":  "UPDATE"
+                                             },
                       "FTP-PasswordLength":  {
                                                  "isEncrypted":  false,
                                                  "Description":  "",
@@ -15,15 +30,10 @@
                                            "Description":  "",
                                            "Value":  "UPDATE"
                                        },
-                      "FTP-GroupOUPath":  {
-                                              "isEncrypted":  false,
-                                              "Description":  "",
-                                              "Value":  "UPDATE"
-                                          },
-                      "FTP-PasswordSpecialCharacters":  {
-                                                            "isEncrypted":  false,
-                                                            "Description":  "",
-                                                            "Value":  5
-                                                        }
+                      "FTP-UserOUPath":  {
+                                             "isEncrypted":  false,
+                                             "Description":  "",
+                                             "Value":  "UPDATE"
+                                         }
                   }
 }
