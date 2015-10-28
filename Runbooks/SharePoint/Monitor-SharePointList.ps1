@@ -30,6 +30,8 @@ do
     $AzureAutomationCredential = Get-AutomationPSCredential -Name $Vars.AzureAutomationAccessCredentialName
     $SharePointCredential = Get-AutomationPSCredential -Name $Vars.DefaultSPActionCredName
 
+    Connect-AzureRmAccount -Credential $AzureAutomationCredential -SubscriptionName $Vars.SubscriptionName
+
     Invoke-SharePointRunbookJob -SharePointCredential $SharePointCredential `
                                 -Farm $Vars.SourceSPFarm `
                                 -Site $Vars.SourceSPSite `

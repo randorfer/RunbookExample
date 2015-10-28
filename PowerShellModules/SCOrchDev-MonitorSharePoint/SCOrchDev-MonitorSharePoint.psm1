@@ -137,7 +137,7 @@ Function Invoke-SharePointRunbookJob
                                                  -EnvironmentValue $EnvironmentValue `
                                                  -Credential $SharePointCredential
         
-        Connect-AzureRmAccount -Credential $AzureAutomationCredental `
+        Connect-AzureRmAccount -Credential $AzureAutomationCredential `
                                -SubscriptionName $SubscriptionName
         
         ForEach($RequestId in $RequestList.Keys)

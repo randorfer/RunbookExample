@@ -12,7 +12,7 @@
 RootModule = '.\SCOrchDev-MonitorSharePoint.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.1'
+ModuleVersion = '1.0.2'
 
 # ID used to uniquely identify this module
 GUID = '983d1402-96c7-4d94-bc18-c3fb363b37b4'
