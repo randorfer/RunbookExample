@@ -8,8 +8,7 @@ Param(
 )
 
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
-$CompletedParameters = Write-StartingMessage -CommandName $WorkflowCommandName
-
+$CompletedParameters = Write-StartingMessage
 Try
 {
     $GlobalVars = Get-BatchAutomationVariable -Name 'SharePointCredName',
