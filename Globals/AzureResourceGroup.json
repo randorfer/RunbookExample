@@ -1,0 +1,14 @@
+﻿{
+    "Variables":  {
+                      "AzureResourceGroup-SubscriptionName":  {
+                                                                  "isEncrypted":  false,
+                                                                  "Description":  "",
+                                                                  "Value":  "Azure PaaS Discovery"
+                                                              },
+                      "AzureResourceGroup-CredentialName":  {
+                                                                "isEncrypted":  false,
+                                                                "Description":  "",
+                                                                "Value":  "M3IS052@genmills.com"
+                                                            }
+                  }
+}
