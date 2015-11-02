@@ -1,0 +1,19 @@
+﻿{
+    "Variables":  {
+                      "Foo-b":  {
+                                    "isEncrypted":  false,
+                                    "Description":  "",
+                                    "Value":  "{\"c\":\"d\",\"a\":\"b\"}"
+                                },
+                      "Foo-credname":  {
+                                           "isEncrypted":  false,
+                                           "Description":  "",
+                                           "Value":  "coolkid@contoso.com"
+                                       },
+                      "Foo-a":  {
+                                    "isEncrypted":  false,
+                                    "Description":  "",
+                                    "Value":  "hello"
+                                }
+                  }
+}
