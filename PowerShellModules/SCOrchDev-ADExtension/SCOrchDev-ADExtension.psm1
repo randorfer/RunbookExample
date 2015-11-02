@@ -102,41 +102,7 @@ Function Test-ADSecurityGroup
     Write-CompletedMessage @CompletedParams
     Return $ADGroup.GroupCategory -eq 'Security'
 }
-<#
-.SYNOPSIS
-    Converts a domain name (e.g. contoso.COM) into its distinguished name suitable for use as a suffix
-    in distinguished name lookups.
 
-.PARAMETER Domain
-    The domain to convert.
-
-.EXAMPLE
-    PS > ConvertTo-DomainDN -Domain 'contoso.COM'
-    DC=contoso,DC=COM
-#>
-Function ConvertTo-DomainDN
-{
-    Param([Parameter(Mandatory=$True)] [String] $Domain)
-
-    $FullDomain = ConvertTo-FullDomain -Domain $Domain
-    return "DC=$($FullDomain.Replace('.', ',DC='))".ToUpper()
-}
-
-
-<#
-.SYNOPSIS
-    Given a full domain (e.g. contoso.COM), converts the domain to a short version (e.g. contoso)
-    as you might find in a down-level logon name.
-
-.PARAMETER Domain
-    The domain to convert.
-#>
-Function ConvertTo-ShortDomain
-{
-    Param([Parameter(Mandatory=$True)] [String] $Domain)
-
-    Return $Domain.Split('.')[0]
-}
 
 <#
 .SYNOPSIS
@@ -269,7 +235,6 @@ Function Get-ADIdentityInfo
     {
         # It's a down-level logon name
         $Domain, $IdentityInfo.Name = $Identity -split '\\'
-        $IdentityInfo.Domain = ConvertTo-FullDomain -Domain $Domain
     }
     else
     {
@@ -293,19 +258,6 @@ Function Get-ADIdentityInfo
     If specified, includes the full domain name in the domain portion (contoso.COM instead
     of contoso).
 #>
-Function ConvertTo-DownlevelLogonName
-{
-    param(
-        [Parameter(Mandatory=$True)]  [String] $Identity,
-        [Parameter(Mandatory=$False)] [Switch] $FullDomain
-    )
-    $IdentityInfo = Get-ADIdentityInfo -Identity $Identity
-    if(-not $FullDomain)
-    {
-        $IdentityInfo.Domain = ConvertTo-ShortDomain -Domain $IdentityInfo.Domain
-    }
-    return "$($IdentityInfo.Domain)\$($IdentityInfo.Name)"
-}
 
 <#
 .SYNOPSIS
@@ -325,19 +277,16 @@ Function ConvertTo-PrimaryUserId
 {
     Param(
         [Parameter(Mandatory=$True)]  [String]       $Identity,
-        [Parameter(Mandatory=$False)] [String]       $Server = 'contoso.COM',
+        [Parameter(Mandatory=$False)] [String]       $Server = 'contoso.com',
         [Parameter(Mandatory=$False)] [Switch]       $AsADUser = $True,
         [Parameter(Mandatory=$False)] [String[]]     $Properties,
+        [Parameter(Mandatory=$False)] [String[]]     $AccountPrefix = @('G','X','M'),
         [Parameter(Mandatory=$False)] [PSCredential] $Credential
     )
 
     $IdentityInfo = Get-ADIdentityInfo -Identity $Identity
     $UserName = $IdentityInfo.Name
-    if($IdentityInfo.Domain -ne $null)
-    {
-        $Server = ConvertTo-FullDomain -Domain $IdentityInfo.Domain
-    }
-    ForEach($Prefix in 'G', 'X', 'M')
+    ForEach($Prefix in $AccountPrefix)
     {
         $PrimaryUserName = $Prefix + $UserName.Substring(1)
         Try
@@ -1638,7 +1587,7 @@ Function New-ADFTPSetup
     )
 
     $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
-    $CompletedParams = Write-StartingMessage
+    $CompletedParams = Write-StartingMessage -String "Args [$($Args | ConvertTo-Json ([int]::MaxValue))]"
 
     Try
     {
