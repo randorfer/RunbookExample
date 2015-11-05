@@ -12,5 +12,7 @@ Workflow Invoke-Foo
 
     Write-Verbose 'This is cooler and cooler'
 
+    Write-Verbose 'Test to see if it does the right thing'
+
     Write-CompletedMessage -StartTime $CompletedParams.StartTime -Name $CompletedParams.Name -Stream $CompletedParams.Stream
 }
