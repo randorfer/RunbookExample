@@ -10,7 +10,7 @@ Workflow Invoke-Foo
 
     Write-Verbose 'Hello World from the MVP summit!'
 
-    Write-Verbose 'This is cooler'
+    Write-Verbose 'This is cooler and cooler'
 
     Write-CompletedMessage -StartTime $CompletedParams.StartTime -Name $CompletedParams.Name -Stream $CompletedParams.Stream
 }
