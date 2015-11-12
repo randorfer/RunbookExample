@@ -1,7 +1,7 @@
 ﻿<#
     .SYNOPSIS
        Looks up all the Resource Groups in an Azure Subscription and copies all tags down
-       onto the child resources
+       onto the child resources.
 #>
 Param(
 )
