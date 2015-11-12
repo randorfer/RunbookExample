@@ -14,7 +14,7 @@ Param(
 
     Write-Verbose -Message 'Test to see if it does the right thing'
 
-    Write-Verbose -Message 'Write verbose should always specify Message'
+    Write-Verbose -Message 'Write verbose should always specify Message!'
 
     Write-CompletedMessage -StartTime $CompletedParams.StartTime -Name $CompletedParams.Name -Stream $CompletedParams.Stream
 }
