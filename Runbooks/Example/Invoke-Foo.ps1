@@ -8,11 +8,11 @@ Param(
     $Vars = Get-BatchAutomationVariable -Prefix 'Foo' -Name @('a','b','credname')
     $Credential = Get-AutomationPSCredential -Name $Vars.credname
 
-    Write-Verbose 'Hello World from the MVP summit!'
+    Write-Verbose -Message 'Hello World from the MVP summit!'
 
-    Write-Verbose 'This is cooler and cooler'
+    Write-Verbose -Message 'This is cooler and cooler'
 
-    Write-Verbose 'Test to see if it does the right thing'
+    Write-Verbose -Message 'Test to see if it does the right thing'
 
     Write-Verbose -Message 'Write verbose should always specify Message'
 
