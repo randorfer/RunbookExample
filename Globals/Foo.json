@@ -13,7 +13,7 @@
                       "Foo-a":  {
                                     "isEncrypted":  false,
                                     "Description":  "",
-                                    "Value":  "hello"
+                                    "Value":  "[\"a\",\"b\",\"c\",\"d\"]"
                                 }
                   }
 }
