@@ -16,7 +16,7 @@ Describe -Tags 'VersionChecks' 'SCOrchDev-MonitorSharePoint manifest' {
     }
 
     It 'has a valid guid in the manifest' {
-        $script:manifest.Guid | Should Be '28c4f89c-5eee-5127-ab07-3511d46b8b11'
+        $script:manifest.Guid | Should Be '983d1402-96c7-4d94-bc18-c3fb363b37b4'
     }
 
     It 'has a valid version in the manifest' {
