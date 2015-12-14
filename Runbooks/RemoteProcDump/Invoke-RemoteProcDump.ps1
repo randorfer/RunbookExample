@@ -46,7 +46,7 @@
 
 Param(
     [Parameter(Mandatory = $True)]
-    [String[]]
+    [String]
     $ComputerName,
           
     [Parameter(Mandatory = $False)]
@@ -54,7 +54,7 @@ Param(
     $DumpPath = 'c:\ProcDump',
           
     [Parameter(Mandatory = $True)]
-    [String[]]
+    [String]
     $ProcessName,
     
     [Parameter(Mandatory = $False)]
