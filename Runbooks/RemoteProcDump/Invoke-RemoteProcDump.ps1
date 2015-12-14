@@ -59,7 +59,7 @@ Param(
     
     [Parameter(Mandatory = $False)]
     [pscredential]
-    $Credential,
+    $Credential = $Null,
 
     [Parameter(Mandatory = $False)]
     [ValidateSet(
@@ -88,7 +88,7 @@ if(-not($Credential -as [bool]))
     $Credential = Get-AutomationPSCredential -Name $RemoteProcDumpVars.AccessCredName
 }
 
-Invoke-Command -ComputerName $ComputerName -PSCredential $Credential -PSAuthentication $AuthenticationMechanism -ScriptBlock `
+Invoke-Command -ComputerName $ComputerName -Credential $Credential -Authentication $AuthenticationMechanism -ScriptBlock `
 {
     $DebugPreference       = [System.Management.Automation.ActionPreference]$Using:DebugPreference
     $VerbosePreference     = [System.Management.Automation.ActionPreference]$Using:VerbosePreference
@@ -142,4 +142,4 @@ Invoke-Command -ComputerName $ComputerName -PSCredential $Credential -PSAuthenti
     }
 }
 
-Write-Verbose -Message "Finished [$WorkflowCommandName]"
+Write-CompletedMessage @CompletedVars
