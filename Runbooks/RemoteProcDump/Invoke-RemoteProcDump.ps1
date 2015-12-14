@@ -15,7 +15,7 @@
     The remote computer to run procdump on.
 
 .Parameter ProcessList
-    A JSON array of processes to capture a procdump for.
+    An array of processes to capture a procdump for.
     
 .Parameter DumpPath
     A string representing the location to save the procdump to.
@@ -30,6 +30,7 @@
     The Authentication mechanism for PS Remoting. Default is Default.
 
 .Example
+    Invoke-RemoteProcDump -ComputerName 'oms.scorchdev.com' -ProcessName @('Orchestrator.Sandbox', 'W3WP') -
     Workflow Test-InvokeRemoteProcDump
     {
         $RunbookWorker = Get-SMARunbookWorker
@@ -42,86 +43,103 @@
     }
     Test-InvokeRemoteProcDump
 #>
-Workflow Invoke-RemoteProcDump
+
+Param(
+    [Parameter(Mandatory = $True)]
+    [String[]]
+    $ComputerName,
+          
+    [Parameter(Mandatory = $False)]
+    [String]
+    $DumpPath = 'c:\ProcDump',
+          
+    [Parameter(Mandatory = $True)]
+    [String[]]
+    $ProcessName,
+    
+    [Parameter(Mandatory = $False)]
+    [pscredential]
+    $Credential,
+
+    [Parameter(Mandatory = $False)]
+    [ValidateSet(
+        'Basic',
+        'CredSSP',
+        'Default',
+        'Digest',
+        'Kerberos',
+        'Negotiate',
+        'NegotiateWithImplicitCredential'
+    )]
+    $AuthenticationMechanism = 'Default'
+)
+
+$CompletedVars = Write-StartingMessage -CommandName 'Invoke-RemoteProcDump'
+$ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
+
+$RemoteProcDumpVars = Get-BatchAutomationVariable -Name @(
+                                                    'AccessCredName', 
+                                                    'ProcDumpExePath', 
+                                                    'ProcDumpDownloadURI') `
+                                                  -Prefix 'RemoteProcDump'
+
+if(-not($Credential -as [bool]))
 {
-    Param([Parameter(Mandatory = $True) ]
-          [String]
-          $ComputerName,
-          
-          [Parameter(Mandatory = $True) ]
-          [String] 
-          $DumpPath,
-          
-          [Parameter(Mandatory = $True)]
-          [String]
-          $ProcessList,
-          
-          [Parameter(Mandatory = $False)]
-          [String]
-          $AccessCredName,
-          
-          [Parameter(Mandatory = $False)]
-          [ValidateSet('Basic','CredSSP','Default','Digest','Kerberos','Negotiate','NegotiateWithImplicitCredential')]
-          $AuthenticationMechanism = 'Default')
-
-    Write-Verbose -Message "Starting [$WorkflowCommandName]"
-    $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
-    
-    $RemoteProcDumpVars = Get-BatchAutomationVariable -Name @('AccessCredName', 
-                                                              'ProcDumpExePath', 
-                                                              'ProcDumpDownloadURI') `
-                                                      -Prefix 'RemoteProcDump'
-    
-    $AccessCred = Get-AutomationPSCredential -Name (Select-FirstValid -Value @($AccessCredName, 
-                                                                               $RemoteProcDumpVars.AccessCredName))
-    inlinescript
-    {
-        $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Continue
-        & {
-            $null = $(
-                $DebugPreference       = [System.Management.Automation.ActionPreference]$Using:DebugPreference
-                $VerbosePreference     = [System.Management.Automation.ActionPreference]$Using:VerbosePreference
-                $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
-
-                $RemoteProcDumpVars = $Using:RemoteProcDumpVars
-                $DumpPath           = $Using:DumpPath
-                $ProcessList        = $Using:ProcessList
-
-                if(-not (Test-Path -Path $RemoteProcDumpVars.ProcDumpExePath))
-                {
-                    Write-Warning -Message (New-Exception -Type 'ProcDumpExeNotFound' `
-                                                          -Message 'Could not find the procdump.exe executable. Attempting download' `
-                                                          -Property @{
-                                                'ProcDumpExePath'   = $RemoteProcDumpVars.ProcDumpExePath
-                                                'ComputerName'      = $Env:ComputerName
-                                                'ProcDumpDownloadURI' = $RemoteProcDumpVars.ProcDumpDownloadURI
-                                            })
-                   
-                    New-FileItemContainer -FileItemPath $RemoteProcDumpVars.ProcDumpExePath
-                    Invoke-WebRequest -Uri $RemoteProcDumpVars.ProcDumpDownloadURI -OutFile $RemoteProcDumpVars.ProcDumpExePath
-                    Unblock-File -Path $RemoteProcDumpVars.ProcDumpExePath
-                }
-                    
-                if(-not (Test-Path -Path $DumpPath))
-                {
-                    Write-Verbose -Message "Dump path did not exist for this computer - creating [$DumpPath]"
-                    New-Item -ItemType Directory -Path $DumpPath
-                }
-
-                $ProcessNames = ConvertFrom-Json -InputObject $ProcessList
-                foreach($ProcessName in $ProcessNames)
-                {
-                    $ProcessIds = (Get-Process -Name $ProcessName).Id
-                    foreach($ProcessId in $ProcessIds)
-                    {
-                        $ProcDumpCommand = "$($ProcDumpVars.ProcDumpExePath) -ma $ProcessId $($DumpPath) -accepteula"
-                        Write-Verbose -Message "Starting Procdump [$ProcDumpCommand]"
-                        Invoke-Expression -Command $ProcDumpCommand
-                    }
-                }
-            )
-        }
-    } -PSComputerName $ComputerName -PSCredential $AccessCred -PSAuthentication $AuthenticationMechanism
-
-    Write-Verbose -Message "Finished [$WorkflowCommandName]"
+    $Credential = Get-AutomationPSCredential -Name $RemoteProcDumpVars.AccessCredName
 }
+
+Invoke-Command -ComputerName $ComputerName -PSCredential $Credential -PSAuthentication $AuthenticationMechanism -ScriptBlock `
+{
+    $DebugPreference       = [System.Management.Automation.ActionPreference]$Using:DebugPreference
+    $VerbosePreference     = [System.Management.Automation.ActionPreference]$Using:VerbosePreference
+    $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
+
+    $RemoteProcDumpVars = $Using:RemoteProcDumpVars
+    $DumpPath           = $Using:DumpPath
+    $ProcessName        = $Using:ProcessName
+
+    if(-not (Test-Path -Path $RemoteProcDumpVars.ProcDumpExePath))
+    {
+        Write-Warning -Message (New-Exception -Type 'ProcDumpExeNotFound' `
+                                                -Message 'Could not find the procdump.exe executable. Attempting download' `
+                                                -Property @{
+                                    'ProcDumpExePath'   = $RemoteProcDumpVars.ProcDumpExePath
+                                    'ComputerName'      = $Env:ComputerName
+                                    'ProcDumpDownloadURI' = $RemoteProcDumpVars.ProcDumpDownloadURI
+                                })
+        
+        $ContainerPath = $RemoteProcDumpVars.ProcDumpExePath -replace '[^\\]+$', ''
+        if(-Not (Test-Path -Path $ContainerPath))
+        {
+            Write-Verbose -Message 'Creating Directory'
+            $Null = New-Item -ItemType Directory -Path $ContainerPath
+        }
+        else
+        {
+            Write-Verbose -Message 'Directory Existed'
+            $Null = Get-Item -Path $ContainerPath
+        }
+        
+        $Null = Invoke-WebRequest -Uri $RemoteProcDumpVars.ProcDumpDownloadURI -OutFile $RemoteProcDumpVars.ProcDumpExePath
+        $Null = Unblock-File -Path $RemoteProcDumpVars.ProcDumpExePath
+    }
+                    
+    if(-not (Test-Path -Path $DumpPath))
+    {
+        Write-Verbose -Message "Dump path did not exist for this computer - creating [$DumpPath]"
+        New-Item -ItemType Directory -Path $DumpPath
+    }
+
+    foreach($_ProcessName in $ProcessName)
+    {
+        $ProcessIds = (Get-Process -Name $_ProcessName).Id
+        foreach($ProcessId in $ProcessIds)
+        {
+            $ProcDumpCommand = "$($ProcDumpVars.ProcDumpExePath) -ma $ProcessId $($DumpPath) -accepteula"
+            Write-Verbose -Message "Starting Procdump [$ProcDumpCommand]"
+            Invoke-Expression -Command $ProcDumpCommand
+        }
+    }
+}
+
+Write-Verbose -Message "Finished [$WorkflowCommandName]"

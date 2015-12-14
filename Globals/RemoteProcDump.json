@@ -1,4 +1,4 @@
-{
+﻿{
     "Variables":  {
                       "RemoteProcDump-ProcDumpDownloadURI":  {
                                                                  "isEncrypted":  false,
@@ -13,7 +13,7 @@
                       "RemoteProcDump-AccessCredName":  {
                                                             "isEncrypted":  false,
                                                             "Description":  "",
-                                                            "Value":  "UPDATE"
+                                                            "Value":  "omsa@scorchdev.com"
                                                         }
                   }
 }
