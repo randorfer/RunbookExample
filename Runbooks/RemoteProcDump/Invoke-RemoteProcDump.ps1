@@ -55,23 +55,7 @@ Param(
           
     [Parameter(Mandatory = $True)]
     [String]
-    $ProcessName,
-    
-    [Parameter(Mandatory = $False)]
-    [pscredential]
-    $Credential = $Null,
-
-    [Parameter(Mandatory = $False)]
-    [ValidateSet(
-        'Basic',
-        'CredSSP',
-        'Default',
-        'Digest',
-        'Kerberos',
-        'Negotiate',
-        'NegotiateWithImplicitCredential'
-    )]
-    $AuthenticationMechanism = 'Default'
+    $ProcessName
 )
 
 $CompletedVars = Write-StartingMessage -CommandName 'Invoke-RemoteProcDump'
@@ -83,12 +67,9 @@ $RemoteProcDumpVars = Get-BatchAutomationVariable -Name @(
                                                     'ProcDumpDownloadURI') `
                                                   -Prefix 'RemoteProcDump'
 
-if(-not($Credential -as [bool]))
-{
-    $Credential = Get-AutomationPSCredential -Name $RemoteProcDumpVars.AccessCredName
-}
+$Credential = Get-AutomationPSCredential -Name $RemoteProcDumpVars.AccessCredName
 
-Invoke-Command -ComputerName $ComputerName -Credential $Credential -Authentication $AuthenticationMechanism -ScriptBlock `
+Invoke-Command -ComputerName $ComputerName -Credential $Credential -ScriptBlock `
 {
     $DebugPreference       = [System.Management.Automation.ActionPreference]$Using:DebugPreference
     $VerbosePreference     = [System.Management.Automation.ActionPreference]$Using:VerbosePreference
