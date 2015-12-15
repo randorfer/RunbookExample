@@ -138,7 +138,7 @@ Invoke-Command -ComputerName $ComputerName -Credential $Credential -Authenticati
             $ProcDumpCommand = "$($RemoteProcDumpVars.ProcDumpExePath) -ma $ProcessId $($DumpPath) -accepteula"
             Write-Verbose -Message "Starting Procdump [$ProcDumpCommand]"
             $Message = Invoke-Expression -Command $ProcDumpCommand
-            Write-Verbose -Message $Message
+            $Message | Foreach-Object { Write-Verbose -Message $_ }
         }
     }
 }
