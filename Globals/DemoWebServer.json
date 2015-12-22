@@ -1,0 +1,14 @@
+﻿{
+    "Variables":  {
+                      "DemoWebServer-DomainJoinCredName":  {
+                                                               "isEncrypted":  false,
+                                                               "Description":  "",
+                                                               "Value":  "omsa@scorchdev.com"
+                                                           },
+                      "DemoWebServer-Domain":  {
+                                                   "isEncrypted":  false,
+                                                   "Description":  "",
+                                                   "Value":  "SCOrchDev.com"
+                                               }
+                  }
+}
