@@ -1,9 +1,0 @@
-﻿{
-    "Variables":  {
-                      "testvalue":  {
-                                        "isEncrypted":  false,
-                                        "Description":  "",
-                                        "Value":  1
-                                    }
-                  }
-}
