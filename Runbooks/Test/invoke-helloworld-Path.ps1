@@ -14,7 +14,7 @@ $CompletedParameters = Write-StartingMessage -CommandName invoke-helloworld-Path
 
 Try
 {
-    Write-Verbose -Message 'hello world'
+    Write-Verbose -Message 'hello world!'
 }
 Catch
 {
