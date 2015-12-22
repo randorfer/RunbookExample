@@ -3,12 +3,12 @@
                       "AzureResourceGroup-SubscriptionName":  {
                                                                   "isEncrypted":  false,
                                                                   "Description":  "",
-                                                                  "Value":  "Azure PaaS Discovery"
+                                                                  "Value":  "UPDATE"
                                                               },
                       "AzureResourceGroup-CredentialName":  {
                                                                 "isEncrypted":  false,
                                                                 "Description":  "",
-                                                                "Value":  "M3IS052@genmills.com"
+                                                                "Value":  "UPDATE"
                                                             }
                   }
 }
