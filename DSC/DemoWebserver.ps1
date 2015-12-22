@@ -18,8 +18,8 @@ Configuration DemoWebserver
         xFireWall WebFirewallRuleHTTPs
         {
             Direction = 'Inbound'
-            Name = 'Web-Server-TCP-In'
-            DisplayName = 'Web Server (TCP-In)'
+            Name = 'Web-Server-HTTPs-TCP-In'
+            DisplayName = 'Web Server HTTPs (TCP-In)'
             Description = 'IIS Allow incoming web site traffic.'
             Enabled = $true
             Action = 'Allow'
@@ -30,8 +30,8 @@ Configuration DemoWebserver
         xFireWall WebFirewallRuleHTTP
         {
             Direction = 'Inbound'
-            Name = 'Web-Server-TCP-In'
-            DisplayName = 'Web Server (TCP-In)'
+            Name = 'Web-Server-HTTP-TCP-In'
+            DisplayName = 'Web Server HTTP (TCP-In)'
             Description = 'IIS Allow incoming web site traffic.'
             Enabled = $true
             Action = 'Allow'
