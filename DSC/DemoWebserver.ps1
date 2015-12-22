@@ -6,22 +6,9 @@ Configuration DemoWebserver
     #Import the required DSC Resources
     Import-DscResource -Module xNetworking
     Import-DscResource -Module xComputerManagement
-    
-    $Variables = Get-BatchAutomationVariable -Prefix 'DemoWebServer' `
-                                             -Name @(
-                                                'Domain'
-                                                'DomainJoinCredName'
-                                             )
-    $DomainCredential = Get-AutomationPSCredential -Name $Variables.DomainJoinCredName
 
     Node 'Webserver'
     {
-        xComputer DomainJoinComputer
-        {
-            DomainName = $Variables.Domain
-            Credential = $DomainCredential
-        }
-
         WindowsFeature InstallIIS
         {
             Ensure = 'Present'
