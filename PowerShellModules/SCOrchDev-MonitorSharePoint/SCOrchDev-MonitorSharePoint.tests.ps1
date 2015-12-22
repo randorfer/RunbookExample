@@ -23,28 +23,6 @@ Describe -Tags 'VersionChecks' 'SCOrchDev-MonitorSharePoint manifest' {
         $script:manifest.Version -as [Version] | Should Not BeNullOrEmpty
     }
 
-    if (Get-Command git.exe -ErrorAction SilentlyContinue) {
-        $script:tagVersion = $null
-        It 'is tagged with a valid version' {
-            $cwd = get-location
-            Set-Location ($Path -as [System.IO.FileInfo]).Directory
-            $thisCommit = git.exe log --decorate --oneline HEAD~1..HEAD
-            Set-Location $cwd
-            if ($thisCommit -match 'tag:\s*(\d+(?:\.\d+)*)')
-            {
-                $script:tagVersion = $matches[1]
-            }
-            $script:tagVersion                  | Should Not BeNullOrEmpty
-            $script:tagVersion -as [Version]    | Should Not BeNullOrEmpty
-            
-        }
-
-        It 'all versions are the same' {
-            $script:manifest.Version -as [Version] | Should be ( $script:tagVersion -as [Version] )
-        }
-
-    }
-
     It 'should have all files listed in the FileList' {
         $ModuleFiles = (Get-ChildItem -Path $here -Recurse -Exclude .git).FullName
         $FileDifferences = Compare-Object -ReferenceObject $ModuleFiles -DifferenceObject $script:manifest.FileList
