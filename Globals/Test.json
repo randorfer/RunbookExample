@@ -1,0 +1,19 @@
+﻿{
+    "Variables":  {
+                      "Test-Var2":  {
+                                        "isEncrypted":  false,
+                                        "Description":  "",
+                                        "Value":  "fds"
+                                    },
+                      "Test-CredName":  {
+                                            "isEncrypted":  false,
+                                            "Description":  "",
+                                            "Value":  "omsa@scorchdev.com"
+                                        },
+                      "Test-Var1":  {
+                                        "isEncrypted":  false,
+                                        "Description":  "",
+                                        "Value":  "asdf"
+                                    }
+                  }
+}
