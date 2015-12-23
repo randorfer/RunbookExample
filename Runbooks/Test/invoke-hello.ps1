@@ -23,7 +23,7 @@ $Credential = Get-AutomationPSCredential -Name $Vars.CredName
 
 Try
 {
-    Write-Verbose -Message "$($Var1) - $($Var2)"
+    Write-Verbose -Message "$($Var1) - $($Var2)!"
 }
 Catch
 {
