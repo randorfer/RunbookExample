@@ -3,40 +3,50 @@ Configuration DemoWebserver
     Param(
     )
 
-    #Import the required DSC Resources
-    Import-DscResource -Module xNetworking
-    Import-DscResource -Module xComputerManagement
+    Import-DscResource -Module PackageManagementProviderResource
+    Import-DscResource -ModuleName xNetworking
 
-    Node 'Webserver'
-    {
-        WindowsFeature InstallIIS
+    Node "DemoWebServer" {   
+
+        #register package source       
+        PackageManagementSource SourceRepository
         {
-            Ensure = 'Present'
-            Name = 'Web-Server'
+
+            Ensure      = "Present"
+            Name        = "Application"
+            ProviderName= "Nuget"
+            SourceUri   = "https://scorchdev.pkgs.visualstudio.com/DefaultCollection/_packaging/Application/nuget/v3"  
+            InstallationPolicy ="Trusted"
+            SourceCredential = 
+        }   
+
+        WindowsFeature installIIS 
+        { 
+            Ensure="Present" 
+            Name="Web-Server" 
         }
 
-        xFireWall WebFirewallRuleHTTPs
-        {
-            Direction = 'Inbound'
-            Name = 'Web-Server-HTTPs-TCP-In'
-            DisplayName = 'Web Server HTTPs (TCP-In)'
-            Description = 'IIS Allow incoming web site traffic.'
-            Enabled = $true
-            Action = 'Allow'
-            Protocol = 'TCP'
-            LocalPort = '443'
-        }
+        xFirewall WebFirewallRule 
+        { 
+            Direction = "Inbound" 
+            Name = "Web-Server-TCP-In" 
+            DisplayName = "Web Server (TCP-In)" 
+            Description = "IIS allow incoming web site traffic."
+            Action = "Allow"
+            Enabled = "True"
+            Protocol = "TCP" 
+            LocalPort = "80" 
+            Ensure = "Present" 
+        } 
 
-        xFireWall WebFirewallRuleHTTP
+        #Install a package from Nuget repository
+        NugetPackage Nuget
         {
-            Direction = 'Inbound'
-            Name = 'Web-Server-HTTP-TCP-In'
-            DisplayName = 'Web Server HTTP (TCP-In)'
-            Description = 'IIS Allow incoming web site traffic.'
-            Enabled = $true
-            Action = 'Allow'
-            Protocol = 'TCP'
-            LocalPort = '80'
+            Ensure          = "Present" 
+            Name            = $Name
+            DestinationPath = $DestinationPath
+            RequiredVersion = "2.0.1"
+            DependsOn       = "[PackageManagementSource]SourceRepository"
         }
-    }
+    }    
 }
