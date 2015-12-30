@@ -3,21 +3,21 @@ Configuration DemoWebserver
     Param(
     )
 
-    Import-DscResource -Module PackageManagementProviderResource
+    Import-DscResource -Name NuGetPackageRepository
     Import-DscResource -ModuleName xNetworking
+    
+    $Vars = Get-BatchAutomationVariable -Prefix 'DemoWebServer' -Name 'NuGetCredentialName'
+    $NuGetCredential = Get-AutomationPSCredential -Name $Vars.NuGetCredentialName
 
-    Node "DemoWebServer" {   
+    Node localhost {   
 
         #register package source       
-        PackageManagementSource SourceRepository
+        NuGetPackageRepository SourceRepository
         {
-
             Ensure      = "Present"
             Name        = "Application"
-            ProviderName= "Nuget"
-            SourceUri   = "https://scorchdev.pkgs.visualstudio.com/DefaultCollection/_packaging/Application/nuget/v3"  
-            InstallationPolicy ="Trusted"
-            SourceCredential = 
+            Source      = "https://scorchdev.pkgs.visualstudio.com/DefaultCollection/_packaging/Application/nuget/v2"  
+            Credential  = $NuGetCredential 
         }   
 
         WindowsFeature installIIS 
@@ -38,7 +38,7 @@ Configuration DemoWebserver
             LocalPort = "80" 
             Ensure = "Present" 
         } 
-
+        <#
         #Install a package from Nuget repository
         NugetPackage Nuget
         {
@@ -46,7 +46,8 @@ Configuration DemoWebserver
             Name            = $Name
             DestinationPath = $DestinationPath
             RequiredVersion = "2.0.1"
-            DependsOn       = "[PackageManagementSource]SourceRepository"
+            DependsOn       = "[NuGetPackageRepository]SourceRepository"
         }
+        #>
     }    
 }
