@@ -18,45 +18,40 @@ Workflow Start-LabEnvironment
     Try
     {
         Connect-AzureRmAccount -Credential $Credential -SubscriptionName $Vars.SubscriptionName -Tenant $Vars.Tenant
-
         $VM = Get-AzureRmVM
     
-        # Group VMs By Type
-        $TypedVM = ConvertTo-Hashtable -InputObject $VM -KeyName 'Name' -KeyFilterScript {
-            Param($Key)
-            if($Key -match '-([^-]+)-[0-9][0-9]')
-            {
-                $Matches[1]
-            }
-        }
+        $DomainController = $VM | Where-Object { $_.Name -like '*DC*' }
 
         $PoweringOnStart = Write-StartingMessage -CommandName 'Powering On Domain Controllers'
-        Foreach -Parallel ($DomainController in $TypedVM.DC)
+        Foreach -Parallel -ThrottleLimit 10 ($_DomainController in $DomainController)
         {
-            $DetailedVM = Get-AzureRmVM -ResourceGroupName $DomainController.ResourceGroupName `
-                                        -Name $DomainController.Name `
+            Connect-AzureRmAccount -Credential $Credential -SubscriptionName $Vars.SubscriptionName -Tenant $Vars.Tenant
+            $DetailedVM = Get-AzureRmVM -ResourceGroupName $_DomainController.ResourceGroupName `
+                                        -Name $_DomainController.Name `
                                         -Status
-            $PowerState = ($DetailedVM.Statuses | Where-Object { $_.Code -like 'PowerState/*' }).Code.Split('/')[1]
-            if($PowerState -ne 'Running') 
+            
+            if($DetailedVM.StatusesText -notlike '*PowerState/running*') 
             { 
-                # Async Start
-                Start-AzureRmVM -ResourceGroupName $DomainController.ResourceGroupName `
-                                -Name $DomainController.Name
+                Write-Verbose -Message "Starting $($_DomainController.Name)"
+                $Null = Start-AzureRmVM -ResourceGroupName $_DomainController.ResourceGroupName `
+                                        -Name $_DomainController.Name
             }
         }
         Write-CompletedMessage -StartTime $PoweringOnStart.StartTime -Name $PoweringOnStart.Name -Status $PoweringOnStart.Stream
 
         $StartingAllVMs = Write-StartingMessage -CommandName 'Starting all VMs'
-        Foreach -Parallel ($_VM in $VM)
+        Foreach -Parallel -ThrottleLimit 10 ($_VM in $VM)
         {
+            Connect-AzureRmAccount -Credential $Credential -SubscriptionName $Vars.SubscriptionName -Tenant $Vars.Tenant
             $DetailedVM = Get-AzureRmVM -ResourceGroupName $_VM.ResourceGroupName `
                                         -Name $_VM.Name `
                                         -Status
-            $PowerState = ($DetailedVM.Statuses | Where-Object { $_.Code -like 'PowerState/*' }).Code.Split('/')[1]
-            if($PowerState -ne 'Running') 
+            
+            if($DetailedVM.StatusesText -notlike '*PowerState/running*') 
             { 
-                Start-AzureRmVM -ResourceGroupName $_VM.ResourceGroupName `
-                                -Name $_VM.Name
+                Write-Verbose -Message "Starting $($_VM.Name)"
+                $Null = Start-AzureRmVM -ResourceGroupName $_VM.ResourceGroupName `
+                                        -Name $_VM.Name
             }
         }
         Write-CompletedMessage -StartTime $StartingAllVMs.StartTime -Name $StartingAllVMs.Name -Status $StartingAllVMs.Stream
