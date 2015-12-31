@@ -3,7 +3,7 @@ Configuration SCOrchDevLOB
     Param(
     )
 
-    Import-DscResource -Name NuGetPackageRepository
+    #Import-DscResource -Name NuGetPackageRepository
     Import-DscResource -ModuleName xNetworking
     Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
 
@@ -12,15 +12,6 @@ Configuration SCOrchDevLOB
 
     Node FrontEnd {   
 
-        #register package source
-        NuGetPackageRepository SourceRepository
-        {
-            Ensure      = "Present"
-            Name        = "Application"
-            Source      = "https://scorchdev.pkgs.visualstudio.com/DefaultCollection/_packaging/Application/nuget/v2"  
-            Credential  = $NuGetCredential 
-        }   
-    
         WindowsFeature installIIS 
         { 
             Ensure="Present" 
@@ -43,15 +34,6 @@ Configuration SCOrchDevLOB
 
     Node MidTier {   
 
-        #register package source
-        NuGetPackageRepository SourceRepository
-        {
-            Ensure      = "Present"
-            Name        = "Application"
-            Source      = "https://scorchdev.pkgs.visualstudio.com/DefaultCollection/_packaging/Application/nuget/v2"  
-            Credential  = $NuGetCredential 
-        }   
-    
         WindowsFeature installIIS 
         { 
             Ensure="Present" 
@@ -74,15 +56,6 @@ Configuration SCOrchDevLOB
 
     Node BackEnd {   
 
-        #register package source
-        NuGetPackageRepository SourceRepository
-        {
-            Ensure      = "Present"
-            Name        = "Application"
-            Source      = "https://scorchdev.pkgs.visualstudio.com/DefaultCollection/_packaging/Application/nuget/v2"  
-            Credential  = $NuGetCredential 
-        }   
-    
         WindowsFeature installIIS 
         { 
             Ensure="Present" 
