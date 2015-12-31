@@ -10,7 +10,7 @@ Param(
 
 )
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
-$CompletedParameters = Write-StartingMessage -CommandName Stop-LabEnvironmnet
+$CompletedParameters = Write-StartingMessage -CommandName Stop-LabEnvironment
 
 $Vars = Get-BatchAutomationVariable -Name  'DomainCredentialName' `
                                     -Prefix 'Global'
