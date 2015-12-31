@@ -1,6 +1,6 @@
 ﻿<#
     .SYNOPSIS
-       Start all VMs (Domain controller's first) in a subscription
+       Start all VMs (Domain controller's first) in a subscription.
 #>
 Workflow Start-LabEnvironment
 {
