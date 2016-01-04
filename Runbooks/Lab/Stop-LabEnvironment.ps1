@@ -21,8 +21,7 @@ Workflow Stop-LabEnvironment
 
     Try
     {
-        Connect-AzureRmAccount -Credential $Credential -SubscriptionName $Vars.SubscriptionName -Tenant $Vars.Tenant
-        $VM = Get-AzureRmVM
+        $VM = Get-LabEnvironmentVM -SubscriptionName $Vars.SubscriptionName -Credential $Credential -Tenant $Vars.Tenant
 
         Foreach -Parallel -ThrottleLimit 10 ($_VM in $VM)
         {

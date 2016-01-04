@@ -17,8 +17,7 @@ Workflow Start-LabEnvironment
 
     Try
     {
-        Connect-AzureRmAccount -Credential $Credential -SubscriptionName $Vars.SubscriptionName -Tenant $Vars.Tenant
-        $VM = Get-AzureRmVM
+        $VM = Get-LabEnvironmentVM -SubscriptionName $Vars.SubscriptionName -Credential $Credential -Tenant $Vars.Tenant
     
         $DomainController = $VM | Where-Object { $_.Name -like '*DC*' }
 
