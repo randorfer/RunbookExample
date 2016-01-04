@@ -25,34 +25,22 @@ Workflow Start-LabEnvironment
         $PoweringOnStart = Write-StartingMessage -CommandName 'Powering On Domain Controllers'
         Foreach -Parallel -ThrottleLimit 10 ($_DomainController in $DomainController)
         {
-            Connect-AzureRmAccount -Credential $Credential -SubscriptionName $Vars.SubscriptionName -Tenant $Vars.Tenant
-            $DetailedVM = Get-AzureRmVM -ResourceGroupName $_DomainController.ResourceGroupName `
-                                        -Name $_DomainController.Name `
-                                        -Status
-            
-            if($DetailedVM.StatusesText -notlike '*PowerState/running*') 
-            { 
-                Write-Verbose -Message "Starting $($_DomainController.Name)"
-                $Null = Start-AzureRmVM -ResourceGroupName $_DomainController.ResourceGroupName `
-                                        -Name $_DomainController.Name
-            }
+            Start-LabEnvironmentVM -SubscriptionName $Vars.SubscriptionName `
+                                   -Credential $Credential `
+                                   -Tenant $Vars.Tenant `
+                                   -Name $_DomainController.Name `
+                                   -ResourceGroupName $_DomainController.ResourceGroupName
         }
         Write-CompletedMessage -StartTime $PoweringOnStart.StartTime -Name $PoweringOnStart.Name -Status $PoweringOnStart.Stream
 
         $StartingAllVMs = Write-StartingMessage -CommandName 'Starting all VMs'
         Foreach -Parallel -ThrottleLimit 10 ($_VM in $VM)
         {
-            Connect-AzureRmAccount -Credential $Credential -SubscriptionName $Vars.SubscriptionName -Tenant $Vars.Tenant
-            $DetailedVM = Get-AzureRmVM -ResourceGroupName $_VM.ResourceGroupName `
-                                        -Name $_VM.Name `
-                                        -Status
-            
-            if($DetailedVM.StatusesText -notlike '*PowerState/running*') 
-            { 
-                Write-Verbose -Message "Starting $($_VM.Name)"
-                $Null = Start-AzureRmVM -ResourceGroupName $_VM.ResourceGroupName `
-                                        -Name $_VM.Name
-            }
+            Start-LabEnvironmentVM -SubscriptionName $Vars.SubscriptionName `
+                                   -Credential $Credential `
+                                   -Tenant $Vars.Tenant `
+                                   -Name $_VM.Name `
+                                   -ResourceGroupName $_VM.ResourceGroupName
         }
         Write-CompletedMessage -StartTime $StartingAllVMs.StartTime -Name $StartingAllVMs.Name -Status $StartingAllVMs.Stream
     }

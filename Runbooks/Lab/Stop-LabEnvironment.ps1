@@ -26,17 +26,11 @@ Workflow Stop-LabEnvironment
 
         Foreach -Parallel -ThrottleLimit 10 ($_VM in $VM)
         {
-            Connect-AzureRmAccount -Credential $Credential -SubscriptionName $Vars.SubscriptionName -Tenant $Vars.Tenant
-            $DetailedVM = Get-AzureRmVM -ResourceGroupName $_VM.ResourceGroupName `
-                                        -Name $_VM.Name `
-                                        -Status
-            
-            if($DetailedVM.StatusesText -like '*PowerState/running*') 
-            { 
-                Write-Verbose -Message "Stopping $($_VM.Name)"
-                $Null = Stop-AzureRmVM -ResourceGroupName $_VM.ResourceGroupName `
-                                       -Name $_VM.Name -Force
-            }
+            Stop-LabEnvironmentVM -SubscriptionName $Vars.SubscriptionName `
+                                  -Credential $Credential `
+                                  -Tenant $Vars.Tenant `
+                                  -Name $_VM.Name `
+                                  -ResourceGroupName $_VM.ResourceGroupName
         }
     }
     Catch
