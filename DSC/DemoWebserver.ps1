@@ -7,8 +7,8 @@ Configuration DemoWebserver
     Import-DscResource -ModuleName xNetworking
     Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
 
-    $Vars = Get-BatchAutomationVariable -Prefix 'DemoWebServer' -Name 'NuGetCredentialName'
-    $NuGetCredential = Get-AutomationPSCredential -Name $Vars.NuGetCredentialName
+    #$Vars = Get-BatchAutomationVariable -Prefix 'DemoWebServer' -Name 'NuGetCredentialName'
+    #$NuGetCredential = Get-AutomationPSCredential -Name $Vars.NuGetCredentialName
 
     Node localhost {   
         <#
