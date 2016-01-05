@@ -6,44 +6,42 @@
         Give a description of the Script.
 
 #>
-Workflow Stop-LabEnvironment
+
+Param(
+
+)
+$ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
+$CompletedParameters = Write-StartingMessage -CommandName Stop-LabEnvironment
+
+$Vars = Get-BatchAutomationVariable -Name  'SubscriptionName', 'SubscriptionAccessCredentialName', 'Tenant' `
+                                    -Prefix 'RunbookExampleGlobal'
+
+$Credential = Get-AutomationPSCredential -Name $Vars.SubscriptionAccessCredentialName
+
+Try
 {
-    Param(
+    $VM = Get-LabEnvironmentVM -SubscriptionName $Vars.SubscriptionName -Credential $Credential -Tenant $Vars.Tenant
 
-    )
-    $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
-    $CompletedParameters = Write-StartingMessage -CommandName Stop-LabEnvironment
-
-    $Vars = Get-BatchAutomationVariable -Name  'SubscriptionName', 'SubscriptionAccessCredentialName', 'Tenant' `
-                                        -Prefix 'RunbookExampleGlobal'
-
-    $Credential = Get-AutomationPSCredential -Name $Vars.SubscriptionAccessCredentialName
-
-    Try
+    Foreach ($_VM in $VM)
     {
-        $VM = Get-LabEnvironmentVM -SubscriptionName $Vars.SubscriptionName -Credential $Credential -Tenant $Vars.Tenant
-
-        Foreach -Parallel -ThrottleLimit 10 ($_VM in $VM)
-        {
-            Stop-LabEnvironmentVM -SubscriptionName $Vars.SubscriptionName `
-                                  -Credential $Credential `
-                                  -Tenant $Vars.Tenant `
-                                  -Name $_VM.Name `
-                                  -ResourceGroupName $_VM.ResourceGroupName
-        }
+        Stop-LabEnvironmentVM -SubscriptionName $Vars.SubscriptionName `
+                                -Credential $Credential `
+                                -Tenant $Vars.Tenant `
+                                -Name $_VM.Name `
+                                -ResourceGroupName $_VM.ResourceGroupName
     }
-    Catch
-    {
-        $Exception = $_
-        $ExceptionInfo = Get-ExceptionInfo -Exception $Exception
-        Switch ($ExceptionInfo.FullyQualifiedErrorId)
-        {
-            Default
-            {
-                Write-Exception $Exception -Stream Warning
-            }
-        }
-    }
-
-    Write-CompletedMessage -StartTime $CompletedParameters.StartTime -Name $CompletedParameters.Name -Stream $CompletedParameters.Stream
 }
+Catch
+{
+    $Exception = $_
+    $ExceptionInfo = Get-ExceptionInfo -Exception $Exception
+    Switch ($ExceptionInfo.FullyQualifiedErrorId)
+    {
+        Default
+        {
+            Write-Exception $Exception -Stream Warning
+        }
+    }
+}
+
+Write-CompletedMessage @CompletedParameters
