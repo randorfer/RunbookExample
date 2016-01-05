@@ -1,0 +1,9 @@
+﻿{
+    "Variables":  {
+                      "HelloWorld-EmailAccessCredentialName":  {
+                                                                   "isEncrypted":  false,
+                                                                   "Description":  "",
+                                                                   "Value":  "ryan@microsoft.com"
+                                                               }
+                  }
+}

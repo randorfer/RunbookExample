@@ -1,0 +1,24 @@
+﻿{
+    "Variables":  {
+                      "RunbookExampleGlobal-StorageAccountName":  {
+                                                                      "isEncrypted":  false,
+                                                                      "Description":  "",
+                                                                      "Value":  "scodev"
+                                                                  },
+                      "RunbookExampleGlobal-Tenant":  {
+                                                          "isEncrypted":  false,
+                                                          "Description":  "",
+                                                          "Value":  "72f988bf-86f1-41af-91ab-2d7cd011db47"
+                                                      },
+                      "RunbookExampleGlobal-SubscriptionName":  {
+                                                                    "isEncrypted":  false,
+                                                                    "Description":  "",
+                                                                    "Value":  "Microsoft Azure Internal Consumption"
+                                                                },
+                      "RunbookExampleGlobal-SubscriptionAccessCredentialName":  {
+                                                                                    "isEncrypted":  false,
+                                                                                    "Description":  "",
+                                                                                    "Value":  "6640d6a4-7a7c-45b9-b0a9-bbc055bf8684"
+                                                                                }
+                  }
+}

@@ -5,6 +5,11 @@
                                                                "Description":  "",
                                                                "Value":  "omsa@scorchdev.com"
                                                            },
+                      "DemoWebServer-NuGetCredentialName":  {
+                                                                "isEncrypted":  false,
+                                                                "Description":  "",
+                                                                "Value":  "Ryan.Andorfer"
+                                                            },
                       "DemoWebServer-Domain":  {
                                                    "isEncrypted":  false,
                                                    "Description":  "",
