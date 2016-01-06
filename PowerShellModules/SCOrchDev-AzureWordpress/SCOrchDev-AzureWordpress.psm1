@@ -34,55 +34,6 @@
     Write-CompletedMessage @CompletedParams
 }
 
-Function Test-AzureRmResourceGroup
-{
-     Param(
-        $Credential,
-        $SubscriptionName,
-        $ResourceGroupName,
-        $Location
-    )
-    $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
-    $CompletedParams = Write-StartingMessage -String $ResourceGroupName
-    Connect-AzureRmAccount -Credential $Credential -SubscriptionName $SubscriptionName
-
-    Try
-    {
-        $GetParams = @{ 'Name' = $ResourceGroupName }
-        if($Location -as [bool])
-        {
-            $Null = $GetParams.Add('Location',$Location)
-        }
-        $ResourceGroup = Get-AzureRmResourceGroup @GetParams
-    }
-    Catch
-    {
-        $Exception = $_
-        $ExceptionInfo = Get-ExceptionInfo -Exception $Exception
-        Switch ($ExceptionInfo.FullyQualifiedErrorId)
-        {
-            'System.ArgumentException,Microsoft.Azure.Commands.Resources.GetAzureResourceGroupCommand'
-            {
-                if($ExceptionInfo.Message = 'Provided resource group does not exist.')
-                {
-                    $ResourceGroup = $False
-                }
-                else
-                {
-                    Throw
-                }
-            }
-            Default
-            {
-                throw
-            }
-        }
-    }
-    Write-CompletedMessage @CompletedParams
-
-    Return ($ResourceGroup -as [bool])
-}
-
 Function Test-AzureRmAppServicePlan
 {
      Param(
