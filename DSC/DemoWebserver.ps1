@@ -37,7 +37,7 @@ Configuration DemoWebserver
             Enabled = "True"
             Protocol = "TCP" 
             LocalPort = "80" 
-            Ensure = "Absent"
+            Ensure = "Present"
         } 
         <#
         #Install a package from Nuget repository
