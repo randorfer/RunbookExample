@@ -5,7 +5,7 @@ Configuration DemoWebserver
 
     Import-DscResource -ModuleName xNetworking
     Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
-
+    Import-DscResource -ModuleName 'xInternetExplorerHomePage'
     $Vars = Get-BatchAutomationVariable -Prefix 'DemoWebServer' -Name 'NuGetCredentialName'
     $NuGetCredential = Get-AutomationPSCredential -Name $Vars.NuGetCredentialName
 
@@ -27,6 +27,12 @@ Configuration DemoWebserver
             Enabled = "True"
             Protocol = "TCP" 
             LocalPort = "80" 
+            Ensure = "Present"
+        }
+
+        xInternetExplorerHomePage myHomePage
+        {
+            StartPage = "http://ameriprise.com"
             Ensure = "Present"
         }
     }
