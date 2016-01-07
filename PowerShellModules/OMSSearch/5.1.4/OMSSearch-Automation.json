@@ -1,0 +1,43 @@
+﻿{
+ 
+    "ConnectionFields":  [
+                             {
+                                 "IsEncrypted":  false,
+                                 "IsOptional":  false,
+                                 "Name":  "TenantADName",
+                                 "TypeName":  "System.String"
+                             },
+                             {
+                                 "IsEncrypted":  false,
+                                 "IsOptional":  false,
+                                 "Name":  "SubscriptionID",
+                                 "TypeName":  "System.String"
+                             },
+                             {
+                                 "IsEncrypted":  false,
+                                 "IsOptional":  false,
+                                 "Name":  "ResourceGroupName",
+                                 "TypeName":  "System.String"
+                             },
+                             {
+                                 "IsEncrypted":  false,
+                                 "IsOptional":  false,
+                                 "Name":  "WorkSpaceName",
+                                 "TypeName":  "System.String"
+                             },
+                             {
+                                 "IsEncrypted":  false,
+                                 "IsOptional":  false,
+                                 "Name":  "Username",
+                                 "TypeName":  "System.String"
+                             },
+                             {
+                                 "IsEncrypted":  true,
+                                 "IsOptional":  false,
+                                 "Name":  "Password",
+                                 "TypeName":  "System.String"
+                             }
+                         ],
+    "ConnectionTypeName":  "OMSConnection",
+    "IntegrationModuleName":  "OMSSearch"
+}
