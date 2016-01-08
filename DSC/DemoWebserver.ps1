@@ -24,7 +24,7 @@ Configuration DemoWebserver
             DisplayName = "Web Server (TCP-In)" 
             Description = "IIS allow incoming web site traffic."
             Action = "Block"
-            Enabled = "False"
+            Enabled = "True"
             Protocol = "TCP" 
             LocalPort = "80" 
             Ensure = "Present"

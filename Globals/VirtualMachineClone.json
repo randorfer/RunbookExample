@@ -1,0 +1,19 @@
+﻿{
+    "Variables":  {
+                      "VirtualMachineClone-SourceStorageAccountName":  {
+                                                                           "isEncrypted":  false,
+                                                                           "Description":  "",
+                                                                           "Value":  "scodev"
+                                                                       },
+                      "VirtualMachineClone-TargetStorageAccountName":  {
+                                                                           "isEncrypted":  false,
+                                                                           "Description":  "",
+                                                                           "Value":  "scorchdevstandard"
+                                                                       },
+                      "VirtualMachineClone-ResourceGroup":  {
+                                                                "isEncrypted":  false,
+                                                                "Description":  "",
+                                                                "Value":  "SCOrchDev"
+                                                            }
+                  }
+}

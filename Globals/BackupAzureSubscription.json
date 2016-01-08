@@ -1,0 +1,19 @@
+﻿{
+    "Variables":  {
+                      "BackupAzureSubscription-AccessCredentialName":  {
+                                                                           "isEncrypted":  false,
+                                                                           "Description":  "",
+                                                                           "Value":  "automation@scazure.onmicrosoft.com"
+                                                                       },
+                      "BackupAzureSubscription-Name":  {
+                                                           "isEncrypted":  false,
+                                                           "Description":  "",
+                                                           "Value":  "Visual Studio Enterprise With MSDN"
+                                                       },
+                      "BackupAzureSubscription-Tenant":  {
+                                                             "isEncrypted":  false,
+                                                             "Description":  "",
+                                                             "Value":  ""
+                                                         }
+                  }
+}
