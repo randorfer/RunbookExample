@@ -27,7 +27,7 @@ $CloneVars = Get-BatchAutomationVariable -Prefix 'VirtualMachineClone' `
                                                'TargetStorageAccountName',
                                                'SourceStorageAccountName'
 
-$PrimarySubscriptionAccessCredential = Get-AutomationPSCredential -Name $AzureSubscriptionVars.AccessCredentialName
+$PrimarySubscriptionAccessCredential = Get-AutomationPSCredential -Name $PrimaryAzureSubscriptionVars.AccessCredentialName
 $BackupSubscriptionAccessCredential = Get-AutomationPSCredential -Name $BackupAzureSubscriptionVars.AccessCredentialName
 
 Try
