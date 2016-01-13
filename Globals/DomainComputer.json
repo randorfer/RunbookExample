@@ -1,0 +1,14 @@
+﻿{
+    "Variables":  {
+                      "DomainComputer-PackagesNetworkShareCredName":  {
+                                                                          "isEncrypted":  false,
+                                                                          "Description":  "",
+                                                                          "Value":  "scodev"
+                                                                      },
+                      "DomainComputer-DomainJoinCredName":  {
+                                                                "isEncrypted":  false,
+                                                                "Description":  "",
+                                                                "Value":  "omsa@scorchdev.com"
+                                                            }
+                  }
+}
