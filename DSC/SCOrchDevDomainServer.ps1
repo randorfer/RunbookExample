@@ -22,8 +22,7 @@ Configuration SCOrchDevDomainServer
             DestinationPath = $Vars.OIPackageLocalPath
         }
 
-        #Application
-        Package OI {
+        Package OIAgent {
             Ensure = "Present"
             Path  = $Vars.OIPackageLocalPath
             Name = "Microsoft Monitoring Agent"

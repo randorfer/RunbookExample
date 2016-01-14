@@ -8,7 +8,7 @@
                       "DomainComputer-OIWorkspaceId":  {
                                                            "isEncrypted":  false,
                                                            "Description":  "",
-                                                           "Value":  "jSNFt3OHSQoVJq2687HIIbMoORx9KqZfo+gpFgyAamiL7T5sBLGFJwEM75B+R7ARcfIe64jOjZmApuYfTcx05w=="
+                                                           "Value":  "09249256-99e5-4c6e-9d7a-3b73e3a90281"
                                                        },
                       "DomainComputer-OIPackageLocalPath":  {
                                                                 "isEncrypted":  false,
@@ -19,6 +19,11 @@
                                                                           "isEncrypted":  false,
                                                                           "Description":  "",
                                                                           "Value":  "scodev"
-                                                                      }
+                                                                      },
+                      "DomainComputer-OIWorkspaceKey":  {
+                                                            "isEncrypted":  false,
+                                                            "Description":  "",
+                                                            "Value":  "jSNFt3OHSQoVJq2687HIIbMoORx9KqZfo+gpFgyAamiL7T5sBLGFJwEM75B+R7ARcfIe64jOjZmApuYfTcx05w=="
+                                                        }
                   }
 }
