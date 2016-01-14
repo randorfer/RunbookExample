@@ -1,14 +1,24 @@
 ﻿{
     "Variables":  {
-                      "DomainComputer-PackagesNetworkShareCredName":  {
-                                                                          "isEncrypted":  false,
-                                                                          "Description":  "",
-                                                                          "Value":  "scodev"
-                                                                      },
                       "DomainComputer-DomainJoinCredName":  {
                                                                 "isEncrypted":  false,
                                                                 "Description":  "",
                                                                 "Value":  "omsa@scorchdev.com"
-                                                            }
+                                                            },
+                      "DomainComputer-OIWorkspaceId":  {
+                                                           "isEncrypted":  false,
+                                                           "Description":  "",
+                                                           "Value":  "jSNFt3OHSQoVJq2687HIIbMoORx9KqZfo+gpFgyAamiL7T5sBLGFJwEM75B+R7ARcfIe64jOjZmApuYfTcx05w=="
+                                                       },
+                      "DomainComputer-OIPackageLocalPath":  {
+                                                                "isEncrypted":  false,
+                                                                "Description":  "",
+                                                                "Value":  "d:\\"
+                                                            },
+                      "DomainComputer-PackagesNetworkShareCredName":  {
+                                                                          "isEncrypted":  false,
+                                                                          "Description":  "",
+                                                                          "Value":  "scodev"
+                                                                      }
                   }
 }
