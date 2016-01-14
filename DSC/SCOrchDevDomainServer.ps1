@@ -9,7 +9,9 @@ Configuration SCOrchDevDomainServer
 
     $Vars = Get-BatchAutomationVariable -Prefix 'DomainComputer' `
                                         -Name 'DomainJoinCredName',
-                                              'OIPackageLocalPath'
+                                              'OIPackageLocalPath',
+                                              'OIWorkspaceId'
+                                              'OIWorkspaceKey'
     
     $DomainJoinCred = Get-AutomationPSCredential -Name $Vars.DomainJoinCredName
     $PackagesNetworkShareCred = Get-AutomationPSCredential -Name $Vars.PackagesNetworkShareCredName
