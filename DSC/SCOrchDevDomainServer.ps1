@@ -11,7 +11,7 @@ Configuration SCOrchDevDomainServer
                                               'PackagesNetworkShareCredName'
     
     $DomainJoinCred = Get-AutomationPSCredential -Name $Vars.DomainJoinCredName
-    $PackagesNetworkShareCred = Get-AutomationPSCredential -Name $Vars.DomainJoinCredName
+    $PackagesNetworkShareCred = Get-AutomationPSCredential -Name $Vars.PackagesNetworkShareCredName
     
     Node Default {   
         cNetworkShare PackagesNetworkShare
