@@ -7,6 +7,7 @@ Configuration DemoWebserver
     Import-DscResource -ModuleName cNetworkShare
     Import-DscResource -ModuleName xComputerManagement
     Import-DscResource -ModuleName PSDesiredStateConfiguration
+    Import-DscResource -ModuleName xJea
 
     $Vars = Get-BatchAutomationVariable -Prefix 'DemoWebServer' -Name 'NuGetCredentialName'
     $NuGetCredential = Get-AutomationPSCredential -Name $Vars.NuGetCredentialName
@@ -39,19 +40,23 @@ Configuration DemoWebserver
             Ensure = "Present"
         }
 
-        xComputer DomainComputer
+        xJeaToolKit Process
         {
-            Name = $Env:COMPUTERNAME
-            DomainName = 'SCOrchDev.com'
-            Credential = $DomainJoinCred
+            Name         = 'Process'
+            CommandSpecs = @"
+Name,Parameter,ValidateSet,ValidatePattern
+Get-Process
+Get-Service
+Stop-Process,Name,calc;notepad
+Restart-Service,Name,,^A
+"@
         }
-
-        cNetworkShare PackagesNetworkShare
+        xJeaEndPoint Demo1EP
         {
-            Ensure = 'Present'
-            DriveLetter = 'P'
-            Credential = $PackagesNetworkShareCred
-            SharePath = '\\scodev.file.core.windows.net\packages'
+            Name                   = 'Demo1EP'
+            Toolkit                = 'Process'
+            SecurityDescriptorSddl = 'O:NSG:BAD:P(A;;GX;;;WD)S:P(AU;FA;GA;;;WD)(AU;SA;GXGW;;;WD)'                                  
+            DependsOn              = '[xJeaToolKit]Process'
         }
     }
 }
