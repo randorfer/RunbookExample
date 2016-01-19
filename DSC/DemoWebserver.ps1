@@ -9,16 +9,7 @@ Configuration DemoWebserver
     Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DscResource -ModuleName xJea
 
-    $Vars = Get-BatchAutomationVariable -Prefix 'DemoWebServer' -Name 'NuGetCredentialName'
-    $NuGetCredential = Get-AutomationPSCredential -Name $Vars.NuGetCredentialName
-
-    $DomainComputerVars = Get-BatchAutomationVariable -Prefix 'DomainComputer' `
-                                        -Name 'DomainJoinCredName',
-                                              'PackagesNetworkShareCredName'
-    
-    $DomainJoinCred = Get-AutomationPSCredential -Name $Vars.DomainJoinCredName
-    $PackagesNetworkShareCred = Get-AutomationPSCredential -Name $Vars.DomainJoinCredName
-
+   
     Node localhost {   
 
         WindowsFeature installIIS 
