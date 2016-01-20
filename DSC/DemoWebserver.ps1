@@ -69,7 +69,7 @@ Restart-Service,Name,,^A
             Ensure          = "Present" 
             Name            = "testApp"
             DestinationPath = "c:\inetpub\wwwroot"
-            RequiredVersion = "2.0.1"
+            RequiredVersion = "1.0.0"
             DependsOn       = "[PackageManagementSource]SourceRepository"
         }
     }
