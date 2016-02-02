@@ -1,10 +1,6 @@
 ﻿<#
     .SYNOPSIS
        Add a synopsis here to explain the PSScript. 
-
-    .Description
-        Give a description of the Script.
-
 #>
 Param(
 
