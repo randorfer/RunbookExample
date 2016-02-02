@@ -9,7 +9,8 @@ environment:
     secure: Povc/ZMJNsRYfKgrXCQnHb8U0zLY8K3j8nf/rSoUwnqy4NwO03pdd+lK9kBhKuOWYOi/vyrq8u2Su9wqc3iNDIYcaNxcwP3ucCDItASrDIQv0wD4uq+LlDnwH6NJ9z6xjtkjNivG2FcF6KAUdjVaCA==
 clone_folder: c:\git\ScorchDev
 init:
-- ps: $env:PSModulePath = "$($env:PSModulePath);c:\git\ScorchDev\PowerShellModules"
+- ps: git clone -q --branch="$($env:APPVEYOR_REPO_BRANCH)" https://github.com/randorfer/SCOrchDev c:\git\scorchdev
+- ps: $env:PSModulePath = "$($env:PSModulePath);c:\git\ScorchDev\PowerShellModules;c:\git\RunbookExample\PowerShellModules"
 install:
 - cmd: cinst -y pester
 nuget:
