@@ -1,5 +1,10 @@
 ﻿{
     "Variables":  {
+                      "HelloWorld-Var1":  {
+                                              "isEncrypted":  false,
+                                              "Description":  "",
+                                              "Value":  "asdf"
+                                          },
                       "HelloWorld-EmailAccessCredentialName":  {
                                                                    "isEncrypted":  false,
                                                                    "Description":  "",
