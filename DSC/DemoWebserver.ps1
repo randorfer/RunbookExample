@@ -52,6 +52,7 @@ Restart-Service,Name,,^A
             DependsOn              = '[xJeaToolKit]Process'
         }
 
+        <#
         PackageManagementSource SourceRepository
         {
 
@@ -72,5 +73,6 @@ Restart-Service,Name,,^A
             RequiredVersion = "1.0.0"
             DependsOn       = "[PackageManagementSource]SourceRepository"
         }
+        #>
     }
 }
