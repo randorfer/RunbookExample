@@ -10,7 +10,7 @@ Configuration DemoWebserver
     Import-DscResource -ModuleName xJea
     Import-DscResource -Module PackageManagementProviderResource
 
-    $NuGetCredential = Get-AutomationPSCredential -Name 'Ryan.Andorfer'
+    #$NuGetCredential = Get-AutomationPSCredential -Name 'Ryan.Andorfer'
    
     Node localhost {   
 
