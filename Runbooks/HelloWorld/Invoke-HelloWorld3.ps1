@@ -1,1 +1,1 @@
-'OtherSide'
+Write-Verbose -Message 'Hello World'
