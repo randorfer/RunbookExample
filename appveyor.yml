@@ -8,13 +8,19 @@ environment:
 clone_folder: c:\git\RunbookExample
 init:
 - ps: >-
+    $ErrorActionPreference = 'Stop
+    
     try {
     
         git clone --branch="$($env:APPVEYOR_REPO_BRANCH)" -q https://github.com/randorfer/SCOrchDev c:\git\scorchdev
     
     }
     
+    catch {
+
     git clone --branch="vNext" -q https://github.com/randorfer/SCOrchDev c:\git\scorchdev
+
+    }
 
     $env:PSModulePath = "$($env:PSModulePath);c:\git\ScorchDev\PowerShellModules;c:\git\RunbookExample\PowerShellModules"
 nuget:
