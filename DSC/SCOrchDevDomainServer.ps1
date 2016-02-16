@@ -1,3 +1,5 @@
+<#
+#>
 Configuration SCOrchDevDomainServer
 {
     Param(
