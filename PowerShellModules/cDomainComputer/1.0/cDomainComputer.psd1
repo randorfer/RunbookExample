@@ -27,7 +27,7 @@ CompanyName = 'Microsoft'
 Copyright = '(c) 2016 Ryan Andorfer. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'Powershell module for usage in Azure Automation. Joins a machine to the specified domain using its current name'
+Description = 'Powershell module for usage in Azure Automation. Joins a machine to the specified domain using its current name.'
 
 # Minimum version of the Windows PowerShell engine required by this module
 # PowerShellVersion = ''
