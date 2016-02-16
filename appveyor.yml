@@ -7,7 +7,7 @@ environment:
     secure: +ssIq4M39yXq/VqooAUE56V8KUTDbxgQqB2SgG+edn2P16qNYtIzLWyEUlLhYqC7
 clone_folder: c:\git\RunbookExample
 init:
-- ps: git clone -q https://github.com/randorfer/SCOrchDev c:\git\scorchdev
+- ps: git clone --branch="$($env:APPVEYOR_REPO_BRANCH)" -q https://github.com/randorfer/SCOrchDev c:\git\scorchdev
 - ps: $env:PSModulePath = "$($env:PSModulePath);c:\git\ScorchDev\PowerShellModules;c:\git\RunbookExample\PowerShellModules"
 nuget:
   disable_publish_on_pr: true
