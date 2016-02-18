@@ -15,7 +15,7 @@ CompanyName = 'Microsoft Corporation'
 Copyright = '(c) 2013 Microsoft Corporation. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'Module with DSC Resources for Web Administration'
+Description = 'Module with DSC Resources for Web Administration. Updated for localhost for AA DSC'
 
 # Minimum version of the Windows PowerShell engine required by this module
 PowerShellVersion = '4.0'
