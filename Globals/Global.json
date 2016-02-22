@@ -1,0 +1,14 @@
+﻿{
+    "Variables":  {
+                      "Global-HelloWorldString":  {
+                                                      "isEncrypted":  false,
+                                                      "Description":  "",
+                                                      "Value":  "Hello World"
+                                                  },
+                      "Global-DomainCredentialName":  {
+                                                          "isEncrypted":  false,
+                                                          "Description":  "",
+                                                          "Value":  "ryan@microsoft.com"
+                                                      }
+                  }
+}
