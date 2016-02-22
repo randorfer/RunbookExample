@@ -14,12 +14,7 @@ $Credential = Get-AutomationPSCredential -Name $Vars.EmailAccessCredentialName
 
 Try
 {
-    Write-Verbose -Message 'Hello World 2'
-    $EWSConnection = New-EWSMailboxConnection -Credential $Credential
-    $null = Send-EWSEmail -mailboxConnection $EWSConnection `
-                          -Recipients 'Ryan.Andorfer@microsoft.com' `
-                          -Subject 'Hello World' `
-                          -Body 'From Email'
+    Write-Verbose -Message "Hello World [$($Credential.UserName)]"
 }
 Catch
 {
