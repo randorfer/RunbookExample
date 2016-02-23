@@ -23,7 +23,8 @@ Try
     $PoweringOnStart = Write-StartingMessage -CommandName 'Powering On Domain Controllers'
     Foreach ($_DomainController in $DomainController)
     {
-        $Null = Start-Job -ScriptBlock {
+        $Null = Start-Job -Name 'StartLabDC' -ScriptBlock {
+            $VerbosePreference = [System.Management.Automation.ActionPreference]$Using:VerbosePreference
             $Vars = $Using:Vars
             $Credential = $Using:Credential
             $_DomainController = $Using:_DomainController
@@ -34,12 +35,14 @@ Try
                                     -ResourceGroupName $_DomainController.ResourceGroupName
         }
     }
+    Get-Job -Name 'StartLabDC' | Receive-Job -AutoRemoveJob -Wait
     Write-CompletedMessage -StartTime $PoweringOnStart.StartTime -Name $PoweringOnStart.Name -Status $PoweringOnStart.Stream
 
     $StartingAllVMs = Write-StartingMessage -CommandName 'Starting all VMs'
     Foreach ($_VM in $VM)
     {
-        $Null = Start-Job -ScriptBlock {
+        $Null = Start-Job -Name 'StartAllVMs' -ScriptBlock {
+            $VerbosePreference = [System.Management.Automation.ActionPreference]$Using:VerbosePreference
             $Vars = $Using:Vars
             $Credential = $Using:Credential
             $_VM = $Using:_VM
@@ -50,6 +53,7 @@ Try
                                     -ResourceGroupName $_VM.ResourceGroupName
         }
     }
+    Get-Job -Name 'StartAllVMs' | Receive-Job -AutoRemoveJob -Wait
     Write-CompletedMessage -StartTime $StartingAllVMs.StartTime -Name $StartingAllVMs.Name -Status $StartingAllVMs.Stream
 }
 Catch
