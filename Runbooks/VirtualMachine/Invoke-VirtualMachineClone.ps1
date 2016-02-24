@@ -32,6 +32,7 @@ $BackupSubscriptionAccessCredential = Get-AutomationPSCredential -Name $BackupAz
 
 Try
 {
+    Write-Verbose -Message 'hello world'
     Copy-AzureRMResourceGroupVMDisk -SourceSubscriptionName $PrimaryAzureSubscriptionVars.Name `
                                     -SourceSubscriptionAccessCredential $PrimarySubscriptionAccessCredential `
                                     -SourceSubscriptionTenant $PrimaryAzureSubscriptionVars.Tenant `
