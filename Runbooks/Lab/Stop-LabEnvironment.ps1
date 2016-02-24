@@ -34,10 +34,11 @@ Try
             $TurnOffLights = $True;
             $VMName = $_VM.Name
             $ResourceGroup = $_VM.ResourceGroup;
-            Write-Verbose -Message "Don't shutoff yourself. [$($_VM.Name)]"
+            Write-Verbose -Message "Don't TurnOff the lights while you are doing work. [$($_VM.Name)]"
         }
         else
         {
+            Write-Verbose -Message "Stopping [$($_VM.Name)]"
             $Null = Start-Job -Name 'StopLabVM' -ScriptBlock {
                 $Vars = $Using:Vars
                 $Credential = $Using:Credential
@@ -54,6 +55,7 @@ Try
 
     if($TurnOffLights)
     {
+        Write-Verbose -Message "TurnOff the lights when you leave [$($VMName)]"
         $Null = Start-Job -Name 'StopLabVM' -ScriptBlock {
             $Vars = $Using:Vars
             $Credential = $Using:Credential
@@ -64,7 +66,7 @@ Try
                                   -Credential $Credential `
                                   -Tenant $Vars.Tenant `
                                   -Name $VMName `
-                                  -ResourceGroupName $ResourceGroup.ResourceGroupName
+                                  -ResourceGroupName $ResourceGroup
         }
         
     }
