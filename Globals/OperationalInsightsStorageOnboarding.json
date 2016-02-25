@@ -1,0 +1,29 @@
+﻿{
+    "Variables":  {
+                      "OperationalInsightsStorageOnboarding-ResourceGroupName":  {
+                                                                                     "isEncrypted":  false,
+                                                                                     "Description":  "",
+                                                                                     "Value":  "OI-Default-East-US"
+                                                                                 },
+                      "OperationalInsightsStorageOnboarding-Tenant":  {
+                                                                          "isEncrypted":  false,
+                                                                          "Description":  "",
+                                                                          "Value":  "72f988bf-86f1-41af-91ab-2d7cd011db47"
+                                                                      },
+                      "OperationalInsightsStorageOnboarding-WorkspaceName":  {
+                                                                                 "isEncrypted":  false,
+                                                                                 "Description":  "",
+                                                                                 "Value":  "scorch"
+                                                                             },
+                      "OperationalInsightsStorageOnboarding-SubscriptionName":  {
+                                                                                    "isEncrypted":  false,
+                                                                                    "Description":  "",
+                                                                                    "Value":  "Microsoft Azure Internal Consumption"
+                                                                                },
+                      "OperationalInsightsStorageOnboarding-SubscriptionAccessCredentialName":  {
+                                                                                                    "isEncrypted":  false,
+                                                                                                    "Description":  "",
+                                                                                                    "Value":  "6640d6a4-7a7c-45b9-b0a9-bbc055bf8684"
+                                                                                                }
+                  }
+}
