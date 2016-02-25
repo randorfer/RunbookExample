@@ -5,7 +5,7 @@
 Param(
 )
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
-$CompletedParameters = Write-StartingMessage
+$CompletedParameters = Write-StartingMessage -CommandName 'Invoke-OperationalInsightsStorageOnboarding'
 
 $Vars = Get-BatchAutomationVariable -Name  'SubscriptionAccessCredentialName',
                                            'SubscriptionName',
