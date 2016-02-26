@@ -227,14 +227,6 @@ Configuration SCCMDistributionPoint
             }
         }
 
-        # File Server
-        WindowsFeature FileServer
-        {
-            Name = "FS-FileServer"
-            Ensure = "Present"
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_FileServer.log"
-        }
-
         # IIS Management Console
         WindowsFeature WebServerManagementConsole
         {
@@ -283,14 +275,6 @@ Configuration SCCMDistributionPoint
             LogPath = "C:\Windows\debug\DSC_WindowsFeature_WebServerWindowsAuth.log"
         }
 
-        # IIS WebDAV Publishing
-        WindowsFeature WebServerWebDAVPublishing
-        {
-            Name = "Web-DAV-Publishing"
-            Ensure = "Present"
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_WebServerWebDAVPublishing.log"
-        }
-
         # IIS 6 Metabase Compatibility
         WindowsFeature WebServerLegacyMetabaseCompatibility
         {
@@ -305,14 +289,6 @@ Configuration SCCMDistributionPoint
             Name = "Web-WMI"
             Ensure = "Present"
             LogPath = "C:\Windows\debug\DSC_WindowsFeature_WebServerLegacyWMICompatibility.log"
-        }
-
-        # BITS IIS Server Extension
-        WindowsFeature WebServerBITSExtension
-        {
-            Name = "BITS-IIS-Ext"
-            Ensure = "Present"
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_WebServerBITSExtension.log"
         }
 
         # IIS ASP.NET 3.5
