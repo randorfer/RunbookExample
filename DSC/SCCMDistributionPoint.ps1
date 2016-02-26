@@ -9,8 +9,8 @@ Configuration SCCMDistributionPoint
                                    cNtfsAccessControl,
                                    xCertificate
 
-    $DistributionPContentLocalPath = 'E:\DPContent'
-    $WindowsDeploymentServicesFolder = 'D:\Deployment'
+    $DistributionPContentLocalPath = 'E:\SCCMContentLib'
+    $WindowsDeploymentServicesFolder = 'C:\RemoteInstall'
     
     Node localhost {   
 
@@ -129,180 +129,6 @@ Configuration SCCMDistributionPoint
             LogPath = "C:\Windows\debug\DSC_WindowsFeature_RemoteDifferentialCompression.log"
         }
 
-        # DHCP Server
-        WindowsFeature DhcpServer
-        {
-            Name = "DHCP"
-            Ensure = "Present"
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_DhcpServer.log"
-        }
-
-        # DHCP Server Tools
-        WindowsFeature DhcpServerTools
-        {
-            DependsOn = "[WindowsFeature]DhcpServer"
-            Name = "RSAT-DHCP"
-            Ensure = "Present"
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_DhcpServerTools.log"
-        }
-
-        # DHCP Server Option Value - 006 DNS Server
-        Script DhcpServerOptionValue006
-        {
-            DependsOn = "[WindowsFeature]DhcpServer"
-            TestScript = {
-                $IPConfig = (Get-NetIPConfiguration | Where-Object IPv4DefaultGateway)
-                $DNSServer = ($IPConfig.DNSServer | Where-Object AddressFamily -eq 2).ServerAddresses
-            
-                $Option = Get-DhcpServerv4OptionValue -OptionId 6 -ErrorAction SilentlyContinue
-                if ($Option -ne $null)
-                {
-                    $CompareResult = Compare-Object -ReferenceObject $DNSServer `
-                        -DifferenceObject $Option.Value
-                         
-                    return ($CompareResult.SideIndicator -eq $null)
-                }
-                else
-                {
-                    return $false
-                }
-            }
-            SetScript = { 
-                $IPConfig = (Get-NetIPConfiguration | Where-Object IPv4DefaultGateway)
-                $DNSServer = ($IPConfig.DNSServer | Where-Object AddressFamily -eq 2).ServerAddresses
-
-                Set-DhcpServerv4OptionValue -DnsServer $DNSServer
-            }
-            GetScript = {
-                return @{
-                    GetScript = $GetScript
-                    SetScript = $SetScript
-                    TestScript = $TestScript
-                    Credential = $Credential
-                    Result = (Invoke-Expression $TestScript)
-                }
-            }
-        }
-
-        # DHCP Server Option Value - 015 DNS Domain Name
-        Script DhcpServerOptionValue015
-        {
-            DependsOn = "[WindowsFeature]DhcpServer"
-            TestScript = {
-                $Option = Get-DhcpServerv4OptionValue -OptionId 15 -ErrorAction SilentlyContinue
-                if ($Option -ne $null)
-                {
-                    return [bool]($Option.Value -eq (Get-WmiObject -Class Win32_ComputerSystem).Domain)
-                }
-                else
-                {
-                    return $false
-                }
-            }
-            SetScript = { 
-                Set-DhcpServerv4OptionValue -DnsDomain (Get-WmiObject -Class Win32_ComputerSystem).Domain
-            }
-            GetScript = {
-                return @{
-                    GetScript = $GetScript
-                    SetScript = $SetScript
-                    TestScript = $TestScript
-                    Credential = $Credential
-                    Result = (Invoke-Expression $TestScript)
-                }
-            }
-        }
-
-        # DHCP Server Option Value - 060 PXEClient
-        Script DhcpServerOptionValue060
-        {
-            DependsOn = "[WindowsFeature]DhcpServer"
-            TestScript = {
-                $Option = Get-DhcpServerv4OptionValue -OptionId 60 -ErrorAction SilentlyContinue
-                if ($Option -ne $null)
-                {
-                    return [bool]($Option.Value -eq "PXEClient")
-                }
-                else
-                {
-                    return $false
-                }
-            }
-            SetScript = {
-                Set-DhcpServerv4OptionValue -OptionId 60 -Value "PXEClient"
-            }
-            GetScript = {
-                return @{
-                    GetScript = $GetScript
-                    SetScript = $SetScript
-                    TestScript = $TestScript
-                    Credential = $Credential
-                    Result = (Invoke-Expression $TestScript)
-                }
-            }
-        }
-
-        # DHCP Server Option Value - 066 Boot Server Host Name
-        Script DhcpServerOptionValue066
-        {
-            DependsOn = "[WindowsFeature]DhcpServer"
-            TestScript = {
-                $IPConfig = (Get-NetIPConfiguration | Where-Object IPv4DefaultGateway)
-
-                $Option = Get-DhcpServerv4OptionValue -OptionId 66 -ErrorAction SilentlyContinue
-                if ($Option -ne $null)
-                {
-                    return [bool]($Option.Value -eq $IPConfig.IPv4Address.IPAddress)
-                }
-                else
-                {
-                    return $false
-                }
-            }
-            SetScript = {
-                $IPConfig = (Get-NetIPConfiguration | Where-Object IPv4DefaultGateway) 
-                Set-DhcpServerv4OptionValue -OptionId 66 -Value $IPConfig.IPv4Address.IPAddress
-            }
-            GetScript = {
-                return @{
-                    GetScript = $GetScript
-                    SetScript = $SetScript
-                    TestScript = $TestScript
-                    Credential = $Credential
-                    Result = (Invoke-Expression $TestScript)
-                }
-            }
-        }
-
-        # DHCP Server Option Value - 067 Bootfile Name
-        Script DhcpServerOptionValue067
-        {
-            DependsOn = "[WindowsFeature]DhcpServer"
-            TestScript = {
-                $Option = Get-DhcpServerv4OptionValue -OptionId 67 -ErrorAction SilentlyContinue
-                if ($Option -ne $null)
-                {
-                    return [bool]($Option.Value -eq "SMSBoot\x64\wdsnbp.com")
-                }
-                else
-                {
-                    return $false
-                }
-            }
-            SetScript = {
-                Set-DhcpServerv4OptionValue -OptionId 67 -Value "SMSBoot\x64\wdsnbp.com"
-            }
-            GetScript = {
-                return @{
-                    GetScript = $GetScript
-                    SetScript = $SetScript
-                    TestScript = $TestScript
-                    Credential = $Credential
-                    Result = (Invoke-Expression $TestScript)
-                }
-            }
-        }
-
         # Windows Deployment Services
         WindowsFeature WindowsDeploymentServices
         {
@@ -401,30 +227,6 @@ Configuration SCCMDistributionPoint
             }
         }
 
-        # Windows Server Update Services
-        WindowsFeature WindowsServerUpdateServices
-        {
-            Name = "UpdateServices"
-            Ensure = "Present"
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_WindowsServerUpdateServices.log"
-        }
-
-        # Windows Server Update Services Management Console
-        WindowsFeature WindowsServerUpdateServicesManagementConsole
-        {
-            Name = "UpdateServices-UI"
-            Ensure = "Present"
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_WindowsServerUpdateServicesManagementConsole.log"
-        }
-
-        # File Server
-        WindowsFeature FileServer
-        {
-            Name = "FS-FileServer"
-            Ensure = "Present"
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_FileServer.log"
-        }
-
         # IIS Management Console
         WindowsFeature WebServerManagementConsole
         {
@@ -473,14 +275,6 @@ Configuration SCCMDistributionPoint
             LogPath = "C:\Windows\debug\DSC_WindowsFeature_WebServerWindowsAuth.log"
         }
 
-        # IIS WebDAV Publishing
-        WindowsFeature WebServerWebDAVPublishing
-        {
-            Name = "Web-DAV-Publishing"
-            Ensure = "Present"
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_WebServerWebDAVPublishing.log"
-        }
-
         # IIS 6 Metabase Compatibility
         WindowsFeature WebServerLegacyMetabaseCompatibility
         {
@@ -495,14 +289,6 @@ Configuration SCCMDistributionPoint
             Name = "Web-WMI"
             Ensure = "Present"
             LogPath = "C:\Windows\debug\DSC_WindowsFeature_WebServerLegacyWMICompatibility.log"
-        }
-
-        # BITS IIS Server Extension
-        WindowsFeature WebServerBITSExtension
-        {
-            Name = "BITS-IIS-Ext"
-            Ensure = "Present"
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_WebServerBITSExtension.log"
         }
 
         # IIS ASP.NET 3.5

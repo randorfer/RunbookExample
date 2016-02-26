@@ -36,9 +36,9 @@ Try
 
             $StorageContainer = Get-AzureStorageContainer -Context $_StorageAccount.Context
 
-            if(($StorageContainer.Name -as [string]) -like '*insights-logs*')
+            if(($StorageContainer.Name -as [string]) -like '*wad*')
             {
-                $Containers = $StorageContainer | Where-Object -FilterScript { $_.Name -like 'insights-logs' }
+                $Containers = $StorageContainer | Where-Object -FilterScript { $_.Name -like '*wad*' }
                 
             }
             else
@@ -76,7 +76,7 @@ Try
             {
                 'NoInsightContainers'
                 {
-                    Write-Exception $Exception -Stream Verbose
+                    #Write-Exception $Exception -Stream Verbose
                 }
                 Default
                 {
