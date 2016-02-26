@@ -287,8 +287,9 @@
             LogPath = "C:\Windows\debug\DSC_WindowsFeature_DotNet35NonHttpActivation.log"
         }
     }
-    Node DP_WDS_DHCP {   
-    WindowsFeature IIS 
+    Node DP_WDS_DHCP {
+       
+        WindowsFeature IIS 
         { 
             Ensure="Present" 
             Name="Web-Server" 
