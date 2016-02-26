@@ -288,7 +288,8 @@
         }
     }
     Node DP_WDS_DHCP {   
-    WindowsFeature IIS 
+        
+        WindowsFeature IIS 
         { 
             Ensure="Present" 
             Name="Web-Server" 
@@ -576,16 +577,6 @@
                 }
             }
         }
-
-        # Windows Deployment Services
-        WindowsFeature WindowsDeploymentServices
-        {
-            Name = "WDS"
-            Ensure = "Present"
-            IncludeAllSubFeature = $true
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_WindowsDeploymentServices.log"
-        }
-
 
         # Windows Deployment Services
         WindowsFeature WindowsDeploymentServices
