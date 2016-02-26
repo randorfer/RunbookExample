@@ -9,8 +9,8 @@ Configuration SCCMDistributionPoint
                                    cNtfsAccessControl,
                                    xCertificate
 
-    $DistributionPContentLocalPath = 'E:\DPContent'
-    $WindowsDeploymentServicesFolder = 'D:\Deployment'
+    $DistributionPContentLocalPath = 'E:\SCCMContentLib'
+    $WindowsDeploymentServicesFolder = 'C:\RemoteInstall'
     
     Node localhost {   
 
