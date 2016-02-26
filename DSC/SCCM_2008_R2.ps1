@@ -118,7 +118,8 @@
         {
             Ensure = 'Present'
             DestinationPath = 'c:\no_sms_on_drive.sms'
-            Type = 'File'   
+            Type = 'File'
+            Contents = [string]::Empty
         }
         
         # Remote Differential Compression
@@ -287,8 +288,8 @@
             LogPath = "C:\Windows\debug\DSC_WindowsFeature_DotNet35NonHttpActivation.log"
         }
     }
-    Node DP_WDS_DHCP {
-       
+    Node DP_WDS_DHCP {   
+        
         WindowsFeature IIS 
         { 
             Ensure="Present" 
@@ -393,7 +394,8 @@
         {
             Ensure = 'Present'
             DestinationPath = 'c:\no_sms_on_drive.sms'
-            Type = 'File'   
+            Type = 'File'
+            Contents = [string]::Empty
         }
         
         # Remote Differential Compression

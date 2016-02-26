@@ -118,7 +118,8 @@
         {
             Ensure = 'Present'
             DestinationPath = 'c:\no_sms_on_drive.sms'
-            Type = 'File'   
+            Type = 'File'
+            Contents = [string]::Empty
         }
         
         # Remote Differential Compression
@@ -393,7 +394,8 @@
         {
             Ensure = 'Present'
             DestinationPath = 'c:\no_sms_on_drive.sms'
-            Type = 'File'   
+            Type = 'File'
+            Contents = [string]::Empty
         }
         
         # Remote Differential Compression
