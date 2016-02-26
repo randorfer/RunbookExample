@@ -19,6 +19,8 @@ Try
     [System.Environment]::OSVersion
     
     $Env:PSModulePath
+
+    $PSVersionTable
 }
 Catch
 {
