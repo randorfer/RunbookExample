@@ -1,4 +1,4 @@
-﻿Configuration SCCM_2012
+﻿Configuration SCCM_2008_R2
 {
     Param(
     )
