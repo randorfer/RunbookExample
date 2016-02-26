@@ -14,7 +14,8 @@ $CompletedParameters = Write-StartingMessage -CommandName Invoke-TestNetConnecti
 
 Try
 {
-    Test-NetConnection -ComputerName 8.8.8.8
+    Test-NetConnection -ComputerName '8.8.8.8'
+    Test-NetConnection -ComputerName 'www.google.com'
 }
 Catch
 {
