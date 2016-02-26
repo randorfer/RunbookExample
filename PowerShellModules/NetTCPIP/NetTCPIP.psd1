@@ -4,7 +4,7 @@
     CompanyName = "Microsoft Corporation"
     Copyright = "© Microsoft Corporation. All rights reserved."
     HelpInfoUri = "http://go.microsoft.com/fwlink/?linkid=390802"
-    ModuleVersion = "1.0.0.0"
+    ModuleVersion = "1.0.0.1"
     PowerShellVersion = "3.0"
 
     NestedModules = @(

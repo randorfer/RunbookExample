@@ -100,6 +100,7 @@ function Test-NetConnection
                 }
                 catch [System.Net.Sockets.SocketException]
                 {
+                    Write-Exception -Exception $_
                     $Message = "Name resolution of $TargetName failed -- Status: " + $_.Exception.InnerException.SocketErrorCode.ToString()
                     Write-Warning $Message
                     return $null
