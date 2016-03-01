@@ -1017,30 +1017,6 @@
             Ensure = "Present"
             LogPath = "C:\Windows\debug\DSC_WindowsFeature_WebServerLegacyWMICompatibility.log"
         }
-
-        # IIS ASP.NET 3.5
-        WindowsFeature WebServerAspNet35
-        {
-            Name = "Web-Asp-Net"
-            Ensure = "Present"
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_WebServerAspNet35.log"
-        }
-
-        # .NET Framework 3.5 HTTP Activation
-        WindowsFeature DotNet35HttpActivation
-        {
-            Name = "NET-HTTP-Activation"
-            Ensure = "Present"
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_DotNet35HttpActivation.log"
-        }
-    
-        # .NET Framework 3.5 Non-HTTP Activation
-        WindowsFeature DotNet35NonHttpActivation
-        {
-            Name = "NET-Non-HTTP-Activ"
-            Ensure = "Present"
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_DotNet35NonHttpActivation.log"
-        }
     }
     Node DP_WDS_DHCP_WIN2012_R2 {   
         
@@ -1494,30 +1470,6 @@
             Name = "Web-WMI"
             Ensure = "Present"
             LogPath = "C:\Windows\debug\DSC_WindowsFeature_WebServerLegacyWMICompatibility.log"
-        }
-
-        # IIS ASP.NET 3.5
-        WindowsFeature WebServerAspNet35
-        {
-            Name = "Web-Asp-Net"
-            Ensure = "Present"
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_WebServerAspNet35.log"
-        }
-
-        # .NET Framework 3.5 HTTP Activation
-        WindowsFeature DotNet35HttpActivation
-        {
-            Name = "NET-HTTP-Activation"
-            Ensure = "Present"
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_DotNet35HttpActivation.log"
-        }
-    
-        # .NET Framework 3.5 Non-HTTP Activation
-        WindowsFeature DotNet35NonHttpActivation
-        {
-            Name = "NET-Non-HTTP-Activ"
-            Ensure = "Present"
-            LogPath = "C:\Windows\debug\DSC_WindowsFeature_DotNet35NonHttpActivation.log"
         }
     }
 }
