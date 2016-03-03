@@ -4,11 +4,11 @@
     )
 
     Import-DscResource -ModuleName xNetworking
-    Import-DscResource -ModuleName cNetworkShare
+    Import-DscResource -ModuleName xSQLServer
+    Import-DscResource -ModuleName xWindowsUpdate
     Import-DscResource -ModuleName xComputerManagement
     Import-DscResource -ModuleName PSDesiredStateConfiguration
-    Import-DscResource -Module PackageManagementProviderResource
-    Import-DscResource -ModuleName xSQLServer
+    
     
     $Vars = Get-BatchAutomationVariable -Prefix 'EnterpriseApplication' `
                                         -Name @(
@@ -47,7 +47,7 @@
             Ensure = "Present"
             Type = "Directory"
             DestinationPath = "c:\Source"
-            Force = "True"
+            Force = $True
         }
 
         File SqlServerISO
@@ -57,7 +57,7 @@
             SourcePath = "$($Vars.FileSharePath)\en_sql_server_2012_service_pack_3_x86_x64_dvd_7298789.iso"
             DestinationPath = "C:\Source\en_sql_server_2012_service_pack_3_x86_x64_dvd_7298789.iso"
             Credential = $FileShareAccessCredential
-            Force = "True"
+            Force = $True
             DependsOn = "[File]SourceDirectory"
         }
 
