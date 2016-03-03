@@ -1,5 +1,10 @@
 ﻿{
     "Variables":  {
+                      "EnterpriseApplication-FileSharePath":  {
+                                                                  "isEncrypted":  false,
+                                                                  "Description":  "",
+                                                                  "Value":  "\\\\scodev.file.core.windows.net\\packages"
+                                                              },
                       "EnterpriseApplication-FileShareAccessCredentialName":  {
                                                                                   "isEncrypted":  false,
                                                                                   "Description":  "",

@@ -13,6 +13,7 @@
     $Vars = Get-BatchAutomationVariable -Prefix 'EnterpriseApplication' `
                                         -Name @(
                                             'FileShareAccessCredentialName'
+                                            'FileSharePath'
                                         )
 
     $FileShareAccessCredential = Get-AutomationPSCredential -Name $Vars.FileShareAccessCredentialName
