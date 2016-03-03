@@ -10,6 +10,13 @@
     Import-DscResource -Module PackageManagementProviderResource
     Import-DscResource -ModuleName xSQLServer
     
+    $Vars = Get-BatchAutomationVariable -Prefix 'EnterpriseApplication' `
+                                        -Name @(
+                                            'FileShareAccessCredentialName'
+                                        )
+
+    $FileShareAccessCredential = Get-AutomationPSCredential -Name $Vars.FileShareAccessCredentialName
+
     Node FrontEndWebserver {   
 
         WindowsFeature installIIS 
