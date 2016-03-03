@@ -1,0 +1,9 @@
+﻿{
+    "Variables":  {
+                      "EnterpriseApplication-FileShareAccessCredentialName":  {
+                                                                                  "isEncrypted":  false,
+                                                                                  "Description":  "",
+                                                                                  "Value":  "scodev"
+                                                                              }
+                  }
+}
