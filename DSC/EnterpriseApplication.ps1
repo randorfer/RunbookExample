@@ -39,19 +39,25 @@
             Ensure = "Present"
         }
     }
-
+    
     Node SQLServer {
-        xFirewall WebFirewallRule 
-        { 
-            Direction = "Inbound" 
-            Name = "Web-Server-TCP-In" 
-            DisplayName = "Web Server (TCP-In)" 
-            Description = "IIS allow incoming web site traffic."
-            Action = "Allow"
-            Enabled = "True"
-            Protocol = "TCP" 
-            LocalPort = "80" 
+        
+        File SourceDirectory
+        {
             Ensure = "Present"
+            Type = "Directory"
+            DestinationPath = "c:\Source"
         }
+
+        File SqlServerISO
+        {
+            Ensure = "Present"
+            Type = "File"
+            SourcePath = "$($Vars.FileSharePath)\en_sql_server_2012_service_pack_3_x86_x64_dvd_7298789.iso"
+            DestinationPath = "C:\Source"
+            Credential = $FileShareAccessCredential
+            DependsOn = "[File]SourceDirectory"
+        }
+
     }
 }
