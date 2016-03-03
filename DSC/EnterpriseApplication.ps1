@@ -47,6 +47,7 @@
             Ensure = "Present"
             Type = "Directory"
             DestinationPath = "c:\Source"
+            Force = "True"
         }
 
         File SqlServerISO
@@ -54,8 +55,9 @@
             Ensure = "Present"
             Type = "File"
             SourcePath = "$($Vars.FileSharePath)\en_sql_server_2012_service_pack_3_x86_x64_dvd_7298789.iso"
-            DestinationPath = "C:\Source"
+            DestinationPath = "C:\Source\en_sql_server_2012_service_pack_3_x86_x64_dvd_7298789.iso"
             Credential = $FileShareAccessCredential
+            Force = "True"
             DependsOn = "[File]SourceDirectory"
         }
 
