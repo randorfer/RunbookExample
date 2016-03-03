@@ -5,6 +5,16 @@
                                                                   "Description":  "",
                                                                   "Value":  "\\\\scodev.file.core.windows.net\\packages"
                                                               },
+                      "EnterpriseApplication-DomainJoinCredentialName":  {
+                                                                             "isEncrypted":  false,
+                                                                             "Description":  "",
+                                                                             "Value":  "omsa@scorchdev.com"
+                                                                         },
+                      "EnterpriseApplication-DomainName":  {
+                                                               "isEncrypted":  false,
+                                                               "Description":  "",
+                                                               "Value":  "SCOrchDev.com"
+                                                           },
                       "EnterpriseApplication-FileShareAccessCredentialName":  {
                                                                                   "isEncrypted":  false,
                                                                                   "Description":  "",

@@ -6,18 +6,19 @@
     Import-DscResource -ModuleName xNetworking
     Import-DscResource -ModuleName xSQLServer
     Import-DscResource -ModuleName xWindowsUpdate
-    Import-DscResource -ModuleName xComputerManagement
+    Import-DscResource -ModuleName cDomainComputer
     Import-DscResource -ModuleName PSDesiredStateConfiguration
-    
     
     $Vars = Get-BatchAutomationVariable -Prefix 'EnterpriseApplication' `
                                         -Name @(
                                             'FileShareAccessCredentialName'
-                                            'FileSharePath'
+                                            'FileSharePath',
+                                            'DomainName',
+                                            'DomainJoinCredentialName'
                                         )
 
     $FileShareAccessCredential = Get-AutomationPSCredential -Name $Vars.FileShareAccessCredentialName
-
+    $DomainJoinCredential = Get-AutomationPSCredential -Name $Vars.DomainJoinCredentialName
     Node FrontEndWebserver {   
 
         WindowsFeature installIIS 
@@ -65,8 +66,8 @@
         {
             Ensure = 'Present'
             Type = 'File'
-            SourcePath = "$($Vars.FileSharePath)\W2K12-KB33134759-x64.msu"
-            DestinationPath = 'C:\Source\W2K12-KB33134759-x64.msu'
+            SourcePath = "$($Vars.FileSharePath)\W2K12-KB3134759-x64.msu"
+            DestinationPath = 'C:\Source\W2K12-KB3134759-x64.msu'
             Credential = $FileShareAccessCredential
             Force = $True
             DependsOn = '[File]SourceDirectory'
@@ -74,9 +75,66 @@
         
         xHotFix WMF_Install
         {
-            Path = 'C:\Source\W2K12-KB33134759-x64.msu'
-            Id = 'KB33134759'
+            Path = 'C:\Source\W2K12-KB3134759-x64.msu'
+            Id = 'KB3134759'
             Ensure = 'Present'
+            DependsOn = '[File]WMF5_MSU'
         }
+
+        cDomainComputer DomainJoin
+        {
+            DomainName = $Vars.DomainName
+            Credential = $DomainJoinCredential
+        }
+
+        WindowsFeature NET-Framework-Core
+        {
+            Ensure = "Present"
+            Name = "NET-Framework-Core"
+        }
+        <#
+        xSqlServerSetup MSSQLSERVER
+        {
+            DependsOn = @("[WindowsFeature]NET-Framework-Core")
+            SourcePath = $Node.SourcePath
+            SourceFolder = $Node.SQL2012FolderPath
+            InstanceName = 'MSSQLSERVER'
+            Features = 'SQLENGINE'
+            SetupCredential = $Node.InstallerServiceAccount
+            SQLCollation = "Latin1_General_CI_AS"
+            SQLSysAdminAccounts = $Node.AdminAccount
+            SQLSvcAccount = $Node.LocalSystemAccount
+            AgtSvcAccount = $Node.LocalSystemAccount
+            InstallSharedDir = "C:\Program Files\Microsoft SQL Server"
+            InstallSharedWOWDir = "C:\Program Files (x86)\Microsoft SQL Server"
+            InstanceDir = "E:\Program Files\Microsoft SQL Server"
+            InstallSQLDataDir = "E:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
+            SQLUserDBDir = "E:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
+            SQLUserDBLogDir = "E:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
+            SQLTempDBDir = "H:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
+            SQLTempDBLogDir = "I:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
+            SQLBackupDir = "J:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
+        }
+
+        xSqlServerFirewall MSSQLSERVER
+        {
+            DependsOn = @("[xSqlServerSetup]RDBMS")
+            SourcePath = $Node.SourcePath
+            SourceFolder = $Node.SQL2012FolderPath
+            InstanceName = $Node.Instance
+            Features = $Node.Features
+        }
+
+        # This will enable TCP/IP protocol and set custom static port, this will also restart sql service
+        xSQLServerNetwork MSSQLSERVER
+        {
+            DependsOn = @("[xSqlServerSetup]RDBMS")
+            InstanceName = $Node.Instance
+            ProtocolName = "tcp"
+            IsEnabled = $true
+            TCPPort = 4509
+            RestartService = $true 
+        }
+        #>
     }
 }
