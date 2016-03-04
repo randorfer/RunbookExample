@@ -52,17 +52,6 @@
             Force = $True
         }
 
-        File SqlServer2012_SP3_X86_X64_ISO
-        {
-            Ensure = 'Present'
-            Type = 'File'
-            SourcePath = "$($Vars.FileSharePath)\en_sql_server_2012_service_pack_3_x86_x64_dvd_7298789.iso"
-            DestinationPath = 'C:\Source\en_sql_server_2012_service_pack_3_x86_x64_dvd_7298789.iso'
-            Credential = $FileShareAccessCredential
-            Force = $True
-            DependsOn = '[File]SourceDirectory'
-        }
-
         File WMF5_MSU
         {
             Ensure = 'Present'
@@ -106,6 +95,25 @@
              DiskNumber = 3
              DriveLetter = 'F'
              AllocationUnitSize = 32768
+        }
+
+        File SqlServer2012_SP3_X86_X64_ISO
+        {
+            Ensure = 'Present'
+            Type = 'File'
+            SourcePath = "$($Vars.FileSharePath)\en_sql_server_2012_service_pack_3_x86_x64_dvd_7298789.iso"
+            DestinationPath = 'C:\Source\en_sql_server_2012_service_pack_3_x86_x64_dvd_7298789.iso'
+            Credential = $FileShareAccessCredential
+            Force = $True
+            DependsOn = '[File]SourceDirectory'
+        }
+
+        xMountImage SQL_ISO
+        {
+            Name = 'SQL Disk'
+            ImagePath = 'C:\Source\en_sql_server_2012_service_pack_3_x86_x64_dvd_7298789.iso'
+            DriveLetter = 's:'
+            DependsOn = '[File]SqlServer2012_SP3_X86_X64_ISO'
         }
 
         <#
