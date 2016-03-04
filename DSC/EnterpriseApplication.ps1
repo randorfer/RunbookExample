@@ -16,10 +16,17 @@
                                             'FileSharePath',
                                             'DomainName',
                                             'DomainJoinCredentialName'
+                                            'InstallerServiceAccountName'
+                                            'SQLAdminAccount'
                                         )
 
     $FileShareAccessCredential = Get-AutomationPSCredential -Name $Vars.FileShareAccessCredentialName
     $DomainJoinCredential = Get-AutomationPSCredential -Name $Vars.DomainJoinCredentialName
+    $InstallerServiceAccount = Get-AutomationPSCredential -Name $Vars.InstallerServiceAccountName
+
+    $LocalSystemAccountPassword = ConvertTo-SecureString -String (New-RandomString) -AsPlainText -Force
+    $LocalSystemAccount = New-Object -TypeName System.Management.Automation.PSCredential("SYSTEM", $LocalSystemAccountPassword)
+
     Node FrontEndWebserver {   
 
         WindowsFeature installIIS 
@@ -57,7 +64,7 @@
             Ensure = 'Present'
             Type = 'File'
             SourcePath = "$($Vars.FileSharePath)\Win8.1AndW2K12R2-KB3134758-x64.msu"
-            DestinationPath = 'C:\Source\Win8.1AndW2K12R2-KB3134758-x64'
+            DestinationPath = 'C:\Source\Win8.1AndW2K12R2-KB3134758-x64.msu'
             Credential = $FileShareAccessCredential
             Force = $True
             DependsOn = '[File]SourceDirectory'
@@ -116,30 +123,36 @@
             DependsOn = '[File]SqlServer2012_SP3_X86_X64_ISO'
         }
 
-        <#
         xSqlServerSetup MSSQLSERVER
         {
-            DependsOn = @("[WindowsFeature]NET-Framework-Core")
-            SourcePath = $Node.SourcePath
-            SourceFolder = $Node.SQL2012FolderPath
+            DependsOn = @(
+                '[WindowsFeature]NET-Framework-Core'
+                '[xDisk]SQL_Data_Disk'
+                '[xDisk]SQL_Log_Disk'
+                '[xMountImage]SQL_ISO'
+
+            )
+            SourcePath = 's:'
             InstanceName = 'MSSQLSERVER'
-            Features = 'SQLENGINE'
-            SetupCredential = $Node.InstallerServiceAccount
-            SQLCollation = "Latin1_General_CI_AS"
-            SQLSysAdminAccounts = $Node.AdminAccount
-            SQLSvcAccount = $Node.LocalSystemAccount
-            AgtSvcAccount = $Node.LocalSystemAccount
+            Features = @(
+                'SQLENGINE'
+            )
+            SetupCredential = $InstallerServiceAccount
+            SQLSysAdminAccounts = $Vars.SQLAdminAccount
+            SQLSvcAccount = $LocalSystemAccount
+            AgtSvcAccount = $LocalSystemAccount
             InstallSharedDir = "C:\Program Files\Microsoft SQL Server"
             InstallSharedWOWDir = "C:\Program Files (x86)\Microsoft SQL Server"
             InstanceDir = "E:\Program Files\Microsoft SQL Server"
             InstallSQLDataDir = "E:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
             SQLUserDBDir = "E:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
-            SQLUserDBLogDir = "E:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
-            SQLTempDBDir = "H:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
-            SQLTempDBLogDir = "I:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
-            SQLBackupDir = "J:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
+            SQLTempDBDir = "E:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
+            SQLUserDBLogDir = "F:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
+            SQLTempDBLogDir = "F:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
+            SQLBackupDir = "F:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
         }
 
+        <#
         xSqlServerFirewall MSSQLSERVER
         {
             DependsOn = @("[xSqlServerSetup]RDBMS")

@@ -5,20 +5,30 @@
                                                                   "Description":  "",
                                                                   "Value":  "\\\\scodev.file.core.windows.net\\packages"
                                                               },
-                      "EnterpriseApplication-DomainJoinCredentialName":  {
-                                                                             "isEncrypted":  false,
-                                                                             "Description":  "",
-                                                                             "Value":  "omsa@scorchdev.com"
-                                                                         },
+                      "EnterpriseApplication-InstallerServiceAccountName":  {
+                                                                                "isEncrypted":  false,
+                                                                                "Description":  "",
+                                                                                "Value":  "omsa@scorchdev.com"
+                                                                            },
                       "EnterpriseApplication-DomainName":  {
                                                                "isEncrypted":  false,
                                                                "Description":  "",
                                                                "Value":  "SCOrchDev.com"
                                                            },
+                      "EnterpriseApplication-SQLAdminAccount":  {
+                                                                    "isEncrypted":  false,
+                                                                    "Description":  "",
+                                                                    "Value":  "SCOrchDev\\randorfer"
+                                                                },
                       "EnterpriseApplication-FileShareAccessCredentialName":  {
                                                                                   "isEncrypted":  false,
                                                                                   "Description":  "",
                                                                                   "Value":  "scodev"
-                                                                              }
+                                                                              },
+                      "EnterpriseApplication-DomainJoinCredentialName":  {
+                                                                             "isEncrypted":  false,
+                                                                             "Description":  "",
+                                                                             "Value":  "omsa@scorchdev.com"
+                                                                         }
                   }
 }
