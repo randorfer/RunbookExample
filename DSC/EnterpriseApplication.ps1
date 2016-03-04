@@ -131,7 +131,7 @@
             InstanceName = 'MSSQLSERVER'
             Features = @(
                 'SQLENGINE'
-            )
+            ) -join ','
             SetupCredential = $InstallerServiceAccount
             SQLSysAdminAccounts = $Vars.SQLAdminAccount
             SQLSvcAccount = $LocalSystemAccount
