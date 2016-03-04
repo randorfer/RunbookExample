@@ -130,6 +130,7 @@
                 '[xDisk]SQL_Data_Disk'
                 '[xDisk]SQL_Log_Disk'
                 '[File]SqlServer2012_SP3_X64_Source'
+                '[cDomainComputer]DomainJoin'
 
             )
             SourcePath = $SQLSourcePath
