@@ -15,6 +15,16 @@
                                                                "Description":  "",
                                                                "Value":  "SCOrchDev.com"
                                                            },
+                      "EnterpriseApplication-SQLAccessCredentialName":  {
+                                                                            "isEncrypted":  false,
+                                                                            "Description":  "",
+                                                                            "Value":  "omsa@scorchdev.com"
+                                                                        },
+                      "EnterpriseApplication-SQLAccessGroup":  {
+                                                                   "isEncrypted":  false,
+                                                                   "Description":  "",
+                                                                   "Value":  "SCOrchDev\\Domain Admins"
+                                                               },
                       "EnterpriseApplication-SQLAdminAccount":  {
                                                                     "isEncrypted":  false,
                                                                     "Description":  "",

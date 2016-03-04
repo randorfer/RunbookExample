@@ -18,14 +18,19 @@
                                             'DomainJoinCredentialName'
                                             'InstallerServiceAccountName'
                                             'SQLAdminAccount'
+                                            'SQLAccessGroup'
+                                            'SQLAccessCredentialName'
                                         )
 
     $FileShareAccessCredential = Get-AutomationPSCredential -Name $Vars.FileShareAccessCredentialName
     $DomainJoinCredential = Get-AutomationPSCredential -Name $Vars.DomainJoinCredentialName
     $InstallerServiceAccount = Get-AutomationPSCredential -Name $Vars.InstallerServiceAccountName
+    $SQLAccessCredential = Get-AutomationPSCredential -Name $Vars.SQLAccessCredentialName
 
     $LocalSystemAccountPassword = ConvertTo-SecureString -String (New-RandomString) -AsPlainText -Force
     $LocalSystemAccount = New-Object -TypeName System.Management.Automation.PSCredential("SYSTEM", $LocalSystemAccountPassword)
+
+    $SQLSourcePath = 'C:\Source\SqlServer2012_SP3_X64'
 
     Node FrontEndWebserver {   
 
@@ -111,7 +116,7 @@
             Ensure = 'Present'
             Type = 'Directory'
             SourcePath = "$($Vars.FileSharePath)\SqlServer2012_SP3_X64"
-            DestinationPath = 'C:\Source\SqlServer2012_SP3_X64'
+            DestinationPath = $SQLSourcePath
             Recurse = $True
             Credential = $FileShareAccessCredential
             Force = $True
@@ -127,7 +132,7 @@
                 '[File]SqlServer2012_SP3_X64_Source'
 
             )
-            SourcePath = 'C:\Source\SqlServer2012_SP3_X64'
+            SourcePath = $SQLSourcePath
             InstanceName = 'MSSQLSERVER'
             Features = @(
                 'SQLENGINE'
@@ -147,26 +152,29 @@
             SQLBackupDir = "F:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
         }
 
-        <#
         xSqlServerFirewall MSSQLSERVER
         {
-            DependsOn = @("[xSqlServerSetup]RDBMS")
-            SourcePath = $Node.SourcePath
-            SourceFolder = $Node.SQL2012FolderPath
-            InstanceName = $Node.Instance
-            Features = $Node.Features
+            DependsOn = '[xSqlServerSetup]MSSQLSERVER'
+            SourcePath = $SQLSourcePath
+            InstanceName = 'MSSQLSERVER'
+            Features = 'SQLENGINE'
+        }
+        
+        xSQLServerMemory MSSQLSERVER
+        {
+            DependsOn = '[xSqlServerSetup]MSSQLSERVER'
+            Ensure = 'Present'
+            SqlInstanceName = 'MSSQLSERVER'
+            DynamicAlloc = $True
         }
 
-        # This will enable TCP/IP protocol and set custom static port, this will also restart sql service
-        xSQLServerNetwork MSSQLSERVER
+        xSqlServerLogin MSSQLSERVER
         {
-            DependsOn = @("[xSqlServerSetup]RDBMS")
-            InstanceName = $Node.Instance
-            ProtocolName = "tcp"
-            IsEnabled = $true
-            TCPPort = 4509
-            RestartService = $true 
+            Ensure = 'Present'
+            LoginCredential = $SQLAccessCredential
+            LoginType = 'WindowsGroup'
+            SQLInstanceName = 'MSSQLSERVER'
+            Name = $Vars.SQLAccessGroup
         }
-        #>
     }
 }
