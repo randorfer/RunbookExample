@@ -170,6 +170,7 @@
 
         xSqlServerLogin MSSQLSERVER
         {
+            DependsOn = '[xSqlServerSetup]MSSQLSERVER'
             Ensure = 'Present'
             LoginCredential = $SQLAccessCredential
             LoginType = 'WindowsGroup'
