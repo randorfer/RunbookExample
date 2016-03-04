@@ -97,16 +97,16 @@
 
         xDisk SQL_Data_Disk
         {
-             DiskNumber = 3
-             DriveLetter = 'E'
+             DiskNumber = 2
+             DriveLetter = 'F'
              FSLabel = 'SQLData'
              AllocationUnitSize = 65536
         }
 
         xDisk SQL_Log_Disk
         {
-             DiskNumber = 4
-             DriveLetter = 'F'
+             DiskNumber = 3
+             DriveLetter = 'G'
              FSLabel = 'SQLLogs'
              AllocationUnitSize = 32768
         }
@@ -143,13 +143,13 @@
             AgtSvcAccount = $LocalSystemAccount
             InstallSharedDir = "C:\Program Files\Microsoft SQL Server"
             InstallSharedWOWDir = "C:\Program Files (x86)\Microsoft SQL Server"
-            InstanceDir = "E:\Program Files\Microsoft SQL Server"
-            InstallSQLDataDir = "E:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
-            SQLUserDBDir = "E:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
-            SQLTempDBDir = "E:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
-            SQLUserDBLogDir = "F:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
-            SQLTempDBLogDir = "F:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
-            SQLBackupDir = "F:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
+            InstanceDir = "F:\Program Files\Microsoft SQL Server"
+            InstallSQLDataDir = "F:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
+            SQLUserDBDir = "F:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
+            SQLTempDBDir = "F:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
+            SQLUserDBLogDir = "G:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
+            SQLTempDBLogDir = "G:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
+            SQLBackupDir = "G:\Program Files\Microsoft SQL Server\MSSQL11.MSSQLSERVER\MSSQL\Data"
         }
 
         xSqlServerFirewall MSSQLSERVER
