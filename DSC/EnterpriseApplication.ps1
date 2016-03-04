@@ -92,35 +92,30 @@
 
         xDisk SQL_Data_Disk
         {
-             DiskNumber = 2
+             DiskNumber = 3
              DriveLetter = 'E'
+             FSLabel = 'SQLData'
              AllocationUnitSize = 65536
         }
 
         xDisk SQL_Log_Disk
         {
-             DiskNumber = 3
+             DiskNumber = 4
              DriveLetter = 'F'
+             FSLabel = 'SQLLogs'
              AllocationUnitSize = 32768
         }
 
-        File SqlServer2012_SP3_X86_X64_ISO
+        File SqlServer2012_SP3_X64_Source
         {
             Ensure = 'Present'
-            Type = 'File'
-            SourcePath = "$($Vars.FileSharePath)\en_sql_server_2012_service_pack_3_x86_x64_dvd_7298789.iso"
-            DestinationPath = 'C:\Source\en_sql_server_2012_service_pack_3_x86_x64_dvd_7298789.iso'
+            Type = 'Directory'
+            SourcePath = "$($Vars.FileSharePath)\SqlServer2012_SP3_X64"
+            DestinationPath = 'C:\Source\SqlServer2012_SP3_X64'
+            Recurse = $True
             Credential = $FileShareAccessCredential
             Force = $True
             DependsOn = '[File]SourceDirectory'
-        }
-
-        xMountImage SQL_ISO
-        {
-            Name = 'SQL Disk'
-            ImagePath = 'C:\Source\en_sql_server_2012_service_pack_3_x86_x64_dvd_7298789.iso'
-            DriveLetter = 's:'
-            DependsOn = '[File]SqlServer2012_SP3_X86_X64_ISO'
         }
 
         xSqlServerSetup MSSQLSERVER
@@ -129,10 +124,10 @@
                 '[WindowsFeature]NET-Framework-Core'
                 '[xDisk]SQL_Data_Disk'
                 '[xDisk]SQL_Log_Disk'
-                '[xMountImage]SQL_ISO'
+                '[File]SqlServer2012_SP3_X64_Source'
 
             )
-            SourcePath = 's:'
+            SourcePath = 'C:\Source\SqlServer2012_SP3_X64'
             InstanceName = 'MSSQLSERVER'
             Features = @(
                 'SQLENGINE'
