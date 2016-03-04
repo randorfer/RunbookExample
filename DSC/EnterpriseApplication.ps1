@@ -66,7 +66,7 @@
         {
             Ensure = 'Present'
             Type = 'File'
-            SourcePath = "$($Vars.FileSharePath)\Win8.1AndW2K12R2-KB3134758-x64"
+            SourcePath = "$($Vars.FileSharePath)\Win8.1AndW2K12R2-KB3134758-x64.msu"
             DestinationPath = 'C:\Source\Win8.1AndW2K12R2-KB3134758-x64'
             Credential = $FileShareAccessCredential
             Force = $True
@@ -75,7 +75,7 @@
         
         xHotFix WMF_Install
         {
-            Path = 'C:\Source\Win8.1AndW2K12R2-KB3134758-x64'
+            Path = 'C:\Source\Win8.1AndW2K12R2-KB3134758-x64.msu'
             Id = 'KB3134758'
             Ensure = 'Present'
             DependsOn = '[File]WMF5_MSU'
