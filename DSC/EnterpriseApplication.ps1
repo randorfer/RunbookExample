@@ -8,6 +8,7 @@
     Import-DscResource -ModuleName xWindowsUpdate
     Import-DscResource -ModuleName cDomainComputer
     Import-DscResource -ModuleName PSDesiredStateConfiguration
+    Import-DscResource -ModuleName xStorage
     
     $Vars = Get-BatchAutomationVariable -Prefix 'EnterpriseApplication' `
                                         -Name @(
@@ -92,6 +93,21 @@
             Ensure = "Present"
             Name = "NET-Framework-Core"
         }
+
+        xDisk SQL_Data_Disk
+        {
+             DiskNumber = 2
+             DriveLetter = 'E'
+             AllocationUnitSize = 65536
+        }
+
+        xDisk SQL_Log_Disk
+        {
+             DiskNumber = 3
+             DriveLetter = 'F'
+             AllocationUnitSize = 32768
+        }
+
         <#
         xSqlServerSetup MSSQLSERVER
         {
