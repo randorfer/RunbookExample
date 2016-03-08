@@ -14,7 +14,7 @@ $Credential = Get-AutomationPSCredential -Name $Vars.EmailAccessCredentialName
 
 Try
 {
-    Write-Verbose -Message "Hello World [$($Credential.UserName)]!"
+    Write-Verbose -Message "Hello World [$($Credential.UserName)]"
 }
 Catch
 {
