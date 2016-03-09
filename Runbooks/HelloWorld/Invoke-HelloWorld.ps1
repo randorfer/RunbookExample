@@ -9,12 +9,12 @@ Param(
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
 $CompletedParameters = Write-StartingMessage -CommandName Invoke-HelloWorld
 
-$Vars = Get-BatchAutomationVariable -Prefix 'HelloWorld' -Name 'EmailAccessCredentialName'
+$Vars = Get-BatchAutomationVariable -Prefix 'HelloWorld' -Name 'EmailAccessCredentialName', 'Who'
 $Credential = Get-AutomationPSCredential -Name $Vars.EmailAccessCredentialName
 
 Try
 {
-    Write-Verbose -Message "Hello World [$($Credential.UserName)]"
+    Write-Verbose -Message "Hello [$($Vars.Who)] from [$($Credential.UserName)]"
 }
 Catch
 {
