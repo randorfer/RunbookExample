@@ -35,7 +35,7 @@ function Set-TargetResource
         $Credential
     )
 
-    Add-Computer -WorkGroupName $WorkGroupName -Credential $Credential -Force
+    Add-Computer -DomainName $DomainName -Credential $Credential -Force
     $global:DSCMachineStatus = 1
 }
 

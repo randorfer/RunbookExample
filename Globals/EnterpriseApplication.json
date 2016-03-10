@@ -1,0 +1,44 @@
+﻿{
+    "Variables":  {
+                      "EnterpriseApplication-FileSharePath":  {
+                                                                  "isEncrypted":  false,
+                                                                  "Description":  "",
+                                                                  "Value":  "\\\\scodev.file.core.windows.net\\packages"
+                                                              },
+                      "EnterpriseApplication-InstallerServiceAccountName":  {
+                                                                                "isEncrypted":  false,
+                                                                                "Description":  "",
+                                                                                "Value":  "omsa@scorchdev.com"
+                                                                            },
+                      "EnterpriseApplication-DomainName":  {
+                                                               "isEncrypted":  false,
+                                                               "Description":  "",
+                                                               "Value":  "SCOrchDev.com"
+                                                           },
+                      "EnterpriseApplication-SQLAccessCredentialName":  {
+                                                                            "isEncrypted":  false,
+                                                                            "Description":  "",
+                                                                            "Value":  "omsa@scorchdev.com"
+                                                                        },
+                      "EnterpriseApplication-SQLAccessGroup":  {
+                                                                   "isEncrypted":  false,
+                                                                   "Description":  "",
+                                                                   "Value":  "SCOrchDev\\Domain Admins"
+                                                               },
+                      "EnterpriseApplication-SQLAdminAccount":  {
+                                                                    "isEncrypted":  false,
+                                                                    "Description":  "",
+                                                                    "Value":  "SCOrchDev\\randorfer"
+                                                                },
+                      "EnterpriseApplication-FileShareAccessCredentialName":  {
+                                                                                  "isEncrypted":  false,
+                                                                                  "Description":  "",
+                                                                                  "Value":  "scodev"
+                                                                              },
+                      "EnterpriseApplication-DomainJoinCredentialName":  {
+                                                                             "isEncrypted":  false,
+                                                                             "Description":  "",
+                                                                             "Value":  "omsa@scorchdev.com"
+                                                                         }
+                  }
+}
