@@ -158,9 +158,9 @@ Catch
 Finally
 {
     Set-Location -Path $CurrentLocation
-    if(Test-Path -Path $tempdir.fullname)
+    if(Test-Path -Path $TempDirectory.fullname)
     {
-        Remove-Item -Path $tempdir -Force -Recurse
+        Remove-Item -Path $TempDirectory -Force -Recurse
     }
 }
 
