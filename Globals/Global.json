@@ -3,12 +3,12 @@
                       "Global-AutomationAccountURL":  {
                                                           "isEncrypted":  false,
                                                           "Description":  "",
-                                                          "Value":  "https://eus2-agentservice-prod-1.azure-automation.net/accounts/514bc3aa-eb73-46e9-a666-66d522c37c9e"
+                                                          "Value":  "https://eus2-agentservice-prod-1.azure-automation.net/accounts/29c065e5-4295-47f9-b89e-8649c179e50a"
                                                       },
                       "Global-AutomationAccountPrimaryKeyCredName":  {
                                                                   "isEncrypted":  false,
                                                                   "Description":  "",
-                                                                  "Value":  "SCOrchDev-Staging-PrimaryKey"
+                                                                  "Value":  "SCOrchDev-PrimaryKey"
                                                               },
                       "Global-HelloWorldString":  {
                                                       "isEncrypted":  false,
