@@ -1,10 +1,7 @@
 <#
-        .SYNOPSIS
-        Add a synopsis here to explain the PSScript. 
-
-        .Description
-        Give a description of the Script.
-
+    .SYNOPSIS
+        Onboards a target computer to Azure Automation and joins it
+        to the target configuration name    
 #>
 Param(
     [Parameter(
@@ -88,7 +85,7 @@ Try
             $RefreshMode = 'PULL'
         }
 
-        Node $computername
+        Node $ComputerName
         {
             Settings 
             { 
