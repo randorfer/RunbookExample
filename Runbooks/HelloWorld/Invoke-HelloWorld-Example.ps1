@@ -25,8 +25,8 @@ $Credential = Get-AutomationPSCredential -Name $Vars.DomainCredentialName
 
 Try
 {
-    Write-Verbose -Message "$($HelloWorldVars.Message) $($Credential.UserName)"
-    Write-Verbose -Message "$($HelloWorldVars.Message2)"
+    Write-Output -InputObject "$($HelloWorldVars.Message) $($Credential.UserName)"
+    Write-Output -InputObject "$($HelloWorldVars.Message2)"
 }
 Catch
 {
