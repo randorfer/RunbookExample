@@ -1,0 +1,14 @@
+﻿{
+    "Variables":  {
+                     "HelloWorld-Example-Message2":  {
+                                    "isEncrypted":  false,
+                                    "Description":  "",
+                                    "Value":  "Goodbye"
+                                },
+                      "HelloWorld-Example-Message":  {
+                                                         "isEncrypted":  false,
+                                                         "Description":  "",
+                                                         "Value":  "Hello"
+                                                     }
+                  }
+}
