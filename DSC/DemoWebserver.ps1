@@ -26,7 +26,7 @@
             Name = "Web-Server-TCP-In" 
             DisplayName = "Web Server (TCP-In)" 
             Description = "IIS allow incoming web site traffic."
-            Action = "Allow"
+            Action = "Block"
             Enabled = "True"
             Protocol = "TCP" 
             LocalPort = "80" 
