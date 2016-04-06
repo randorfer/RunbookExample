@@ -7,7 +7,7 @@ Configuration SCOrchDevDomainServer
 
     Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DscResource -ModuleName xPSDesiredStateConfiguration
-    Import-DscResource -ModuleName cDomainComputer -ModuleVersion 1.0
+    Import-DscResource -ModuleName cDomainComputer
 
     $Vars = Get-BatchAutomationVariable -Prefix 'DomainComputer' `
                                         -Name 'DomainJoinCredName',
