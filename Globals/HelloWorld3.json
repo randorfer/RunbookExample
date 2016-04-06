@@ -1,0 +1,14 @@
+﻿{
+    "Variables":  {
+                      "HelloWorld3-Message2":  {
+                                                   "isEncrypted":  false,
+                                                   "Description":  "",
+                                                   "Value":  "World"
+                                               },
+                      "HelloWorld3-Message1":  {
+                                                   "isEncrypted":  false,
+                                                   "Description":  "",
+                                                   "Value":  "Hello"
+                                               }
+                  }
+}
