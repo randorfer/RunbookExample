@@ -48,7 +48,7 @@
         Foreach ($RepositoryPath in $RepositoryTable.Keys)
         {
             $RepositoryName = $RepositoryPath.Split('/')[-1]
-            $Branch = $RepositoryPath.$RepositoryPath
+            $Branch = $RepositoryTable.$RepositoryPath
             Script "Clone-$RepositoryName"
             {
                 GetScript = {
