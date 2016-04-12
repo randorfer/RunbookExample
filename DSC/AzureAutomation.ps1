@@ -136,10 +136,13 @@
                     Try
                     {
                         Set-Location -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName"
-                        git fetch; git reset --hard origin/$Branch
+                        $Null = git fetch
+                        $Null = git reset --hard origin/$Branch
                     }
                     Catch { throw }
                     Finally { Set-Location -Path $StartingDir }
+
+                    Return $True
                 }
                 DependsOn = "[Script]SetGitBranch-$RepositoryName-$Branch"
             }
