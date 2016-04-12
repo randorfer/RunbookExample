@@ -100,7 +100,7 @@
                 DependsOn = "[Script]Clone-$RepositoryName"
             }
 
-            Script "SetGitBranch-$RepositoryName-$Branch"
+            Script "UpdateGitBranch-$RepositoryName-$Branch"
             {
                 GetScript = {
                 }
