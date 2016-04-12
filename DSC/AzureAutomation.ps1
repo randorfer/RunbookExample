@@ -17,7 +17,7 @@
         'AutomationAccountURL',
         'AutomationAccountPrimaryKeyName',
         'HybridRunbookWorkerGroupName',
-        'GitRepositoryPath',
+        'GitRepository',
         'LocalGitRepositoryRoot'
     )
 
@@ -44,9 +44,11 @@
             Name = "git"
             DependsOn = "[cChocoInstaller]installChoco"
         }
-        Foreach ($RepositoryPath in ($Vars.GitRepositoryPath | ConvertFrom-JSON))
+        $RepositoryTable = $Vars.GitRepository | ConvertFrom-JSON | ConvertFrom-PSCustomObject
+        Foreach ($RepositoryPath in $RepositoryTable.Keys)
         {
             $RepositoryName = $RepositoryPath.Split('/')[-1]
+            $Branch = $RepositoryPath.$RepositoryPath
             Script "Clone-$RepositoryName"
             {
                 GetScript = {
@@ -66,6 +68,79 @@
                 TestScript = {
                     Test-Path -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName\.git"
                 }
+                DependsOn = '[cChocoPackageInstaller]installGit'
+            }
+
+            Script "SetGitBranch-$RepositoryName-$Branch"
+            {
+                GetScript = {
+                }
+
+                SetScript = {
+                    $StartingDir = (pwd).Path
+                    Try
+                    {
+                        Set-Location -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName"
+                        $Null = git checkout $Branch
+                    }
+                    Catch { throw }
+                    Finally { Set-Location -Path $StartingDir }
+                }
+
+                TestScript = {
+                    $StartingDir = (pwd).Path
+                    Try
+                    {
+                        Set-Location -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName"
+                        ((git branch) -as [string]) -Match "\* $($Branch)"
+                    }
+                    Catch { throw }
+                    Finally { Set-Location -Path $StartingDir }
+                }
+                DependsOn = "[Script]Clone-$RepositoryName"
+            }
+
+            Script "SetGitBranch-$RepositoryName-$Branch"
+            {
+                GetScript = {
+                }
+
+                SetScript = {
+             
+                }
+
+                TestScript = {
+                    $StartingDir = (pwd).Path
+                    Try
+                    {
+                        Set-Location -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName"
+                        ((git branch) -as [string]) -Match "\* $($Branch)"
+                    }
+                    Catch { throw }
+                    Finally { Set-Location -Path $StartingDir }
+                }
+                DependsOn = "[Script]Clone-$RepositoryName"
+            }
+
+            Script "UpdateGitRepository" {
+                GetScript = {
+                }
+
+                SetScript = {
+             
+                }
+
+                TestScript = {
+                    $StartingDir = (pwd).Path
+                    Try
+                    {
+                        Set-Location -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName"
+                        git fetch; git reset --hard origin/$Branch
+                    }
+                    Catch { throw }
+                    Finally { Set-Location -Path $StartingDir }
+                }
+                DependsOn = "[Script]SetGitBranch-$RepositoryName-$Branch"
             }
         }
         xRemoteFile DownloadMicrosoftManagementAgent
@@ -116,6 +191,7 @@
             TestScript = {
                 (GetScript) -eq $Vars.HybridRunbookWorkerGroupName
             }
+            DependsOn = '[Package]InstallMicrosoftManagementAgent'
         }
         xFireWall OMS_HTTPS_Access
         {

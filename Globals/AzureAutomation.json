@@ -15,16 +15,16 @@
                                                           "Description":  "",
                                                           "Value":  "09249256-99e5-4c6e-9d7a-3b73e3a90281"
                                                       },
+                      "AzureAutomation-GitRepository":  {
+                                                            "isEncrypted":  false,
+                                                            "Description":  "",
+                                                            "Value":  "{\"https://github.com/randorfer/RunbookExample\":\"vNext\",\"https://github.com/randorfer/SCOrchDev\":\"vNext\"}"
+                                                        },
                       "AzureAutomation-HybridRunbookWorkerGroupName":  {
                                                                            "isEncrypted":  false,
                                                                            "Description":  "",
                                                                            "Value":  "Test"
                                                                        },
-                      "AzureAutomation-GitRepositoryPath":  {
-                                                                "isEncrypted":  false,
-                                                                "Description":  "",
-                                                                "Value":  "[\"https://github.com/randorfer/SCOrchDev\",\"https://github.com/randorfer/RunbookExample\"]"
-                                                            },
                       "AzureAutomation-LocalGitRepositoryRoot":  {
                                                                      "isEncrypted":  false,
                                                                      "Description":  "",
