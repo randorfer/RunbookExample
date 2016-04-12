@@ -1,10 +1,5 @@
 ﻿{
     "Variables":  {
-                      "AzureAutomation-WorkspaceID":  {
-                                                          "isEncrypted":  false,
-                                                          "Description":  "",
-                                                          "Value":  "09249256-99e5-4c6e-9d7a-3b73e3a90281"
-                                                      },
                       "AzureAutomation-AutomationAccountPrimaryKeyName":  {
                                                                               "isEncrypted":  false,
                                                                               "Description":  "",
@@ -15,10 +10,25 @@
                                                                    "Description":  "",
                                                                    "Value":  "https://eus2-agentservice-prod-1.azure-automation.net/accounts/514bc3aa-eb73-46e9-a666-66d522c37c9e"
                                                                },
+                      "AzureAutomation-WorkspaceID":  {
+                                                          "isEncrypted":  false,
+                                                          "Description":  "",
+                                                          "Value":  "09249256-99e5-4c6e-9d7a-3b73e3a90281"
+                                                      },
                       "AzureAutomation-HybridRunbookWorkerGroupName":  {
                                                                            "isEncrypted":  false,
                                                                            "Description":  "",
                                                                            "Value":  "Test"
-                                                                       }
+                                                                       },
+                      "AzureAutomation-GitRepositoryPath":  {
+                                                                "isEncrypted":  false,
+                                                                "Description":  "",
+                                                                "Value":  "[\"https://github.com/randorfer/SCOrchDev\",\"https://github.com/randorfer/RunbookExample\"]"
+                                                            },
+                      "AzureAutomation-LocalGitRepositoryRoot":  {
+                                                                     "isEncrypted":  false,
+                                                                     "Description":  "",
+                                                                     "Value":  "c:\\git"
+                                                                 }
                   }
 }
