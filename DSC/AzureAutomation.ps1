@@ -7,7 +7,7 @@
     Import-DscResource -Module xNetworking
     Import-DscResource -Module xPSDesiredStateConfiguration
     Import-DscResource -Module cChoco    
-    Import-Dscresource -Module PSDesiredStateConfiguration
+    Import-DscResource -Module PSDesiredStateConfiguration
 
     $MMAAgentRemoteURI = 'https://go.microsoft.com/fwlink/?LinkID=517476'
     $MMASetupExe = 'MMASetup-AMD64.exe'
@@ -174,6 +174,7 @@
             }
             $HybridRunbookWorkerDependency += "[Script]UpdateGitRepository-$RepositoryName-$Branch"
         }
+        
         xRemoteFile DownloadMicrosoftManagementAgent
         {
             Uri = $MMAAgentRemoteURI
@@ -238,6 +239,7 @@
             }
             DependsOn = $HybridRunbookWorkerDependency
         }
+        
         xFireWall OMS_HTTPS_Access
         {
             Direction = 'Outbound'
@@ -249,6 +251,7 @@
             Protocol = 'TCP'
             RemotePort = '443'
         }
+        
         xFireWall OMS_Sandbox_Access
         {
             Direction = 'Outbound'
@@ -260,6 +263,7 @@
             Protocol = 'TCP'
             RemotePort = '9354'
         }
+        
         xFireWall OMS_PortRange
         {
             Direction = 'Outbound'
