@@ -44,6 +44,14 @@
             Name = "git"
             DependsOn = "[cChocoInstaller]installChoco"
         }
+
+        File LocalGitRepositoryRoot
+        {
+            Ensure = "Present"
+            Type = "Directory"
+            DestinationPath = $Vars.LocalGitRepositoryRoot
+        }
+
         $RepositoryTable = $Vars.GitRepository | ConvertFrom-JSON | ConvertFrom-PSCustomObject
         Foreach ($RepositoryPath in $RepositoryTable.Keys)
         {
@@ -70,7 +78,10 @@
                     $Status = @{ 'Cloned' = (Test-Path -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName\.git") }
                     $Status.Cloned                    
                 }
-                DependsOn = '[cChocoPackageInstaller]installGit'
+                DependsOn = @(
+                    '[cChocoPackageInstaller]installGit',
+                    '[File]LocalGitRepositoryRoot'
+                )
             }
 
             Script "SetGitBranch-$RepositoryName-$Branch"
