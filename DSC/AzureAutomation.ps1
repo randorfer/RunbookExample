@@ -73,7 +73,10 @@
                     Try
                     {
                         cd $Using:Vars.LocalGitRepositoryRoot
+                        $EAPHolder = $ErrorActionPreference
+                        $ErrorActionPreference = 'SilentlyContinue'
                         git clone $Using:RepositoryPath --recursive
+                        $ErrorActionPreference = [System.Management.Automation.ActionPreference]$EAPHolder
                     }
                     Catch { throw }
                     Finally { Set-Location -Path $StartingDir }
@@ -118,7 +121,10 @@
                     Try
                     {
                         Set-Location -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName"
+                        $EAPHolder = $ErrorActionPreference
+                        $ErrorActionPreference = 'SilentlyContinue'
                         $Null = git checkout $Branch
+                        $ErrorActionPreference = [System.Management.Automation.ActionPreference]$EAPHolder
                     }
                     Catch { throw }
                     Finally { Set-Location -Path $StartingDir }
@@ -162,8 +168,11 @@
                     Try
                     {
                         Set-Location -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName"
+                        $EAPHolder = $ErrorActionPreference
+                        $ErrorActionPreference = 'SilentlyContinue'
                         $Null = git fetch
                         $Null = git reset --hard origin/$Using:Branch
+                        $ErrorActionPreference = [System.Management.Automation.ActionPreference]$EAPHolder
                     }
                     Catch { throw }
                     Finally { Set-Location -Path $StartingDir }
