@@ -67,7 +67,7 @@
                 }
 
                 TestScript = {
-                    $Status = GetScript
+                    $Status = @{ 'Cloned' = (Test-Path -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName\.git") }
                     $Status.Cloned                    
                 }
                 DependsOn = '[cChocoPackageInstaller]installGit'
@@ -108,7 +108,23 @@
                 }
 
                 TestScript = {
-                    $Result = GetScript
+                    $StartingDir = (pwd).Path
+                    Try
+                    {
+                        Set-Location -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName"
+                        $BranchOutput = git branch
+                        if((($BranchOutput -Match '\*') -as [string]) -Match "\* (.*)")
+                        {
+                            $CurrentBranch = $Matches[1]
+                        }
+                        else
+                        {
+                            $CurrentBranch = [string]::Empty
+                        }
+                    }
+                    Catch { throw }
+                    Finally { Set-Location -Path $StartingDir }
+                    $Result = @{ 'CurrentBranch' = $CurrentBranch }
                     $Result.CurrentBranch -eq $Branch
                 }
                 DependsOn = "[Script]Clone-$RepositoryName"
@@ -190,7 +206,15 @@
             }
 
             TestScript = {
-                $State = GetScript
+                if(Test-Path -Path 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker')
+                {
+                    $RunbookWorkerGroup = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker' -Name 'RunbookWorkerGroup').RunbookWorkerGroup
+                }
+                else
+                {
+                    $RunbookWorkerGroup ='Not Configured'
+                }
+                $State = @{ 'RunbookWorkerGroup' = $RunbookWorkerGroup }
                 $State.RunbookWorkerGroup -eq $Vars.HybridRunbookWorkerGroupName
             }
             DependsOn = @(
