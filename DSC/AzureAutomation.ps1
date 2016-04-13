@@ -213,7 +213,7 @@
                     cd HybridRegistration
                     Import-Module .\HybridRegistration.psd1
 
-                    if((GetScript) -ne 'Not Configured')
+                    if(Test-Path -Path 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker')
                     {
                         Remove-HybridRunbookWorker -Url $Using:Vars.AutomationAccountURL -Key $Using:PrimaryKey
                     }
