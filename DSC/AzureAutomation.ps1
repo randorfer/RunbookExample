@@ -52,6 +52,7 @@
             Script "Clone-$RepositoryName"
             {
                 GetScript = {
+                    Return @{ 'Cloned' = (Test-Path -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName\.git") }
                 }
 
                 SetScript = {
@@ -66,14 +67,33 @@
                 }
 
                 TestScript = {
-                    Test-Path -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName\.git"
+                    $Status = GetScript
+                    $Status.Cloned                    
                 }
                 DependsOn = '[cChocoPackageInstaller]installGit'
             }
 
             Script "SetGitBranch-$RepositoryName-$Branch"
-            {
+            {              
                 GetScript = {
+                    $StartingDir = (pwd).Path
+                    Try
+                    {
+                        Set-Location -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName"
+                        $BranchOutput = git branch
+                        if((($BranchOutput -Match '\*') -as [string]) -Match "\* (.*)")
+                        {
+                            $CurrentBranch = $Matches[1]
+                        }
+                        else
+                        {
+                            $CurrentBranch = [string]::Empty
+                        }
+                    }
+                    Catch { throw }
+                    Finally { Set-Location -Path $StartingDir }
+                
+                    Return @{ 'CurrentBranch' = $CurrentBranch }
                 }
 
                 SetScript = {
@@ -88,36 +108,8 @@
                 }
 
                 TestScript = {
-                    $StartingDir = (pwd).Path
-                    Try
-                    {
-                        Set-Location -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName"
-                        ((git branch) -as [string]) -Match "\* $($Branch)"
-                    }
-                    Catch { throw }
-                    Finally { Set-Location -Path $StartingDir }
-                }
-                DependsOn = "[Script]Clone-$RepositoryName"
-            }
-
-            Script "UpdateGitBranch-$RepositoryName-$Branch"
-            {
-                GetScript = {
-                }
-
-                SetScript = {
-             
-                }
-
-                TestScript = {
-                    $StartingDir = (pwd).Path
-                    Try
-                    {
-                        Set-Location -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName"
-                        ((git branch) -as [string]) -Match "\* $($Branch)"
-                    }
-                    Catch { throw }
-                    Finally { Set-Location -Path $StartingDir }
+                    $Result = GetScript
+                    $Result.CurrentBranch -eq $Branch
                 }
                 DependsOn = "[Script]Clone-$RepositoryName"
             }
@@ -125,6 +117,7 @@
             Script "UpdateGitRepository-$RepositoryName-$Branch"
             {
                 GetScript = {
+                    Return @{ 'unused' = 'unused' }
                 }
 
                 SetScript = {
@@ -167,9 +160,13 @@
             GetScript = {
                 if(Test-Path -Path 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker')
                 {
-                    Return (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker' -Name 'RunbookWorkerGroup').RunbookWorkerGroup
+                    $RunbookWorkerGroup = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker' -Name 'RunbookWorkerGroup').RunbookWorkerGroup
                 }
-                Return 'Not Configured'
+                else
+                {
+                    $RunbookWorkerGroup ='Not Configured'
+                }
+                Return @{ 'RunbookWorkerGroup' = $RunbookWorkerGroup }
             }
 
             SetScript = {
@@ -193,9 +190,14 @@
             }
 
             TestScript = {
-                (GetScript) -eq $Vars.HybridRunbookWorkerGroupName
+                $State = GetScript
+                $State.RunbookWorkerGroup -eq $Vars.HybridRunbookWorkerGroupName
             }
-            DependsOn = '[Package]InstallMicrosoftManagementAgent'
+            DependsOn = @(
+                '[Package]InstallMicrosoftManagementAgent', 
+                '[cHocoPackageInstaller]installGit'
+
+            )
         }
         xFireWall OMS_HTTPS_Access
         {
