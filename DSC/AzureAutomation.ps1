@@ -43,8 +43,9 @@
 
         cChocoPackageInstaller installGit
         {
-            Name = "git"
-            DependsOn = "[cChocoInstaller]installChoco"
+            Name = 'git'
+            Version = '2.8.0'
+            DependsOn = '[cChocoInstaller]installChoco'
         }
         $HybridRunbookWorkerDependency = @("[cChocoPackageInstaller]installGit")
 
