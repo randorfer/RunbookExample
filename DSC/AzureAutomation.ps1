@@ -52,22 +52,22 @@
             Script "Clone-$RepositoryName"
             {
                 GetScript = {
-                    Return @{ 'Cloned' = (Test-Path -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName\.git") }
+                    Return @{ 'Cloned' = (Test-Path -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName\.git") }
                 }
 
                 SetScript = {
                     $StartingDir = (pwd).Path
                     Try
                     {
-                        cd $Vars.LocalGitRepositoryRoot
-                        git clone $RepositoryPath --recursive
+                        cd $Using:Vars.LocalGitRepositoryRoot
+                        git clone $Using:RepositoryPath --recursive
                     }
                     Catch { throw }
                     Finally { Set-Location -Path $StartingDir }
                 }
 
                 TestScript = {
-                    $Status = @{ 'Cloned' = (Test-Path -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName\.git") }
+                    $Status = @{ 'Cloned' = (Test-Path -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName\.git") }
                     $Status.Cloned                    
                 }
                 DependsOn = '[cChocoPackageInstaller]installGit'
@@ -79,7 +79,7 @@
                     $StartingDir = (pwd).Path
                     Try
                     {
-                        Set-Location -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName"
+                        Set-Location -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName"
                         $BranchOutput = git branch
                         if((($BranchOutput -Match '\*') -as [string]) -Match "\* (.*)")
                         {
@@ -100,7 +100,7 @@
                     $StartingDir = (pwd).Path
                     Try
                     {
-                        Set-Location -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName"
+                        Set-Location -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName"
                         $Null = git checkout $Branch
                     }
                     Catch { throw }
@@ -111,7 +111,7 @@
                     $StartingDir = (pwd).Path
                     Try
                     {
-                        Set-Location -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName"
+                        Set-Location -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName"
                         $BranchOutput = git branch
                         if((($BranchOutput -Match '\*') -as [string]) -Match "\* (.*)")
                         {
@@ -125,7 +125,7 @@
                     Catch { throw }
                     Finally { Set-Location -Path $StartingDir }
                     $Result = @{ 'CurrentBranch' = $CurrentBranch }
-                    $Result.CurrentBranch -eq $Branch
+                    $Result.CurrentBranch -eq $Using:Branch
                 }
                 DependsOn = "[Script]Clone-$RepositoryName"
             }
@@ -144,9 +144,9 @@
                     $StartingDir = (pwd).Path
                     Try
                     {
-                        Set-Location -Path "$($Vars.LocalGitRepositoryRoot)\$RepositoryName"
+                        Set-Location -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName"
                         $Null = git fetch
-                        $Null = git reset --hard origin/$Branch
+                        $Null = git reset --hard origin/$Using:Branch
                     }
                     Catch { throw }
                     Finally { Set-Location -Path $StartingDir }
@@ -196,10 +196,10 @@
 
                     if((GetScript) -ne 'Not Configured')
                     {
-                        Remove-HybridRunbookWorker -Url $Vars.AutomationAccountURL -Key $PrimaryKey
+                        Remove-HybridRunbookWorker -Url $Using:Vars.AutomationAccountURL -Key $Using:PrimaryKey
                     }
 
-                    Add-HybridRunbookWorker -Url $Vars.AutomationAccountURL -Key $PrimaryKey -GroupName $Vars.HybridRunbookWorkerGroupName
+                    Add-HybridRunbookWorker -Url $Using:Vars.AutomationAccountURL -Key $Using:PrimaryKey -GroupName $Using:Vars.HybridRunbookWorkerGroupName
                 }
                 Catch { throw }
                 Finally { Set-Location -Path $StartingDir }
@@ -215,7 +215,7 @@
                     $RunbookWorkerGroup ='Not Configured'
                 }
                 $State = @{ 'RunbookWorkerGroup' = $RunbookWorkerGroup }
-                $State.RunbookWorkerGroup -eq $Vars.HybridRunbookWorkerGroupName
+                $State.RunbookWorkerGroup -eq $Using:Vars.HybridRunbookWorkerGroupName
             }
             DependsOn = @(
                 '[Package]InstallMicrosoftManagementAgent', 
