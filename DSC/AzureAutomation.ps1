@@ -7,7 +7,8 @@
     Import-DscResource -Module xNetworking
     Import-DscResource -Module xPSDesiredStateConfiguration
     Import-DscResource -Module cChoco    
-    
+    Import-Dscresource -Module PSDesiredStateConfiguration
+
     $MMAAgentRemoteURI = 'https://go.microsoft.com/fwlink/?LinkID=517476'
     $MMASetupExe = 'MMASetup-AMD64.exe'
     $SourceDir = 'c:\Sources'
