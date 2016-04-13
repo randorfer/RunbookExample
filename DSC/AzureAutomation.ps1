@@ -6,7 +6,7 @@
     #Import the required DSC Resources
     Import-DscResource -Module xNetworking
     Import-DscResource -Module xPSDesiredStateConfiguration
-    Import-DscResource -Module cChoco
+    Import-DscResource -Module cChoco    
     
     $MMAAgentRemoteURI = 'https://go.microsoft.com/fwlink/?LinkID=517476'
     $MMASetupExe = 'MMASetup-AMD64.exe'
@@ -39,11 +39,13 @@
         {
             InstallDir = $SourceDir
         }
+
         cChocoPackageInstaller installGit
         {
             Name = "git"
             DependsOn = "[cChocoInstaller]installChoco"
         }
+        $HybridRunbookWorkerDependency = @("[cChocoPackageInstaller]installGit")
 
         File LocalGitRepositoryRoot
         {
@@ -53,10 +55,12 @@
         }
 
         $RepositoryTable = $Vars.GitRepository | ConvertFrom-JSON | ConvertFrom-PSCustomObject
+        
         Foreach ($RepositoryPath in $RepositoryTable.Keys)
         {
             $RepositoryName = $RepositoryPath.Split('/')[-1]
             $Branch = $RepositoryTable.$RepositoryPath
+            
             Script "Clone-$RepositoryName"
             {
                 GetScript = {
@@ -83,7 +87,8 @@
                     '[File]LocalGitRepositoryRoot'
                 )
             }
-
+            $HybridRunbookWorkerDependency += "[Script]Clone-$RepositoryName"
+            
             Script "SetGitBranch-$RepositoryName-$Branch"
             {              
                 GetScript = {
@@ -140,7 +145,7 @@
                 }
                 DependsOn = "[Script]Clone-$RepositoryName"
             }
-
+            $HybridRunbookWorkerDependency += "[Script]SetGitBranch-$RepositoryName-$Branch"
             Script "UpdateGitRepository-$RepositoryName-$Branch"
             {
                 GetScript = {
@@ -166,6 +171,7 @@
                 }
                 DependsOn = "[Script]SetGitBranch-$RepositoryName-$Branch"
             }
+            $HybridRunbookWorkerDependency += "[Script]UpdateGitRepository-$RepositoryName-$Branch"
         }
         xRemoteFile DownloadMicrosoftManagementAgent
         {
@@ -182,6 +188,7 @@
              Ensure = 'Present'
              DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
         }
+
         Script RegisterHybridRunbookWorker
         {
             GetScript = {
@@ -228,11 +235,7 @@
                 $State = @{ 'RunbookWorkerGroup' = $RunbookWorkerGroup }
                 $State.RunbookWorkerGroup -eq $Using:Vars.HybridRunbookWorkerGroupName
             }
-            DependsOn = @(
-                '[Package]InstallMicrosoftManagementAgent', 
-                '[cChocoPackageInstaller]installGit'
-
-            )
+            DependsOn = $HybridRunbookWorkerDependency
         }
         xFireWall OMS_HTTPS_Access
         {
