@@ -195,7 +195,7 @@
             }
             DependsOn = @(
                 '[Package]InstallMicrosoftManagementAgent', 
-                '[cHocoPackageInstaller]installGit'
+                '[cChocoPackageInstaller]installGit'
 
             )
         }
