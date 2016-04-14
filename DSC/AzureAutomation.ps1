@@ -34,7 +34,6 @@
         "OPINSIGHTS_WORKSPACE_ID=$($Vars.WorkspaceID) " +
         "OPINSIGHTS_WORKSPACE_KEY=$($WorkspaceKey)`""
     
-    $HybridRunbookWorkerConfiguredFlagFileName = 'hybridrunbookworkerconfigured'
     Node HybridRunbookWorker
     {
         cChocoInstaller installChoco
@@ -63,7 +62,7 @@
             $RepositoryName = $RepositoryPath.Split('/')[-1]
             $Branch = $RepositoryTable.$RepositoryPath
             
-            cGitRepository $RepositoryName
+            cGitRepository "$RepositoryName"
             {
                 Repository = $RepositoryPath
                 BaseDirectory = $Vars.LocalGitRepositoryRoot
@@ -71,7 +70,7 @@
             }
             $HybridRunbookWorkerDependency += "[cGitRepository]$($RepositoryName)"
             
-            cGitRepositoryBranch $RepositoryName-$Branch
+            cGitRepositoryBranch "$RepositoryName-$Branch"
             {
                 Repository = $RepositoryPath
                 BaseDirectory = $Vars.LocalGitRepositoryRoot
@@ -79,7 +78,7 @@
             }
             $HybridRunbookWorkerDependency += "[cGitRepositoryBranch]$RepositoryName-$Branch"
             
-            cGitRepositoryBranchUpdate $RepositoryName-$Branch
+            cGitRepositoryBranchUpdate "$RepositoryName-$Branch"
             {
                 Repository = $RepositoryPath
                 BaseDirectory = $Vars.LocalGitRepositoryRoot
