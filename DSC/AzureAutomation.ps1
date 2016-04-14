@@ -91,7 +91,7 @@
         
         xRemoteFile DownloadMicrosoftManagementAgent
         {
-            Uri = $MMAAgentRemoteURI
+            Uri = $MMARemotSetupExeURI
             DestinationPath = "$($SourceDir)\$($MMASetupExe)"
             MatchSource = $False
         }
@@ -100,7 +100,7 @@
              Name = 'Microsoft Monitoring Agent' 
              ProductId = 'E854571C-3C01-4128-99B8-52512F44E5E9'
              Path = "$($SourceDir)\$($MMASetupExE)" 
-             Arguments = $CommandLineArguments 
+             Arguments = $MMACommandLineArguments 
              Ensure = 'Present'
              DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
         }
