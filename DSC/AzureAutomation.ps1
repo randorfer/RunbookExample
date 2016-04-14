@@ -18,9 +18,6 @@
         "OPINSIGHTS_WORKSPACE_ID=$($Vars.WorkspaceID) " +
         "OPINSIGHTS_WORKSPACE_KEY=$($WorkspaceKey)`""
 
-    $GitRemoteSetupExeURI = 'https://github.com/git-for-windows/git/releases/download/v2.8.1.windows.1/Git-2.8.1-64-bit.exe'
-    $GitSetupExe = 'Git-2.8.1-64-bit.exe'
-
     $SourceDir = 'c:\Sources'
 
     $Vars = Get-BatchAutomationVariable -Prefix 'AzureAutomation' -Name @(
