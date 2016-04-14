@@ -18,7 +18,7 @@
         "OPINSIGHTS_WORKSPACE_ID=$($Vars.WorkspaceID) " +
         "OPINSIGHTS_WORKSPACE_KEY=$($WorkspaceKey)`""
 
-    $SourceDir = 'c:\Sources'
+    $SourceDir = 'c:\Source'
 
     $Vars = Get-BatchAutomationVariable -Prefix 'AzureAutomation' -Name @(
         'WorkspaceID',
