@@ -145,22 +145,22 @@ function InstallPackage
     if ((-not ($pParams)) -and (-not $pVersion))
     {
         Write-Verbose "Installing Package Standard"
-        $packageInstallOuput = choco install $pName -y
+        $packageInstallOuput = choco install $pName -y -f
     }
     elseif ($pParams -and $pVersion)
     {
         Write-Verbose "Installing Package with Params $pParams and Version $pVersion"
-        $packageInstallOuput = choco install $pName --params="$pParams" --version=$pVersion -y        
+        $packageInstallOuput = choco install $pName --params="$pParams" --version=$pVersion -y -f      
     }
     elseif ($pParams)
     {
         Write-Verbose "Installing Package with params $pParams"
-        $packageInstallOuput = choco install $pName --params="$pParams" -y            
+        $packageInstallOuput = choco install $pName --params="$pParams" -y -f
     }
     elseif ($pVersion)
     {
         Write-Verbose "Installing Package with version $pVersion"
-        $packageInstallOuput = choco install $pName --version=$pVersion -y        
+        $packageInstallOuput = choco install $pName --version=$pVersion -y -f     
     }
     
     

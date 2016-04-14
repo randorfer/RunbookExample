@@ -42,7 +42,15 @@
     
     Node HybridRunbookWorker
     {
-        
+        cChocoInstaller installChoco
+        {
+            InstallDir = $SourceDir
+        }
+
+        cChocoPackageInstaller installGit
+        {
+            Name = 'git'
+        }
         $HybridRunbookWorkerDependency = @("[cChocoPackageInstaller]installGit")
 
         File LocalGitRepositoryRoot
