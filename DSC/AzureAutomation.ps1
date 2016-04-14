@@ -8,6 +8,7 @@
     Import-DscResource -Module xPSDesiredStateConfiguration
     Import-DscResource -Module cChoco    
     Import-DscResource -Module PSDesiredStateConfiguration
+    #Import-DscResource -Module cGit
 
     $MMAAgentRemoteURI = 'https://go.microsoft.com/fwlink/?LinkID=517476'
     $MMASetupExe = 'MMASetup-AMD64.exe'
@@ -43,7 +44,7 @@
 
         cChocoPackageInstaller installGit
         {
-            Name = "git"
+            Name = "git.install"
             DependsOn = "[cChocoInstaller]installChoco"
         }
         $HybridRunbookWorkerDependency = @("[cChocoPackageInstaller]installGit")
@@ -54,7 +55,7 @@
             Type = "Directory"
             DestinationPath = $Vars.LocalGitRepositoryRoot
         }
-
+        
         $RepositoryTable = $Vars.GitRepository | ConvertFrom-JSON | ConvertFrom-PSCustomObject
         
         Foreach ($RepositoryPath in $RepositoryTable.Keys)
@@ -62,36 +63,11 @@
             $RepositoryName = $RepositoryPath.Split('/')[-1]
             $Branch = $RepositoryTable.$RepositoryPath
             
-            Script "Clone-$RepositoryName"
+            cGitRespository $RepositoryName
             {
-                GetScript = {
-                    Return @{ 'Cloned' = (Test-Path -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName\.git") }
-                }
-
-                SetScript = {
-                    $StartingDir = (pwd).Path
-                    Try
-                    {
-                        cd $Using:Vars.LocalGitRepositoryRoot
-                        $EAPHolder = $ErrorActionPreference
-                        $ErrorActionPreference = 'SilentlyContinue'
-                        git clone $Using:RepositoryPath --recursive
-                        $ErrorActionPreference = [System.Management.Automation.ActionPreference]$EAPHolder
-                    }
-                    Catch { throw }
-                    Finally { Set-Location -Path $StartingDir }
-                }
-
-                TestScript = {
-                    $Status = @{ 'Cloned' = (Test-Path -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName\.git") }
-                    $Status.Cloned                    
-                }
-                DependsOn = @(
-                    '[cChocoPackageInstaller]installGit',
-                    '[File]LocalGitRepositoryRoot'
-                )
+                RepositoryPath = $RepositoryPath
             }
-            $HybridRunbookWorkerDependency += "[Script]Clone-$RepositoryName"
+            $HybridRunbookWorkerDependency += "[cGitRespository]$($RepositoryName)"
             
             Script "SetGitBranch-$RepositoryName-$Branch"
             {              
