@@ -10,8 +10,17 @@
     Import-DscResource -Module PSDesiredStateConfiguration
     Import-DscResource -Module cGit
 
-    $MMAAgentRemoteURI = 'https://go.microsoft.com/fwlink/?LinkID=517476'
+    $MMARemotSetupExeURI = 'https://go.microsoft.com/fwlink/?LinkID=517476'
     $MMASetupExe = 'MMASetup-AMD64.exe'
+    
+    $MMACommandLineArguments = 
+        '/Q /C:`"setup.exe /qn ADD_OPINSIGHTS_WORKSPACE=1 AcceptEndUserLicenseAgreement=1 ' +
+        "OPINSIGHTS_WORKSPACE_ID=$($Vars.WorkspaceID) " +
+        "OPINSIGHTS_WORKSPACE_KEY=$($WorkspaceKey)`""
+
+    $GitRemoteSetupExeURI = 'https://github.com/git-for-windows/git/releases/download/v2.8.1.windows.1/Git-2.8.1-64-bit.exe'
+    $GitSetupExe = 'Git-2.8.1-64-bit.exe'
+
     $SourceDir = 'c:\Sources'
 
     $Vars = Get-BatchAutomationVariable -Prefix 'AzureAutomation' -Name @(
@@ -29,23 +38,11 @@
     $PrimaryKeyCredential = Get-AutomationPSCredential -Name $Vars.AutomationAccountPrimaryKeyName
     $PrimaryKey = $PrimaryKeyCredential.GetNetworkCredential().Password
 
-    $CommandLineArguments = 
-        "/Q /C:`"setup.exe /qn ADD_OPINSIGHTS_WORKSPACE=1 AcceptEndUserLicenseAgreement=1 " +
-        "OPINSIGHTS_WORKSPACE_ID=$($Vars.WorkspaceID) " +
-        "OPINSIGHTS_WORKSPACE_KEY=$($WorkspaceKey)`""
+    
     
     Node HybridRunbookWorker
     {
-        cChocoInstaller installChoco
-        {
-            InstallDir = $SourceDir
-        }
-
-        cChocoPackageInstaller installGit
-        {
-            Name = "git.install"
-            DependsOn = "[cChocoInstaller]installChoco"
-        }
+        
         $HybridRunbookWorkerDependency = @("[cChocoPackageInstaller]installGit")
 
         File LocalGitRepositoryRoot
