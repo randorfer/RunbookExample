@@ -8,7 +8,7 @@
     Import-DscResource -Module xPSDesiredStateConfiguration
     Import-DscResource -Module cChoco    
     Import-DscResource -Module PSDesiredStateConfiguration
-    #Import-DscResource -Module cGit
+    Import-DscResource -Module cGit
 
     $MMAAgentRemoteURI = 'https://go.microsoft.com/fwlink/?LinkID=517476'
     $MMASetupExe = 'MMASetup-AMD64.exe'
@@ -51,8 +51,8 @@
 
         File LocalGitRepositoryRoot
         {
-            Ensure = "Present"
-            Type = "Directory"
+            Ensure = 'Present'
+            Type = 'Directory'
             DestinationPath = $Vars.LocalGitRepositoryRoot
         }
         
@@ -63,126 +63,29 @@
             $RepositoryName = $RepositoryPath.Split('/')[-1]
             $Branch = $RepositoryTable.$RepositoryPath
             
-            Script "Clone-$RepositoryName"
+            cGitRepository $RepositoryName
             {
-                GetScript = {
-                    Return @{ 'Cloned' = (Test-Path -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName\.git") }
-                }
-
-                SetScript = {
-                    $StartingDir = (pwd).Path
-                    Try
-                    {
-                        cd $Using:Vars.LocalGitRepositoryRoot
-                        $EAPHolder = $ErrorActionPreference
-                        $ErrorActionPreference = 'SilentlyContinue'
-                        git clone $Using:RepositoryPath --recursive
-                        $ErrorActionPreference = [System.Management.Automation.ActionPreference]$EAPHolder
-                    }
-                    Catch { throw }
-                    Finally { Set-Location -Path $StartingDir }
-                }
-
-                TestScript = {
-                    $Status = @{ 'Cloned' = (Test-Path -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName\.git") }
-                    $Status.Cloned                    
-                }
-                DependsOn = @(
-                    '[cChocoPackageInstaller]installGit',
-                    '[File]LocalGitRepositoryRoot'
-                )
+                Repository = $RepositoryPath
+                BaseDirectory = $Vars.LocalGitRepositoryRoot
+                Ensure = 'Present'
             }
-            $HybridRunbookWorkerDependency += "[cGitRespository]$($RepositoryName)"
+            $HybridRunbookWorkerDependency += "[cGitRepository]$($RepositoryName)"
             
-            Script "SetGitBranch-$RepositoryName-$Branch"
-            {              
-                GetScript = {
-                    $StartingDir = (pwd).Path
-                    Try
-                    {
-                        Set-Location -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName"
-                        $BranchOutput = git branch
-                        if((($BranchOutput -Match '\*') -as [string]) -Match "\* (.*)")
-                        {
-                            $CurrentBranch = $Matches[1]
-                        }
-                        else
-                        {
-                            $CurrentBranch = [string]::Empty
-                        }
-                    }
-                    Catch { throw }
-                    Finally { Set-Location -Path $StartingDir }
-                
-                    Return @{ 'CurrentBranch' = $CurrentBranch }
-                }
-
-                SetScript = {
-                    $StartingDir = (pwd).Path
-                    Try
-                    {
-                        Set-Location -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName"
-                        $EAPHolder = $ErrorActionPreference
-                        $ErrorActionPreference = 'SilentlyContinue'
-                        $Null = git checkout $Branch
-                        $ErrorActionPreference = [System.Management.Automation.ActionPreference]$EAPHolder
-                    }
-                    Catch { throw }
-                    Finally { Set-Location -Path $StartingDir }
-                }
-
-                TestScript = {
-                    $StartingDir = (pwd).Path
-                    Try
-                    {
-                        Set-Location -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName"
-                        $BranchOutput = git branch
-                        if((($BranchOutput -Match '\*') -as [string]) -Match "\* (.*)")
-                        {
-                            $CurrentBranch = $Matches[1]
-                        }
-                        else
-                        {
-                            $CurrentBranch = [string]::Empty
-                        }
-                    }
-                    Catch { throw }
-                    Finally { Set-Location -Path $StartingDir }
-                    $Result = @{ 'CurrentBranch' = $CurrentBranch }
-                    $Result.CurrentBranch -eq $Using:Branch
-                }
-                DependsOn = "[Script]Clone-$RepositoryName"
-            }
-            $HybridRunbookWorkerDependency += "[Script]SetGitBranch-$RepositoryName-$Branch"
-            Script "UpdateGitRepository-$RepositoryName-$Branch"
+            cGitRepositoryBranch $RepositoryName-$Branch
             {
-                GetScript = {
-                    Return @{ 'unused' = 'unused' }
-                }
-
-                SetScript = {
-             
-                }
-
-                TestScript = {
-                    $StartingDir = (pwd).Path
-                    Try
-                    {
-                        Set-Location -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName"
-                        $EAPHolder = $ErrorActionPreference
-                        $ErrorActionPreference = 'SilentlyContinue'
-                        $Null = git fetch
-                        $Null = git reset --hard origin/$Using:Branch
-                        $ErrorActionPreference = [System.Management.Automation.ActionPreference]$EAPHolder
-                    }
-                    Catch { throw }
-                    Finally { Set-Location -Path $StartingDir }
-
-                    Return $True
-                }
-                DependsOn = "[Script]SetGitBranch-$RepositoryName-$Branch"
+                Repository = $RepositoryPath
+                BaseDirectory = $Vars.LocalGitRepositoryRoot
+                Branch = $Branch
             }
-            $HybridRunbookWorkerDependency += "[Script]UpdateGitRepository-$RepositoryName-$Branch"
+            $HybridRunbookWorkerDependency += "[cGitRepositoryBranch]$RepositoryName-$Branch"
+            
+            cGitRepositoryBranchUpdate $RepositoryName-$Branch
+            {
+                Repository = $RepositoryPath
+                BaseDirectory = $Vars.LocalGitRepositoryRoot
+                Branch = $Branch
+            }
+            $HybridRunbookWorkerDependency += "[cGitRepositoryBranchUpdate]$RepositoryName-$Branch"
         }
         
         xRemoteFile DownloadMicrosoftManagementAgent
