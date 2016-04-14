@@ -63,9 +63,34 @@
             $RepositoryName = $RepositoryPath.Split('/')[-1]
             $Branch = $RepositoryTable.$RepositoryPath
             
-            cGitRespository $RepositoryName
+            Script "Clone-$RepositoryName"
             {
-                RepositoryPath = $RepositoryPath
+                GetScript = {
+                    Return @{ 'Cloned' = (Test-Path -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName\.git") }
+                }
+
+                SetScript = {
+                    $StartingDir = (pwd).Path
+                    Try
+                    {
+                        cd $Using:Vars.LocalGitRepositoryRoot
+                        $EAPHolder = $ErrorActionPreference
+                        $ErrorActionPreference = 'SilentlyContinue'
+                        git clone $Using:RepositoryPath --recursive
+                        $ErrorActionPreference = [System.Management.Automation.ActionPreference]$EAPHolder
+                    }
+                    Catch { throw }
+                    Finally { Set-Location -Path $StartingDir }
+                }
+
+                TestScript = {
+                    $Status = @{ 'Cloned' = (Test-Path -Path "$($Using:Vars.LocalGitRepositoryRoot)\$Using:RepositoryName\.git") }
+                    $Status.Cloned                    
+                }
+                DependsOn = @(
+                    '[cChocoPackageInstaller]installGit',
+                    '[File]LocalGitRepositoryRoot'
+                )
             }
             $HybridRunbookWorkerDependency += "[cGitRespository]$($RepositoryName)"
             
