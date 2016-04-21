@@ -4,7 +4,7 @@
 
 #>
 Param(
-    $WebhookData
+    [object]$WebhookData
 )
 $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop
 $CompletedParameters = Write-StartingMessage -CommandName Invoke-HelloWorld
@@ -16,7 +16,7 @@ Try
 {
     $EWSCon = New-EWSMailboxConnection -Credential $Credential
 
-    $Body = ((($webhookdata | ConvertFrom-Json).requestbody | ConvertFrom-Json).searchresults.Value) | ConvertTo-JSON
+    $Body = (($webhookdata.RequestBody | ConvertFrom-Json).searchresults.Value) | ConvertTo-JSON
 
     $Null = Send-EWSEmail -mailboxConnection $EWSCon `
                           -Recipients 'Ryan.Andorfer@microsoft.com' `
