@@ -101,7 +101,7 @@
         {
             $RepositoryName = $RepositoryPath.Split('/')[-1]
             $Branch = $RepositoryTable.$RepositoryPath
-            $PSModulePath += "$($RepositoryPath)\PowerShellModules"
+            $PSModulePath += "$($Vars.LocalGitRepositoryRoot)\$($RepositoryName)\PowerShellModules"
             cGitRepository "$RepositoryName"
             {
                 Repository = $RepositoryPath
