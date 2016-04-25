@@ -12,7 +12,6 @@
     Import-DscResource -Module cWindowscomputer
 
     $SourceDir = 'c:\Source'
-
     
     $Vars = Get-BatchAutomationVariable -Prefix 'AzureAutomation' -Name @(
         'WorkspaceID',
