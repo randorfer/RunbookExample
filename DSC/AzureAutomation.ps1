@@ -153,6 +153,7 @@
              Ensure = 'Present'
              DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
         }
+        $HybridRunbookWorkerDependency += "[Package]InstallMicrosoftManagementAgent"
 
         Script RegisterHybridRunbookWorker
         {
