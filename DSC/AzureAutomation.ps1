@@ -11,13 +11,16 @@
     Import-DscResource -Module cGit
     Import-DscResource -Module cWindowscomputer
 
+    $SourceDir = 'c:\Source'
+
     $MMARemotSetupExeURI = 'https://go.microsoft.com/fwlink/?LinkID=517476'
     $MMASetupExe = 'MMASetup-AMD64.exe'
     
     $MMACommandLineArguments = 
         '/Q /C:`"setup.exe /qn ADD_OPINSIGHTS_WORKSPACE=1 AcceptEndUserLicenseAgreement=1 ' +
         "OPINSIGHTS_WORKSPACE_ID=$($Vars.WorkspaceID) " +
-        "OPINSIGHTS_WORKSPACE_KEY=$($WorkspaceKey)`""
+        "OPINSIGHTS_WORKSPACE_KEY=$($WorkspaceKey)`"" +
+        "/L*v $($SourceDir)\Logs\MMA.log"
 
     $GITVersion = '2.8.1'
     $GITRemotSetupExeURI = "https://github.com/git-for-windows/git/releases/download/v$($GITVersion).windows.1/Git-$($GITVersion)-64-bit.exe"
@@ -25,9 +28,8 @@
     
     $GITCommandLineArguments = 
         '/VERYSILENT /NORESTART /NOCANCEL /SP- ' +
-        '/COMPONENTS="icons,icons\quicklaunch,ext,ext\shellhere,ext\guihere,assoc,assoc_sh" /LOG'
-
-    $SourceDir = 'c:\Source'
+        '/COMPONENTS="icons,icons\quicklaunch,ext,ext\shellhere,ext\guihere,assoc,assoc_sh" /LOG' +
+        "/L*v $($SourceDir)\Logs\GIT.log"
 
     $Vars = Get-BatchAutomationVariable -Prefix 'AzureAutomation' -Name @(
         'WorkspaceID',
