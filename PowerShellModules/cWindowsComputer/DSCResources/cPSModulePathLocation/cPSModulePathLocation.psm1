@@ -102,7 +102,7 @@ function Set-TargetResource
         }
     }
     
-    [Environment]::SetEnvironmentVariable("PSModulePath", $env:PSModulePath, [EnvironmentVariableTartget]::Machine)
+    [System.Environment]::SetEnvironmentVariable("PSModulePath", $env:PSModulePath, [System.EnvironmentVariableTarget]::Machine)
     $global:DSCMachineStatus = 1
 }
 

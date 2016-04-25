@@ -102,7 +102,7 @@ function Set-TargetResource
         }
     }
     
-    [Environment]::SetEnvironmentVariable("Path", $env:Path, [EnvironmentVariableTartget]::Machine)
+    [System.Environment]::SetEnvironmentVariable("Path", $env:Path, [System.EnvironmentVariableTarget]::Machine)
     $global:DSCMachineStatus = 1
 }
 
@@ -126,8 +126,6 @@ function Test-TargetResource
         [System.String]
         $Ensure
     )
-
-    $EnvironmentPath = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::Machine)
 
     $returnValue = Get-TargetResource -Name $Name -Path $Path -Ensure $Ensure
 
