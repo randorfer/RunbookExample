@@ -9,6 +9,7 @@
     Import-DscResource -Module cChoco    
     Import-DscResource -Module PSDesiredStateConfiguration
     Import-DscResource -Module cGit
+    Import-DscResource -Module cWindowscomputer
 
     $MMARemotSetupExeURI = 'https://go.microsoft.com/fwlink/?LinkID=517476'
     $MMASetupExe = 'MMASetup-AMD64.exe'
@@ -70,6 +71,17 @@
              ProductID = ''
              DependsOn = "[xRemoteFile]DownloadGitSetup"
         }
+        $HybridRunbookWorkerDependency = @('[xPackage]InstallGIT')
+
+        cPathLocation GitExePath
+        {
+            Name = 'GitEXEPath'
+            Path = @(
+                'C:\Program Files\Git\cmd'
+            )
+            Ensure = 'Present'
+            DependsOn = '[xPackage]InstallGIT'
+        }
         $HybridRunbookWorkerDependency = @("[xPackage]InstallGIT")
 
         File LocalGitRepositoryRoot
@@ -82,11 +94,12 @@
         
         $RepositoryTable = $Vars.GitRepository | ConvertFrom-JSON | ConvertFrom-PSCustomObject
         
+        $PSModulePath = @()
         Foreach ($RepositoryPath in $RepositoryTable.Keys)
         {
             $RepositoryName = $RepositoryPath.Split('/')[-1]
             $Branch = $RepositoryTable.$RepositoryPath
-            
+            $PSModulePath += "$($RepositoryPath)\PowerShellModules"
             cGitRepository "$RepositoryName"
             {
                 Repository = $RepositoryPath
@@ -115,6 +128,14 @@
             $HybridRunbookWorkerDependency += "[cGitRepositoryBranchUpdate]$RepositoryName-$Branch"
         }
         
+        cPSModulePathLocation GITRepositoryPowerShellModules
+        {
+            Name = 'GITRepositoryPowerShellModules'
+            Path = $PSModulePath
+            Ensure = 'Present'
+            DependsOn = '[File]LocalGitRepositoryRoot'
+        }
+
         xRemoteFile DownloadMicrosoftManagementAgent
         {
             Uri = $MMARemotSetupExeURI
