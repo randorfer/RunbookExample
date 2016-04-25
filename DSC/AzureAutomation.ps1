@@ -34,8 +34,7 @@
     $MMACommandLineArguments = 
         '/Q /C:`"setup.exe /qn ADD_OPINSIGHTS_WORKSPACE=1 AcceptEndUserLicenseAgreement=1 ' +
         "OPINSIGHTS_WORKSPACE_ID=$($Vars.WorkspaceID) " +
-        "OPINSIGHTS_WORKSPACE_KEY=$($WorkspaceKey)` " +
-        "/L*v $($SourceDir)\MMA.log`""
+        "OPINSIGHTS_WORKSPACE_KEY=$($WorkspaceKey)`""
 
     $GITVersion = '2.8.1'
     $GITRemotSetupExeURI = "https://github.com/git-for-windows/git/releases/download/v$($GITVersion).windows.1/Git-$($GITVersion)-64-bit.exe"
