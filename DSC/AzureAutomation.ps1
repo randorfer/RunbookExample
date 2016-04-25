@@ -18,6 +18,14 @@
         "OPINSIGHTS_WORKSPACE_ID=$($Vars.WorkspaceID) " +
         "OPINSIGHTS_WORKSPACE_KEY=$($WorkspaceKey)`""
 
+    $GITVersion = '2.8.1'
+    $GITRemotSetupExeURI = "https://github.com/git-for-windows/git/releases/download/v$($GITVersion).windows.1/Git-$($GITVersion)-64-bit.exe"
+    $GITSetupExe = "Git-$($GITVersion)-64-bit.exe"
+    
+    $GITCommandLineArguments = 
+        '/VERYSILENT /NORESTART /NOCANCEL /SP- ' +
+        '/COMPONENTS="icons,icons\quicklaunch,ext,ext\shellhere,ext\guihere,assoc,assoc_sh" /LOG'
+
     $SourceDir = 'c:\Source'
 
     $Vars = Get-BatchAutomationVariable -Prefix 'AzureAutomation' -Name @(
@@ -34,27 +42,42 @@
 
     $PrimaryKeyCredential = Get-AutomationPSCredential -Name $Vars.AutomationAccountPrimaryKeyName
     $PrimaryKey = $PrimaryKeyCredential.GetNetworkCredential().Password
-
-    
     
     Node HybridRunbookWorker
     {
-        cChocoInstaller installChoco
+        File SourceFolder
         {
-            InstallDir = $SourceDir
+            DestinationPath = $($SourceDir)
+            Type = 'Directory'
+            Ensure = 'Present'
         }
-
-        cChocoPackageInstaller installGit
+        xRemoteFile DownloadGitSetup
         {
-            Name = 'git'
+            Uri = $GITRemotSetupExeURI
+            DestinationPath = "$($SourceDir)\$($GITSetupExe)"
+            MatchSource = $False
+            DependsOn = '[File]SourceFolder'
         }
-        $HybridRunbookWorkerDependency = @("[cChocoPackageInstaller]installGit")
+        xPackage InstallGIT
+        {
+             Name = "Gi =t version $($GITVersion)"
+             Path = "$($SourceDir)\$($GitSetupExE)" 
+             Arguments = $GITCommandLineArguments 
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\GitForWindows'
+             InstalledCheckRegValueName = 'CurrentVersion'
+             InstalledCheckRegValueData = $GITVersion
+             ProductID = ''
+             DependsOn = "[xRemoteFile]DownloadGitSetup"
+        }
+        $HybridRunbookWorkerDependency = @("[xPackage]InstallGIT")
 
         File LocalGitRepositoryRoot
         {
             Ensure = 'Present'
             Type = 'Directory'
             DestinationPath = $Vars.LocalGitRepositoryRoot
+            DependsOn = '[xPackage]InstallGIT'
         }
         
         $RepositoryTable = $Vars.GitRepository | ConvertFrom-JSON | ConvertFrom-PSCustomObject
@@ -69,6 +92,7 @@
                 Repository = $RepositoryPath
                 BaseDirectory = $Vars.LocalGitRepositoryRoot
                 Ensure = 'Present'
+                DependsOn = '[xPackage]InstallGIT'
             }
             $HybridRunbookWorkerDependency += "[cGitRepository]$($RepositoryName)"
             
@@ -77,6 +101,7 @@
                 Repository = $RepositoryPath
                 BaseDirectory = $Vars.LocalGitRepositoryRoot
                 Branch = $Branch
+                DependsOn = '[xPackage]InstallGIT'
             }
             $HybridRunbookWorkerDependency += "[cGitRepositoryBranch]$RepositoryName-$Branch"
             
@@ -85,6 +110,7 @@
                 Repository = $RepositoryPath
                 BaseDirectory = $Vars.LocalGitRepositoryRoot
                 Branch = $Branch
+                DependsOn = '[xPackage]InstallGIT'
             }
             $HybridRunbookWorkerDependency += "[cGitRepositoryBranchUpdate]$RepositoryName-$Branch"
         }
