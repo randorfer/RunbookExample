@@ -20,7 +20,7 @@ Try
                           -Recipients 'Ryan.Andorfer@microsoft.com' `
                           -Subject 'Something Happened!' `
                           -ImportanceLevel High `
-                          -Body 'Hello'
+                          -Body "Hello $($Vars.Who)"
 }
 Catch
 {
