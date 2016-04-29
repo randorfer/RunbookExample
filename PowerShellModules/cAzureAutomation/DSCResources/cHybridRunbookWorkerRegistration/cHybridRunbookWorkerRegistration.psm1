@@ -18,14 +18,14 @@ function Get-TargetResource
     
     if(Test-Path -Path 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker')
     {
-        $RunbookWorkerGroup = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker' -Name 'RunbookWorkerGroup').RunbookWorkerGroup
+        $LocalGroup = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker' -Name 'RunbookWorkerGroup').RunbookWorkerGroup
     }
     else
     {
-        $RunbookWorkerGroup ='Not Configured'
+        $LocalGroup ='Not Configured'
     }
     Return @{
-        'RunbookWorkerGroup' = $RunbookWorkerGroup
+        'RunbookWorkerGroup' = $LocalGroup
         'AutomationAccountURL' = $AutomationAccountURL
         'Key' = [string]::Empty
     }
@@ -95,14 +95,14 @@ function Test-TargetResource
     
     if(Test-Path -Path 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker')
     {
-        $RunbookWorkerGroup = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker' -Name 'RunbookWorkerGroup').RunbookWorkerGroup
+        $LocalGroup = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\HybridRunbookWorker' -Name 'RunbookWorkerGroup').RunbookWorkerGroup
     }
     else
     {
-        $RunbookWorkerGroup ='Not Configured'
+        $LocalGroup ='Not Configured'
     }
-    $State = @{ 'RunbookWorkerGroup' = $RunbookWorkerGroup }
-    return ($State.RunbookWorkerGroup -eq $RunbookWorkerGroup) -as [bool]
+
+    return ($LocalGroup -eq $RunbookWorkerGroup) -as [bool]
 }
 
 Export-ModuleMember -Function *-TargetResource
