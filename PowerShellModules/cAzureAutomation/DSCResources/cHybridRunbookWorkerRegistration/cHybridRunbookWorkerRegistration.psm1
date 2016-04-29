@@ -69,7 +69,7 @@ function Set-TargetResource
             Catch { Write-Exception -Exception $_ -Stream Verbose }
         }
 
-        Add-HybridRunbookWorker -Url $AutomationAccountURL -Key $Key -GroupName $HybridRunbookWorkerGroup
+        Add-HybridRunbookWorker -Url $AutomationAccountURL -Key $Key -GroupName $RunbookWorkerGroup
     }
     Catch { throw }
     Finally { Set-Location -Path $StartingDir }

@@ -13,6 +13,7 @@
     Import-DscResource -Module cAzureAutomation
 
     $SourceDir = 'c:\Source'
+
     $Vars = Get-BatchAutomationVariable -Prefix 'AzureAutomation' -Name @(
         'WorkspaceID',
         'AutomationAccountURL',
