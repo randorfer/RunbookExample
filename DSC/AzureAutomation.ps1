@@ -10,6 +10,7 @@
     Import-DscResource -Module PSDesiredStateConfiguration
     Import-DscResource -Module cGit
     Import-DscResource -Module cWindowscomputer
+    Import-DscResource -Module cAzureAutomation
 
     $SourceDir = 'c:\Source'
     
@@ -200,6 +201,159 @@
                 $State = @{ 'RunbookWorkerGroup' = $RunbookWorkerGroup }
                 $State.RunbookWorkerGroup -eq $Using:Vars.HybridRunbookWorkerGroupName
             }
+            DependsOn = $HybridRunbookWorkerDependency
+        }
+        
+        xFireWall OMS_HTTPS_Access
+        {
+            Direction = 'Outbound'
+            Name = 'HybridWorker-HTTPS'
+            DisplayName = 'Hybrid Runbook Worker (HTTPS)'
+            Description = 'Allow Hybrid Runbook Worker Communication'
+            Enabled = $true
+            Action = 'Allow'
+            Protocol = 'TCP'
+            RemotePort = '443'
+        }
+        
+        xFireWall OMS_Sandbox_Access
+        {
+            Direction = 'Outbound'
+            Name = 'HybridWorker-Sandbox'
+            DisplayName = 'Hybrid Runbook Worker (Sandbox)'
+            Description = 'Allow Hybrid Runbook Worker Communication'
+            Enabled = $true
+            Action = 'Allow'
+            Protocol = 'TCP'
+            RemotePort = '9354'
+        }
+        
+        xFireWall OMS_PortRange
+        {
+            Direction = 'Outbound'
+            Name = 'HybridWorker-PortRange'
+            DisplayName = 'Hybrid Runbook Worker (Port-Range)'
+            Description = 'Allow Hybrid Runbook Worker Communication'
+            Enabled = $true
+            Action = 'Allow'
+            Protocol = 'TCP'
+            RemotePort = '30000-30199'
+        }
+    }
+    Node HybridRunbookWorkerNew
+    {
+        File SourceFolder
+        {
+            DestinationPath = $($SourceDir)
+            Type = 'Directory'
+            Ensure = 'Present'
+        }
+        xRemoteFile DownloadGitSetup
+        {
+            Uri = $GITRemotSetupExeURI
+            DestinationPath = "$($SourceDir)\$($GITSetupExe)"
+            MatchSource = $False
+            DependsOn = '[File]SourceFolder'
+        }
+        xPackage InstallGIT
+        {
+             Name = "Gi =t version $($GITVersion)"
+             Path = "$($SourceDir)\$($GitSetupExE)" 
+             Arguments = $GITCommandLineArguments 
+             Ensure = 'Present'
+             InstalledCheckRegKey = 'SOFTWARE\GitForWindows'
+             InstalledCheckRegValueName = 'CurrentVersion'
+             InstalledCheckRegValueData = $GITVersion
+             ProductID = ''
+             DependsOn = "[xRemoteFile]DownloadGitSetup"
+        }
+        $HybridRunbookWorkerDependency = @('[xPackage]InstallGIT')
+
+        cPathLocation GitExePath
+        {
+            Name = 'GitEXEPath'
+            Path = @(
+                'C:\Program Files\Git\cmd'
+            )
+            Ensure = 'Present'
+            DependsOn = '[xPackage]InstallGIT'
+        }
+        $HybridRunbookWorkerDependency = @("[xPackage]InstallGIT")
+
+        File LocalGitRepositoryRoot
+        {
+            Ensure = 'Present'
+            Type = 'Directory'
+            DestinationPath = $Vars.LocalGitRepositoryRoot
+            DependsOn = '[xPackage]InstallGIT'
+        }
+        
+        $RepositoryTable = $Vars.GitRepository | ConvertFrom-JSON | ConvertFrom-PSCustomObject
+        
+        $PSModulePath = @()
+        Foreach ($RepositoryPath in $RepositoryTable.Keys)
+        {
+            $RepositoryName = $RepositoryPath.Split('/')[-1]
+            $Branch = $RepositoryTable.$RepositoryPath
+            $PSModulePath += "$($Vars.LocalGitRepositoryRoot)\$($RepositoryName)\PowerShellModules"
+            cGitRepository "$RepositoryName"
+            {
+                Repository = $RepositoryPath
+                BaseDirectory = $Vars.LocalGitRepositoryRoot
+                Ensure = 'Present'
+                DependsOn = '[xPackage]InstallGIT'
+            }
+            $HybridRunbookWorkerDependency += "[cGitRepository]$($RepositoryName)"
+            
+            cGitRepositoryBranch "$RepositoryName-$Branch"
+            {
+                Repository = $RepositoryPath
+                BaseDirectory = $Vars.LocalGitRepositoryRoot
+                Branch = $Branch
+                DependsOn = '[xPackage]InstallGIT'
+            }
+            $HybridRunbookWorkerDependency += "[cGitRepositoryBranch]$RepositoryName-$Branch"
+            
+            cGitRepositoryBranchUpdate "$RepositoryName-$Branch"
+            {
+                Repository = $RepositoryPath
+                BaseDirectory = $Vars.LocalGitRepositoryRoot
+                Branch = $Branch
+                DependsOn = '[xPackage]InstallGIT'
+            }
+            $HybridRunbookWorkerDependency += "[cGitRepositoryBranchUpdate]$RepositoryName-$Branch"
+        }
+        
+        cPSModulePathLocation GITRepositoryPowerShellModules
+        {
+            Name = 'GITRepositoryPowerShellModules'
+            Path = $PSModulePath
+            Ensure = 'Present'
+            DependsOn = '[File]LocalGitRepositoryRoot'
+        }
+
+        xRemoteFile DownloadMicrosoftManagementAgent
+        {
+            Uri = $MMARemotSetupExeURI
+            DestinationPath = "$($SourceDir)\$($MMASetupExe)"
+            MatchSource = $False
+        }
+        Package InstallMicrosoftManagementAgent
+        {
+             Name = 'Microsoft Monitoring Agent' 
+             ProductId = 'E854571C-3C01-4128-99B8-52512F44E5E9'
+             Path = "$($SourceDir)\$($MMASetupExE)" 
+             Arguments = $MMACommandLineArguments 
+             Ensure = 'Present'
+             DependsOn = "[xRemoteFile]DownloadMicrosoftManagementAgent"
+        }
+        $HybridRunbookWorkerDependency += "[Package]InstallMicrosoftManagementAgent"
+
+        cHybridRunbookWorkerRegistration HybridRegistration
+        {
+            RunbookWorkerGroup = $Vars.HybridRunbookWorkerGroupName
+            AutomationAccountURL = $Vars.AutomationAccountURL
+            Key = $PrimaryKey
             DependsOn = $HybridRunbookWorkerDependency
         }
         
