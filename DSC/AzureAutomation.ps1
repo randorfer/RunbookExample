@@ -32,7 +32,7 @@
     $MMASetupExe = 'MMASetup-AMD64.exe'
     
     $MMACommandLineArguments = 
-        '/Q /C:`"setup.exe /qn ADD_OPINSIGHTS_WORKSPACE=1 AcceptEndUserLicenseAgreement=1 ' +
+        '/Q /C:"setup.exe /qn ADD_OPINSIGHTS_WORKSPACE=1 AcceptEndUserLicenseAgreement=1 ' +
         "OPINSIGHTS_WORKSPACE_ID=$($Vars.WorkspaceID) " +
         "OPINSIGHTS_WORKSPACE_KEY=$($WorkspaceKey)`""
 
