@@ -3,17 +3,17 @@
                       "HelloWorld-Who":  {
                                              "isEncrypted":  false,
                                              "Description":  "",
-                                             "Value":  "Twin Cities Automation UserGroup"
+                                             "Value":  "OMS Customer Day"
                                          },
-                      "HelloWorld-Var1":  {
-                                              "isEncrypted":  false,
-                                              "Description":  "",
-                                              "Value":  "asdf"
-                                          },
                       "HelloWorld-EmailAccessCredentialName":  {
                                                                    "isEncrypted":  false,
                                                                    "Description":  "",
                                                                    "Value":  "ryan@microsoft.com"
-                                                               }
+                                                               },
+                      "HelloWorld-Var1":  {
+                                              "isEncrypted":  false,
+                                              "Description":  "",
+                                              "Value":  "asdf"
+                                          }
                   }
 }
