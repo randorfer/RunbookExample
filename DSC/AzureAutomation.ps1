@@ -62,7 +62,7 @@
         }
         xPackage InstallGIT
         {
-             Name = "Gi =t version $($GITVersion)"
+             Name = "Git version $($GITVersion)"
              Path = "$($SourceDir)\$($GitSetupExE)" 
              Arguments = $GITCommandLineArguments 
              Ensure = 'Present'
