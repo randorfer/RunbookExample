@@ -74,18 +74,17 @@
         {
 
             Ensure      = 'Present'
-            Name        = 'SCOrchDevNuget'
+            Name        = 'Nuget'
             ProviderName= 'Nuget'
-            SourceUri   = 'https://scorchdev.pkgs.visualstudio.com/DefaultCollection/_packaging/Application/nuget/v2/'  
+            SourceUri   = 'http://nuget.org/api/v2/'  
             InstallationPolicy = 'Trusted'
-            SourceCredential = $NugetRepositoryCredential
         }   
         
         #Install a package from Nuget repository
         NugetPackage Nuget
         {
             Ensure          = 'Present' 
-            Name            = 'testApp'
+            Name            = 'WebApiTestClient'
             DestinationPath = 'c:\wwwroot'
             RequiredVersion = '1.0.0'
             DependsOn       = '[PackageManagementSource]SourceRepository'
