@@ -10,6 +10,7 @@
     Import-DscResource -ModuleName xStorage
     Import-DscResource -Module PackageManagementProviderResource
     Import-DscResource -ModuleName xWebAdministration
+    Import-DscResource -ModuleName cDomainComputer
 
     $Vars = Get-BatchAutomationVariable -Prefix 'EnterpriseApplication' `
                                         -Name @(
@@ -175,6 +176,12 @@
             Credential = $FileShareAccessCredential
             Force = $True
             DependsOn = '[File]SourceDirectory'
+        }
+
+        cDominComputer DomainJoin
+        {
+            DomainName = $Vars.DomainName
+            Credential = $DomainJoinCredential
         }
 
         xSqlServerSetup MSSQLSERVER
