@@ -178,7 +178,7 @@
             DependsOn = '[File]SourceDirectory'
         }
 
-        cDominComputer DomainJoin
+        cDomainComputer DomainJoin
         {
             DomainName = $Vars.DomainName
             Credential = $DomainJoinCredential
