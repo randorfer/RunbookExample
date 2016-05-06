@@ -76,7 +76,7 @@
             Ensure      = 'Present'
             Name        = 'SCOrchDevNuget'
             ProviderName= 'Nuget'
-            SourceUri   = 'https://scorchdev.pkgs.visualstudio.com/DefaultCollection/_packaging/Application/nuget/v2'  
+            SourceUri   = 'https://scorchdev.pkgs.visualstudio.com/DefaultCollection/_packaging/Application/nuget/v2/'  
             InstallationPolicy = 'Trusted'
             SourceCredential = $NugetRepositoryCredential
         }   
