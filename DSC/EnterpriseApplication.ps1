@@ -11,6 +11,7 @@
     Import-DscResource -Module PackageManagementProviderResource
     Import-DscResource -ModuleName xWebAdministration
     Import-DscResource -ModuleName cDomainComputer
+    Import-DscResource -ModuleName xPSDesiredStateConfiguration
 
     $Vars = Get-BatchAutomationVariable -Prefix 'EnterpriseApplication' `
                                         -Name @(
@@ -62,13 +63,19 @@
         }
 
         # Copy the website content
-        File WebContent
+        File WebContentDirectory
         {
             Ensure          = 'Present'
             DestinationPath = 'c:\wwwroot'
             Type            = 'Directory'
             DependsOn       = '[WindowsFeature]AspNet45'
-        }       
+        }
+
+        xRemoteFile WebContent
+        {
+            Uri = "https://opsinsight.blob.core.windows.net/publicfiles/MMASetup-AMD64.exe"
+            DestinationPath = 'c:\wwwroot'
+        }
         #register package source       
         PackageManagementSource SourceRepository
         {
@@ -88,7 +95,7 @@
             DestinationPath = 'c:\wwwroot'
             RequiredVersion = '1.0.0'
             DependsOn       = '[PackageManagementSource]SourceRepository'
-        }   
+        }
         # Create the new Website
         xWebsite NewWebsite
         {
@@ -96,7 +103,7 @@
             Name            = 'testApp'
             State           = 'Started'
             PhysicalPath    = 'c:\wwwroot'
-            DependsOn       = '[File]WebContent'
+            DependsOn       = '[File]WebContentDirectory'
         }
 
         xFirewall WebFirewallRule 
