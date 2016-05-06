@@ -6,7 +6,6 @@
     #Import the required DSC Resources
     Import-DscResource -Module xNetworking
     Import-DscResource -Module xPSDesiredStateConfiguration
-    Import-DscResource -Module cChoco    
     Import-DscResource -Module PSDesiredStateConfiguration
     Import-DscResource -Module cGit
     Import-DscResource -Module cWindowscomputer
@@ -62,7 +61,7 @@
         }
         xPackage InstallGIT
         {
-             Name = "Gi =t version $($GITVersion)"
+             Name = "Git version $($GITVersion)"
              Path = "$($SourceDir)\$($GitSetupExE)" 
              Arguments = $GITCommandLineArguments 
              Ensure = 'Present'

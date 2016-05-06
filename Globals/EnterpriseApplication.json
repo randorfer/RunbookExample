@@ -39,6 +39,11 @@
                                                                              "isEncrypted":  false,
                                                                              "Description":  "",
                                                                              "Value":  "omsa@scorchdev.com"
-                                                                         }
+                                                                         },
+                      "EnterpriseApplication-NugetRepositoryCredentialName":  {
+                                                                                  "isEncrypted":  false,
+                                                                                  "Description":  "",
+                                                                                  "Value":  "ryan.andorfer"
+                                                                              }
                   }
 }

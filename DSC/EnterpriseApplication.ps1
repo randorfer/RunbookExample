@@ -1,4 +1,4 @@
-﻿ Configuration EnterpriseApplication
+﻿Configuration EnterpriseApplication
 {
     Param(
     )
@@ -6,10 +6,13 @@
     Import-DscResource -ModuleName xNetworking
     Import-DscResource -ModuleName xSQLServer
     Import-DscResource -ModuleName xWindowsUpdate
-    Import-DscResource -ModuleName cDomainComputer
     Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DscResource -ModuleName xStorage
-    
+    Import-DscResource -Module PackageManagementProviderResource
+    Import-DscResource -ModuleName xWebAdministration
+    Import-DscResource -ModuleName cDomainComputer
+    Import-DscResource -ModuleName xPSDesiredStateConfiguration
+
     $Vars = Get-BatchAutomationVariable -Prefix 'EnterpriseApplication' `
                                         -Name @(
                                             'FileShareAccessCredentialName'
@@ -19,13 +22,15 @@
                                             'InstallerServiceAccountName'
                                             'SQLAdminAccount'
                                             'SQLAccessGroup'
-                                            'SQLAccessCredentialName'
+                                            'SQLAccessCredentialName',
+                                            'NugetRepositoryCredentialName'
                                         )
 
     $FileShareAccessCredential = Get-AutomationPSCredential -Name $Vars.FileShareAccessCredentialName
     $DomainJoinCredential = Get-AutomationPSCredential -Name $Vars.DomainJoinCredentialName
     $InstallerServiceAccount = Get-AutomationPSCredential -Name $Vars.InstallerServiceAccountName
     $SQLAccessCredential = Get-AutomationPSCredential -Name $Vars.SQLAccessCredentialName
+    $NugetRepositoryCredential = Get-AutomationPSCredential -Name $Vars.NugetRepositoryCredentialName
 
     $LocalSystemAccountPassword = ConvertTo-SecureString -String (New-RandomString) -AsPlainText -Force
     $LocalSystemAccount = New-Object -TypeName System.Management.Automation.PSCredential("SYSTEM", $LocalSystemAccountPassword)
@@ -34,10 +39,71 @@
 
     Node FrontEndWebserver {   
 
-        WindowsFeature installIIS 
+        WindowsFeature IIS 
         { 
             Ensure = 'Present' 
             Name = 'Web-Server'
+        }                            
+        
+        # Install the ASP .NET 4.5 role
+        WindowsFeature AspNet45
+        {
+            Ensure          = 'Present'
+            Name            = 'Web-Asp-Net45'
+        }
+
+        # Stop the default website
+        xWebsite DefaultSite 
+        {
+            Ensure          = 'Present'
+            Name            = 'Default Web Site'
+            State           = 'Stopped'
+            PhysicalPath    = 'C:\inetpub\wwwroot'
+            DependsOn       = '[WindowsFeature]IIS'
+        }
+
+        # Copy the website content
+        File WebContentDirectory
+        {
+            Ensure          = 'Present'
+            DestinationPath = 'c:\wwwroot'
+            Type            = 'Directory'
+            DependsOn       = '[WindowsFeature]AspNet45'
+        }
+
+        xRemoteFile WebContent
+        {
+            Uri = 'https://raw.githubusercontent.com/randorfer/RunbookExample/vNext/Website/Demo/Index.html'
+            DestinationPath = 'c:\wwwroot'
+        }
+        #register package source       
+        PackageManagementSource SourceRepository
+        {
+
+            Ensure      = 'Present'
+            Name        = 'Nuget'
+            ProviderName= 'Nuget'
+            SourceUri   = 'http://nuget.org/api/v2/'  
+            InstallationPolicy = 'Trusted'
+        }   
+        
+        #Install a package from Nuget repository
+        NugetPackage Nuget
+        {
+            Ensure          = 'Present' 
+            Name            = 'WebApiTestClient'
+            DestinationPath = 'c:\wwwroot'
+            RequiredVersion = '1.0.0'
+            DependsOn       = '[PackageManagementSource]SourceRepository'
+        }
+        # Create the new Website
+        xWebsite NewWebsite
+        {
+            Ensure          = 'Present'
+            Name            = 'testApp'
+            State           = 'Started'
+            PhysicalPath    = 'c:\wwwroot'
+            DependsOn       = '[xRemoteFile]WebContent'
         }
 
         xFirewall WebFirewallRule 
@@ -51,6 +117,7 @@
             Protocol = 'TCP' 
             LocalPort = '80' 
             Ensure = 'Present'
+            DependsOn = '[xWebsite]NewWebsite'
         }
     }
     
@@ -81,12 +148,6 @@
             Id = 'KB3134758'
             Ensure = 'Present'
             DependsOn = '[File]WMF5_MSU'
-        }
-
-        cDomainComputer DomainJoin
-        {
-            DomainName = $Vars.DomainName
-            Credential = $DomainJoinCredential
         }
 
         WindowsFeature NET-Framework-Core
@@ -121,6 +182,12 @@
             Credential = $FileShareAccessCredential
             Force = $True
             DependsOn = '[File]SourceDirectory'
+        }
+
+        cDomainComputer DomainJoin
+        {
+            DomainName = $Vars.DomainName
+            Credential = $DomainJoinCredential
         }
 
         xSqlServerSetup MSSQLSERVER
