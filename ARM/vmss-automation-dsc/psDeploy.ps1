@@ -15,11 +15,13 @@ Try
                                               -Name 'AutomationAccountName',
                                                     'SubscriptionName',
                                                     'SubscriptionAccessCredentialName',
+                                                    'RunbookWorkerAccessCredentialName'
                                                     'ResourceGroupName',
                                                     'Tenant'
 
     $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
-        
+    $VMAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.RunbookWorkerAccessCredentialName
+
     Connect-AzureRmAccount -Credential $SubscriptionAccessCredential -SubscriptionName $GlobalVars.SubscriptionName -Tenant $GlobalVars.Tenant
 
     $ResourceGroupName = "vmss$i"
@@ -41,8 +43,8 @@ Try
                                        -TemplateFile .\azuredeploy.json `
                                        -registrationKey ($RegistrationInfo.PrimaryKey | ConvertTo-SecureString -AsPlainText -Force) `
                                        -registrationUrl $RegistrationInfo.Endpoint `
-                                       -adminUsername $credential.UserName `
-                                       -adminPassword $credential.Password `
+                                       -adminUsername $VMAccessCredential.UserName `
+                                       -adminPassword $VMAccessCredential.Password `
                                        -domainNamePrefix $DomainNamePrefix `
                                        -resourceLocation $ResourceLocation `
                                        -vmssName $VirtualMachineScaleSetName `
