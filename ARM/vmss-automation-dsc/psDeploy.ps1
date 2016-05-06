@@ -6,7 +6,7 @@ param (
 	[int]$i
 )
 
-$CurrentWorkspace = Get-LocalDevWorkspace
+$CurrentWorkspace = Get-CurrentLocalDevWorkspace
 Try
 {
     Select-LocalDevWorkspace -Workspace SCOrchDev
