@@ -20,13 +20,15 @@
                                             'InstallerServiceAccountName'
                                             'SQLAdminAccount'
                                             'SQLAccessGroup'
-                                            'SQLAccessCredentialName'
+                                            'SQLAccessCredentialName',
+                                            'NugetRepositoryCredentialName'
                                         )
 
     $FileShareAccessCredential = Get-AutomationPSCredential -Name $Vars.FileShareAccessCredentialName
     $DomainJoinCredential = Get-AutomationPSCredential -Name $Vars.DomainJoinCredentialName
     $InstallerServiceAccount = Get-AutomationPSCredential -Name $Vars.InstallerServiceAccountName
     $SQLAccessCredential = Get-AutomationPSCredential -Name $Vars.SQLAccessCredentialName
+    $NugetRepositoryCredential = Get-AutomationPSCredential -Name $Vars.NugetRepositoryCredentialName
 
     $LocalSystemAccountPassword = ConvertTo-SecureString -String (New-RandomString) -AsPlainText -Force
     $LocalSystemAccount = New-Object -TypeName System.Management.Automation.PSCredential("SYSTEM", $LocalSystemAccountPassword)
@@ -62,9 +64,7 @@
         File WebContent
         {
             Ensure          = 'Present'
-            SourcePath      = $SourcePath
-            DestinationPath = $DestinationPath
-            Recurse         = $true
+            DestinationPath = 'c:\wwwroot'
             Type            = 'Directory'
             DependsOn       = '[WindowsFeature]AspNet45'
         }       
@@ -72,11 +72,12 @@
         PackageManagementSource SourceRepository
         {
 
-            Ensure      = "Present"
-            Name        = "MyNuget"
-            ProviderName= "Nuget"
-            SourceUri   = "http://nuget.org/api/v2/"  
-            InstallationPolicy ="Trusted"
+            Ensure      = 'Present'
+            Name        = 'SCOrchDevNuget'
+            ProviderName= 'Nuget'
+            SourceUri   = 'https://scorchdev.pkgs.visualstudio.com/DefaultCollection/_packaging/Application/nuget/v2'  
+            InstallationPolicy = 'Trusted'
+            SourceCredential = $NugetRepositoryCredential
         }   
         
         #Install a package from Nuget repository
@@ -84,8 +85,8 @@
         {
             Ensure          = 'Present' 
             Name            = $Name
-            DestinationPath = $DestinationPath
-            RequiredVersion = '2.0.1'
+            DestinationPath = 'c:\wwwroot'
+            RequiredVersion = '1.0.0'
             DependsOn       = '[PackageManagementSource]SourceRepository'
         }   
         # Create the new Website
@@ -94,7 +95,7 @@
             Ensure          = 'Present'
             Name            = $WebSiteName
             State           = 'Started'
-            PhysicalPath    = $DestinationPath
+            PhysicalPath    = 'c:\wwwroot'
             DependsOn       = '[File]WebContent'
         }
 
@@ -140,12 +141,6 @@
             Id = 'KB3134758'
             Ensure = 'Present'
             DependsOn = '[File]WMF5_MSU'
-        }
-
-        cDomainComputer DomainJoin
-        {
-            DomainName = $Vars.DomainName
-            Credential = $DomainJoinCredential
         }
 
         WindowsFeature NET-Framework-Core
