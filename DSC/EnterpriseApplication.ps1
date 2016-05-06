@@ -94,7 +94,7 @@
         xWebsite NewWebsite
         {
             Ensure          = 'Present'
-            Name            = $WebSiteName
+            Name            = 'testApp'
             State           = 'Started'
             PhysicalPath    = 'c:\wwwroot'
             DependsOn       = '[File]WebContent'
