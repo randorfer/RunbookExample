@@ -27,7 +27,7 @@ Try
     $ResourceGroupName = "vmss$i"
     $DomainNamePrefix = "demoapp$i"
     $ResourceLocation = 'East US 2'
-    $VirtualMachineScaleSetName = 'webSrv'
+    $VirtualMachineScaleSetName = "webSrv$i"
     $InstanceCount = 2
 
     New-AzureRmResourcegroup -Name $ResourceGroupName -Location 'East US' -Verbose
