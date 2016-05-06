@@ -6,10 +6,11 @@
     Import-DscResource -ModuleName xNetworking
     Import-DscResource -ModuleName xSQLServer
     Import-DscResource -ModuleName xWindowsUpdate
-    Import-DscResource -ModuleName cDomainComputer
     Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DscResource -ModuleName xStorage
-    
+    Import-DscResource -Module PackageManagementProviderResource
+    Import-DscResource -ModuleName xWebAdministration
+
     $Vars = Get-BatchAutomationVariable -Prefix 'EnterpriseApplication' `
                                         -Name @(
                                             'FileShareAccessCredentialName'
@@ -38,6 +39,63 @@
         { 
             Ensure = 'Present' 
             Name = 'Web-Server'
+        }                            
+        
+        # Install the ASP .NET 4.5 role
+        WindowsFeature AspNet45
+        {
+            Ensure          = 'Present'
+            Name            = 'Web-Asp-Net45'
+        }
+
+        # Stop the default website
+        xWebsite DefaultSite 
+        {
+            Ensure          = 'Present'
+            Name            = 'Default Web Site'
+            State           = 'Stopped'
+            PhysicalPath    = 'C:\inetpub\wwwroot'
+            DependsOn       = '[WindowsFeature]IIS'
+        }
+
+        # Copy the website content
+        File WebContent
+        {
+            Ensure          = 'Present'
+            SourcePath      = $SourcePath
+            DestinationPath = $DestinationPath
+            Recurse         = $true
+            Type            = 'Directory'
+            DependsOn       = '[WindowsFeature]AspNet45'
+        }       
+        #register package source       
+        PackageManagementSource SourceRepository
+        {
+
+            Ensure      = "Present"
+            Name        = "MyNuget"
+            ProviderName= "Nuget"
+            SourceUri   = "http://nuget.org/api/v2/"  
+            InstallationPolicy ="Trusted"
+        }   
+        
+        #Install a package from Nuget repository
+        NugetPackage Nuget
+        {
+            Ensure          = 'Present' 
+            Name            = $Name
+            DestinationPath = $DestinationPath
+            RequiredVersion = '2.0.1'
+            DependsOn       = '[PackageManagementSource]SourceRepository'
+        }   
+        # Create the new Website
+        xWebsite NewWebsite
+        {
+            Ensure          = 'Present'
+            Name            = $WebSiteName
+            State           = 'Started'
+            PhysicalPath    = $DestinationPath
+            DependsOn       = '[File]WebContent'
         }
 
         xFirewall WebFirewallRule 
@@ -51,6 +109,7 @@
             Protocol = 'TCP' 
             LocalPort = '80' 
             Ensure = 'Present'
+            DependsOn = '[xWebsite]NewWebsite'
         }
     }
     

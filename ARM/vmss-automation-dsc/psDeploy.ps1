@@ -15,7 +15,7 @@ Try
                                               -Name 'AutomationAccountName',
                                                     'SubscriptionName',
                                                     'SubscriptionAccessCredentialName',
-                                                    'RunbookWorkerAccessCredentialName'
+                                                    'RunbookWorkerAccessCredentialName',
                                                     'ResourceGroupName',
                                                     'Tenant'
 
