@@ -2,7 +2,7 @@
 #  v0.1
 #  This script can be used to test the ARM template deployment, or as a reference for building your own deployment script.
 param (
-	[Parameter(Mandatory=$true)]
+	[Parameter(Mandatory=$false)]
 	[int]$i
 )
 
