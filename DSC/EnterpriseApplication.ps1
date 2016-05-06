@@ -1,4 +1,4 @@
-﻿ Configuration EnterpriseApplication
+﻿Configuration EnterpriseApplication
 {
     Param(
     )
