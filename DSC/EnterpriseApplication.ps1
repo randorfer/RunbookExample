@@ -37,7 +37,7 @@
 
     Node FrontEndWebserver {   
 
-        WindowsFeature installIIS 
+        WindowsFeature IIS 
         { 
             Ensure = 'Present' 
             Name = 'Web-Server'
@@ -84,7 +84,7 @@
         NugetPackage Nuget
         {
             Ensure          = 'Present' 
-            Name            = $Name
+            Name            = 'testApp'
             DestinationPath = 'c:\wwwroot'
             RequiredVersion = '1.0.0'
             DependsOn       = '[PackageManagementSource]SourceRepository'
