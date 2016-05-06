@@ -73,7 +73,7 @@
 
         xRemoteFile WebContent
         {
-            Uri = "https://opsinsight.blob.core.windows.net/publicfiles/MMASetup-AMD64.exe"
+            Uri = 'https://raw.githubusercontent.com/randorfer/RunbookExample/vNext/Website/Demo/Index.html'
             DestinationPath = 'c:\wwwroot'
         }
         #register package source       
@@ -103,7 +103,7 @@
             Name            = 'testApp'
             State           = 'Started'
             PhysicalPath    = 'c:\wwwroot'
-            DependsOn       = '[File]WebContentDirectory'
+            DependsOn       = '[xRemoteFile]WebContent'
         }
 
         xFirewall WebFirewallRule 
