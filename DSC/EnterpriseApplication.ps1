@@ -35,7 +35,7 @@
     $LocalSystemAccountPassword = ConvertTo-SecureString -String (New-RandomString) -AsPlainText -Force
     $LocalSystemAccount = New-Object -TypeName System.Management.Automation.PSCredential("SYSTEM", $LocalSystemAccountPassword)
 
-    $SQLSourcePath = 'C:\Source\SqlServer2012_SP3_X64'
+    $SQLSourcePath = 'C:\Sources\SqlServer2012_SP3_X64'
 
     Node FrontEndWebserver {   
 
