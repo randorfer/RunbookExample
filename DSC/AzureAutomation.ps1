@@ -7,7 +7,7 @@
     Import-DscResource -Module xNetworking
     Import-DscResource -Module xPSDesiredStateConfiguration
     Import-DscResource -Module PSDesiredStateConfiguration
-    Import-DscResource -Module cGit
+    Import-DscResource -Module cGit -ModuleVersion 0.1.3 
     Import-DscResource -Module cWindowscomputer
     Import-DscResource -Module cAzureAutomation
 
