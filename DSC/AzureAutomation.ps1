@@ -4,7 +4,6 @@
     )
 
     #Import the required DSC Resources
-    Import-DscResource -Module xNetworking
     Import-DscResource -Module xPSDesiredStateConfiguration
     Import-DscResource -Module PSDesiredStateConfiguration
     Import-DscResource -Module cGit -ModuleVersion 0.1.3
@@ -159,42 +158,6 @@
             AutomationAccountURL = $Vars.AutomationAccountURL
             Key = $PrimaryKey
             DependsOn = $HybridRunbookWorkerDependency
-        }
-        
-        xFireWall OMS_HTTPS_Access
-        {
-            Direction = 'Outbound'
-            Name = 'HybridWorker-HTTPS'
-            DisplayName = 'Hybrid Runbook Worker (HTTPS)'
-            Description = 'Allow Hybrid Runbook Worker Communication'
-            Enabled = $true
-            Action = 'Allow'
-            Protocol = 'TCP'
-            RemotePort = '443'
-        }
-        
-        xFireWall OMS_Sandbox_Access
-        {
-            Direction = 'Outbound'
-            Name = 'HybridWorker-Sandbox'
-            DisplayName = 'Hybrid Runbook Worker (Sandbox)'
-            Description = 'Allow Hybrid Runbook Worker Communication'
-            Enabled = $true
-            Action = 'Allow'
-            Protocol = 'TCP'
-            RemotePort = '9354'
-        }
-        
-        xFireWall OMS_PortRange
-        {
-            Direction = 'Outbound'
-            Name = 'HybridWorker-PortRange'
-            DisplayName = 'Hybrid Runbook Worker (Port-Range)'
-            Description = 'Allow Hybrid Runbook Worker Communication'
-            Enabled = $true
-            Action = 'Allow'
-            Protocol = 'TCP'
-            RemotePort = '30000-30199'
         }
     }
 }
