@@ -12,7 +12,7 @@ Configuration DomainServer
     Foreach($_Domain in $Domain)
     {
         $DomainJoinCredential = Get-AutomationPSCredential -Name "DomainCred-$($_Domain)"
-        Node "Defaultweb"
+        Node "Defaultweb-$($_Domain)"
         {
             WindowsFeature installIIS 
             { 
