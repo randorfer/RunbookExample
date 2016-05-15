@@ -6,7 +6,7 @@ param (
 	[int]$i
 )
 
-$CurrentWorkspace = Get-LocalDevWorkspace
+$CurrentWorkspace = Get-CurrentLocalDevWorkspace
 Try
 {
     Select-LocalDevWorkspace -Workspace SCOrchDev
@@ -27,7 +27,7 @@ Try
     $ResourceGroupName = "vmss$i"
     $DomainNamePrefix = "demoapp$i"
     $ResourceLocation = 'East US 2'
-    $VirtualMachineScaleSetName = 'webSrv'
+    $VirtualMachineScaleSetName = "webSrv$i"
     $InstanceCount = 2
 
     New-AzureRmResourcegroup -Name $ResourceGroupName -Location 'East US' -Verbose
