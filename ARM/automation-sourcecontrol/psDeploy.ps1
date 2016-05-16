@@ -20,17 +20,13 @@ Try
                                                     'Tenant'
 
     $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
-    $VMAccessCredential = Get-AutomationPSCredential -Name 'ryan'
 
     Connect-AzureRmAccount -Credential $SubscriptionAccessCredential -SubscriptionName $GlobalVars.SubscriptionName -Tenant $GlobalVars.Tenant
 
-    $ResourceGroupName = "vmss$i"
-    $DomainNamePrefix = "demoapp$i"
+    $ResourceGroupName = "AzureAutomationDemo$i"
     $ResourceLocation = 'East US 2'
-    $VirtualMachineScaleSetName = "webSrv$i"
-    $InstanceCount = 2
-
-    New-AzureRmResourcegroup -Name $ResourceGroupName -Location 'East US' -Verbose
+    $AccountName = "AutomationAccountTest$i"
+    New-AzureRmResourcegroup -Name $ResourceGroupName -Location 'East US 2' -Verbose
 
     $RegistrationInfo = Get-AzureRmAutomationRegistrationInfo -ResourceGroupName 'SCOrchDev' -AutomationAccountName 'SCOrchDev-Staging'
 
@@ -41,15 +37,7 @@ Try
     New-AzureRmResourceGroupDeployment -Name TestDeployment `
                                        -ResourceGroupName $ResourceGroupName `
                                        -TemplateFile .\azuredeploy.json `
-                                       -registrationKey ($RegistrationInfo.PrimaryKey | ConvertTo-SecureString -AsPlainText -Force) `
-                                       -registrationUrl $RegistrationInfo.Endpoint `
-                                       -adminUsername $VMAccessCredential.UserName `
-                                       -adminPassword $VMAccessCredential.Password `
-                                       -domainNamePrefix $DomainNamePrefix `
-                                       -resourceLocation $ResourceLocation `
-                                       -vmssName $VirtualMachineScaleSetName `
-                                       -instanceCount $InstanceCount `
-                                       -timestamp $timestamp `
+                                       -AccountName $AccountName `
                                        -Verbose
 }
 Catch
