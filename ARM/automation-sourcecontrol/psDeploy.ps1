@@ -36,8 +36,8 @@ Try
     New-AzureRmResourceGroupDeployment -Name TestDeployment `
                                        -ResourceGroupName $ResourceGroupName `
                                        -TemplateFile .\azuredeploy.json `
-                                       -AutomationAccountName $AccountName `
-                                       -WorkspaceID $Vars.WorkspaceId `
+                                       -automationAccountName $AccountName `
+                                       -workspaceId $Vars.WorkspaceId `
                                        -jobId $NewGUID `
                                        -Verbose
 }
