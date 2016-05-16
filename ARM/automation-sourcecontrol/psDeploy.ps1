@@ -15,10 +15,11 @@ Try
                                               -Name 'AutomationAccountName',
                                                     'SubscriptionName',
                                                     'SubscriptionAccessCredentialName',
-                                                    'RunbookWorkerAccessCredentialName',
                                                     'ResourceGroupName',
                                                     'Tenant'
 
+    $Vars = Get-BatchAutomationVariable -Prefix 'AzureAutomation' `
+                                        -Name 'WorkspaceId'
     $SubscriptionAccessCredential = Get-AutomationPSCredential -Name $GlobalVars.SubscriptionAccessCredentialName
 
     Connect-AzureRmAccount -Credential $SubscriptionAccessCredential -SubscriptionName $GlobalVars.SubscriptionName -Tenant $GlobalVars.Tenant
@@ -32,12 +33,12 @@ Try
 
     $NewGUID = [system.guid]::newguid().guid
 
-    $timestamp = (get-date).getdatetimeformats()[80]
-
     New-AzureRmResourceGroupDeployment -Name TestDeployment `
                                        -ResourceGroupName $ResourceGroupName `
                                        -TemplateFile .\azuredeploy.json `
-                                       -AccountName $AccountName `
+                                       -AutomationAccountName $AccountName `
+                                       -WorkspaceID $Vars.WorkspaceId `
+                                       -jobId $NewGUID `
                                        -Verbose
 }
 Catch
