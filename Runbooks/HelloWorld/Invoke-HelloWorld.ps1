@@ -14,6 +14,7 @@ $Credential = Get-AutomationPSCredential -Name $Vars.EmailAccessCredentialName
 
 Try
 {
+    Write-Verbose -Message 'testing'
     $EWSCon = New-EWSMailboxConnection -Credential $Credential
 
     $Null = Send-EWSEmail -mailboxConnection $EWSCon `
